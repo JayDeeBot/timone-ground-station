@@ -1,0 +1,83 @@
+<div class="telemetry-container p-3">
+    <div class="row">
+        <!-- Current Values Panel -->
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Current Telemetry Values</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                        <!-- Altitude -->
+                        <div class="col">
+                            <div class="telemetry-value-card">
+                                <div class="value-label">Altitude</div>
+                                <div class="value-content">
+                                    <span id="altitudeValue" class="value-number">0</span>
+                                    <span class="value-unit">m</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Velocity -->
+                        <div class="col">
+                            <div class="telemetry-value-card">
+                                <div class="value-label">Velocity</div>
+                                <div class="value-content">
+                                    <span id="velocityValue" class="value-number">0</span>
+                                    <span class="value-unit">m/s</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Acceleration -->
+                        <div class="col">
+                            <div class="telemetry-value-card">
+                                <div class="value-label">Acceleration</div>
+                                <div class="value-content">
+                                    <span id="accelerationValue" class="value-number">0</span>
+                                    <span class="value-unit">m/s²</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Temperature -->
+                        <div class="col">
+                            <div class="telemetry-value-card">
+                                <div class="value-label">Temperature</div>
+                                <div class="value-content">
+                                    <span id="temperatureValue" class="value-number">0</span>
+                                    <span class="value-unit">°C</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Pressure -->
+                        <div class="col">
+                            <div class="telemetry-value-card">
+                                <div class="value-label">Pressure</div>
+                                <div class="value-content">
+                                    <span id="pressureValue" class="value-number">0</span>
+                                    <span class="value-unit">kPa</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- GPS Coordinates -->
+                        <div class="col">
+                            <div class="telemetry-value-card">
+                                <div class="value-label">GPS Location</div>
+                                <div class="value-content">
+                                    <div class="gps-coordinates">
+                                        <small>Lat: <span id="latitudeValue">0.0000</span>°</small>
+                                        <small>Lon: <span id="longitudeValue">0.0000</span>°</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

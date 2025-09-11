@@ -1,0 +1,43 @@
+Settings Page:
+    Spread Factor (int)
+    Coding rate (int - pending confirmation)
+    Frequency (float)
+    Power Level (float)
+    Bandwidth (float)
+    Channel (int)
+
+Status Tab:
+    Radio status should have both whether its connected and whether its active/healthy
+    IBIS FSM Status should be the current state reported out of x states
+    Charge continuite should be a binary graph over Time
+    For flight data we should have customisable graphs able to be added for each telemetry catgeory
+
+Telemetry Tab:
+    There should be a panel for the current values of each telemetry value
+    Potentially put customisable graphs here (more than likely)
+
+Maps Tab:
+    Add in radar map
+    Either a list of radar maps and depending on where we add in out gps location it chooses from the list
+    Show the relative location of rocket
+
+Logs:
+    Remove the battery warning
+    Should be just a moving text portal that scrolls straight to the bottom showing all the text reported
+
+Notifications:
+    Most of the time we will be on the telemetry tab looking at the custom graphs
+    We should  have notifications arise anywhere when any of the following change: 
+        IBIS FSM Status 
+        Charge Continuity (need algorithm for determining this)
+        Radio Status - either
+        Low battery
+
+Historical Logs:
+    This will basically just be a tab that is a file explorer and allows us to access the storage and open any previous logs
+
+Customisation:
+    Later down the track timone should be developed to be ready for additional devices (sensors) to be plugged in
+    There will be a list of device types that the system is prepared to handle
+    When a new device is added the gui should recognise what device type it is by id and arise the functionality to handle it inclusion
+    There should be an API created later that would allow users to create a custom id for their device and customise how it will interact with the gui

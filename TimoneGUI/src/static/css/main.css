@@ -1,0 +1,353 @@
+/* High contrast styles for sunlight visibility */
+:root {
+    --primary-color: #007bff;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+/* Status indicators and Radio layout */
+.status-indicator {
+    width: 8px; /* Reduced from 10px */
+    height: 8px; /* Reduced from 10px */
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.radio-status-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 0.5rem; /* Reduced from 1rem */
+    padding: 0.25rem; /* Reduced from 0.5rem */
+}
+
+.radio-status-group {
+    text-align: center;
+}
+
+.radio-module {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem; /* Reduced from 0.5rem */
+}
+
+.radio-title {
+    font-size: 0.85rem; /* Slightly smaller */
+    font-weight: 600;
+    margin: 0;
+    color: #495057;
+}
+
+.status-indicators {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem; /* Reduced from 0.5rem */
+}
+
+.status-indicator-group {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem; /* Reduced from 0.5rem */
+}
+
+/* Card layouts and sizes */
+.card {
+    margin-bottom: 1rem;
+    height: auto;
+}
+
+.status-card {
+    height: auto;
+    min-height: 80px;
+    max-height: 150px; /* Increased from 120px */
+}
+
+.status-card .card-body {
+    padding: 0.5rem;
+}
+
+/* FSM Status styles */
+.fsm-status {
+    padding: 0.5rem 0;
+}
+
+.fsm-status .progress {
+    height: 25px !important;
+    background-color: #e9ecef;
+}
+
+.fsm-status .progress-bar {
+    transition: width .6s ease;
+    font-size: 0.9rem;
+    line-height: 25px;
+    background-color: var(--primary-color);
+}
+
+.fsm-states {
+    margin-top: 0.5rem;
+}
+
+.state-indicators {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+    padding: 0 0.5rem;
+}
+
+.state-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    position: relative;
+    cursor: help;
+}
+
+.state-dot.completed {
+    background-color: var(--success-color);
+}
+
+.state-dot.active {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+.state-labels {
+    text-align: center;
+    font-size: 0.75rem;
+}
+
+.state-labels small {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+/* Continuity chart styles */
+.continuity-container {
+    height: 200px;
+    margin: 0.5rem 0;
+    position: relative;
+}
+
+#drogueContinuityChart,
+#mainContinuityChart {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+/* Add specific styles for each chart container */
+.continuity-container h6 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+/* Flight data graphs */
+.flight-data-container {
+    min-height: 400px;
+}
+
+#graphContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.graph-wrapper {
+    position: relative;
+    min-height: 250px;
+    width: 100%;
+}
+
+/* Status indicator states */
+.status-indicator.connected {
+    background-color: var(--success-color);
+}
+
+.status-indicator.disconnected {
+    background-color: var(--danger-color);
+}
+
+.status-indicator.healthy {
+    background-color: var(--success-color);
+}
+
+.status-indicator.unhealthy {
+    background-color: var(--warning-color);
+}
+
+.status-label {
+    font-size: 0.75rem; /* Reduced from 0.8rem */
+    color: #6c757d;
+    white-space: nowrap;
+}
+
+/* Telemetry value cards */
+.telemetry-value-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    height: 100%;
+}
+
+.value-label {
+    color: #6c757d;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.value-content {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+}
+
+.value-number {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #212529;
+}
+
+.value-unit {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+/* GPS Coordinate styles */
+.gps-coordinates {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.coordinate-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.coordinate-label {
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+.coordinate-value {
+    font-family: monospace;
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* Log panel styles */
+.log-scroll {
+    height: calc(100vh - 250px);
+    overflow-y: auto;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.log-content {
+    padding: 1rem;
+    min-height: 100%;
+}
+
+.log-entry {
+    margin: 0;
+    padding: 2px 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.log-timestamp {
+    color: #569cd6;
+    margin-right: 8px;
+}
+
+.log-level {
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.log-level.info { color: #3c9; }
+.log-level.warn { color: #fc3; }
+.log-level.error { color: #f66; }
+.log-level.debug { color: #999; }
+
+/* Historical Logs styles */
+.historical-container {
+    min-height: 400px;
+}
+
+#fileList {
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+}
+
+#fileList .list-group-item {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    border-left: none;
+    border-right: none;
+}
+
+#fileList .list-group-item i {
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+
+#fileList .list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+#currentPath {
+    font-family: monospace;
+    font-size: 0.875rem;
+}
+
+/* Map styles */
+.map-container {
+    height: calc(100vh - 200px);
+    min-height: 500px;
+    width: 100%;
+    background-color: #f8f9fa;
+    position: relative;
+    overflow: hidden;
+}
+
+#imageMap {
+    width: 100%;
+    height: 100%;
+}
+
+.leaflet-container {
+    background: #f8f9fa;
+}
+
+/* File viewer styles */
+#fileViewer {
+    background-color: white;
+}
+
+#fileViewer pre {
+    max-height: calc(100vh - 300px);
+    overflow-y: auto;
+}
+
+#fileName {
+    font-family: monospace;
+    color: #495057;
+}

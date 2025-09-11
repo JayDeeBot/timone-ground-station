@@ -1,0 +1,25 @@
+<div class="historical-container p-3">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="card-title mb-0">File Explorer</h5>
+            <span id="currentPath" class="text-muted">/</span>
+        </div>
+        <div class="card-body p-0">
+            <!-- File List View -->
+            <div id="fileList" class="list-group list-group-flush">
+                <!-- Files will be listed here -->
+            </div>
+            
+            <!-- File Content View (hidden by default) -->
+            <div id="fileViewer" class="p-3 d-none">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h6 id="fileName" class="mb-0"></h6>
+                    <button id="closeFile" class="btn btn-sm btn-secondary">
+                        <i class="bi bi-x"></i> Close
+                    </button>
+                </div>
+                <pre id="fileContent" class="bg-light p-3 rounded"></pre>
+            </div>
+        </div>
+    </div>
+</div>
