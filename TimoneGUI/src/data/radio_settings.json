@@ -1,0 +1,12 @@
+{
+  "433": {
+    "bandwidth": 125.0,
+    "codingRate": "4/5",
+    "spreadingFactor": 8
+  },
+  "915": {
+    "bandwidth": 1555.0,
+    "codingRate": "4/5",
+    "spreadingFactor": 12
+  }
+}
