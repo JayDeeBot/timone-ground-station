@@ -154,17 +154,55 @@ body {
     min-height: 400px;
 }
 
+/* IMPORTANT: Let Bootstrap control the layout (2 per row on md+).
+   Do NOT use CSS grid here; it caused 3-per-row crowding before. */
 #graphContainer {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
+    /* was: display: grid; grid-template-columns...  (removed) */
+    padding: 0.25rem;
 }
 
-.graph-wrapper {
+/* Each graph sits in a Bootstrap column (.col-12 .col-md-6) created by HTML/JS.
+   Ensure sensible min height and responsive canvas sizing. */
+.graph-card .card-body {
     position: relative;
-    min-height: 250px;
-    width: 100%;
+    height: 300px;            /* default height for charts */
+    padding: 0.75rem;
+}
+
+.graph-card canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Optional: slightly taller on large screens for readability */
+@media (min-width: 992px) {
+    .graph-card .card-body {
+        height: 340px;
+    }
+}
+
+/* Resize handle used by JS for manual height adjustments */
+.graph-resize-handle {
+    position: absolute;
+    right: 10px;
+    bottom: 8px;
+    width: 16px;
+    height: 16px;
+    cursor: ns-resize;
+    opacity: 0.6;
+    border-radius: 3px;
+    background:
+        linear-gradient(135deg, rgba(0,0,0,0) 50%, #adb5bd 50%) left,
+        linear-gradient(225deg, rgba(0,0,0,0) 50%, #adb5bd 50%) right;
+    background-size: 50% 100%;
+    background-repeat: no-repeat;
+}
+.graph-resize-handle:hover { opacity: 0.9; }
+
+/* Drag & drop visual aid for graph columns */
+#graphContainer .drop-target {
+    outline: 2px dashed #6c757d;
+    outline-offset: 4px;
 }
 
 /* Status indicator states */
@@ -350,4 +388,18 @@ body {
 #fileName {
     font-family: monospace;
     color: #495057;
+}
+
+/* Pulsing ground-station dot (Leaflet divIcon) */
+.pulse-wrapper { position: relative; }
+.pulse-dot {
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #0d6efd;
+  box-shadow: 0 0 0 rgba(13,110,253,0.7);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(13,110,253,0.7); }
+  70%  { box-shadow: 0 0 0 14px rgba(13,110,253,0); }
+  100% { box-shadow: 0 0 0 0 rgba(13,110,253,0); }
 }
