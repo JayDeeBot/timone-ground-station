@@ -1,158 +1,210 @@
 <div class="status-container p-3">
-    <div class="row">
-        <!-- Radio and IBIS Status Row -->
-        <div class="col-12">
-            <div class="row g-3">
-                <!-- Radio Status -->
-                <div class="col-md-6">
-                    <div class="card status-card">
-                        <div class="card-header py-2">
-                            <h5 class="card-title mb-0">Radio Status</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="radio-status-container">
-                                <!-- 433 MHz Radio -->
-                                <div class="radio-module">
-                                    <h6 class="radio-title">433 MHz</h6>
-                                    <div class="status-indicators">
-                                        <div class="status-indicator-group">
-                                            <div class="status-indicator disconnected" 
-                                                 id="radio433Connected"></div>
-                                            <span class="status-label">Connection</span>
-                                        </div>
-                                        <div class="status-indicator-group">
-                                            <div class="status-indicator unhealthy" 
-                                                 id="radio433Health"></div>
-                                            <span class="status-label">Health</span>
-                                        </div>
-                                    </div>
-                                    <small class="text-muted" id="radio433LastHeartbeat">Last: --:--:--</small>
-                                </div>
-
-                                <!-- 915 MHz Radio -->
-                                <div class="radio-module">
-                                    <h6 class="radio-title">915 MHz</h6>
-                                    <div class="status-indicators">
-                                        <div class="status-indicator-group">
-                                            <div class="status-indicator disconnected" 
-                                                 id="radio915Connected"></div>
-                                            <span class="status-label">Connection</span>
-                                        </div>
-                                        <div class="status-indicator-group">
-                                            <div class="status-indicator unhealthy" 
-                                                 id="radio915Health"></div>
-                                            <span class="status-label">Health</span>
-                                        </div>
-                                    </div>
-                                    <small class="text-muted" id="radio915LastHeartbeat">Last: --:--:--</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- IBIS FSM Status -->
-                <div class="col-md-6">
-                    <div class="card status-card">
-                        <div class="card-header py-2">
-                            <h5 class="card-title mb-0">IBIS FSM Status</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="fsm-status">
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" id="fsmProgress" role="progressbar" style="width: 40%">
-                                        <span id="currentState">ARMED</span>
-                                    </div>
-                                </div>
-                                <div class="fsm-states">
-                                    <div class="state-indicators">
-                                        <span class="state-dot completed" title="INIT"></span>
-                                        <span class="state-dot completed" title="READY"></span>
-                                        <span class="state-dot active" title="ARMED"></span>
-                                        <span class="state-dot" title="LAUNCHED"></span>
-                                        <span class="state-dot" title="LANDED"></span>
-                                    </div>
-                                    <div class="state-labels">
-                                        <small class="text-muted">State 3 of 5: INIT → READY → ARMED → LAUNCHED → LANDED</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="row">
+    <!-- Radio and IBIS Status Row -->
+    <div class="col-12">
+      <div class="row g-3">
+        <!-- Radio Status -->
+        <div class="col-md-6">
+          <div class="card status-card">
+            <div class="card-header py-2">
+              <h5 class="card-title mb-0">Radio Status</h5>
             </div>
+            <div class="card-body">
+              <div class="radio-status-container">
+                <!-- 433 MHz Radio -->
+                <div class="radio-module">
+                  <h6 class="radio-title">433 MHz</h6>
+                  <div class="status-indicators">
+                    <div class="status-indicator-group">
+                      <div class="status-indicator disconnected" id="radio433Connected"></div>
+                      <span class="status-label">Connection</span>
+                    </div>
+                    <div class="status-indicator-group">
+                      <div class="status-indicator unhealthy" id="radio433Health"></div>
+                      <span class="status-label">Health</span>
+                    </div>
+                  </div>
+                  <small class="text-muted" id="radio433LastHeartbeat">Last: --:--:--</small>
+                </div>
+
+                <!-- 915 MHz Radio -->
+                <div class="radio-module">
+                  <h6 class="radio-title">LoRa (915 MHz)</h6>
+                  <div class="status-indicators">
+                    <div class="status-indicator-group">
+                      <div class="status-indicator disconnected" id="radio915Connected"></div>
+                      <span class="status-label">Connection</span>
+                    </div>
+                    <div class="status-indicator-group">
+                      <div class="status-indicator unhealthy" id="radio915Health"></div>
+                      <span class="status-label">Health</span>
+                    </div>
+                  </div>
+                  <small class="text-muted" id="radio915LastHeartbeat">Last: --:--:--</small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Continuity Charts -->
-        <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Charge Continuity</h5>
+        <!-- IBIS FSM Status -->
+        <div class="col-md-6">
+          <div class="card status-card">
+            <div class="card-header py-2">
+              <h5 class="card-title mb-0">IBIS FSM Status</h5>
+            </div>
+            <div class="card-body">
+              <div class="fsm-status">
+                <div class="progress mb-2">
+                  <!-- Keep existing id="currentState" for your old code -->
+                  <div class="progress-bar" id="fsmProgress" role="progressbar" style="width: 40%">
+                    <span id="currentState">ARMED</span>
+                  </div>
+                </div>
+                <div class="fsm-states mb-2">
+                  <div class="state-indicators">
+                    <span class="state-dot completed" title="INIT"></span>
+                    <span class="state-dot completed" title="READY"></span>
+                    <span class="state-dot active" title="ARMED"></span>
+                    <span class="state-dot" title="LAUNCHED"></span>
+                    <span class="state-dot" title="LANDED"></span>
+                  </div>
+                  <div class="state-labels">
+                    <small class="text-muted">State 3 of 5: INIT → READY → ARMED → LAUNCHED → LANDED</small>
+                  </div>
+                </div>
+
+                <!-- New: raw state value for live telemetry (doesn't replace currentState) -->
+                <div class="small text-muted">
+                  Raw state: <strong id="status-state">—</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charge Continuity -->
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+          <h5 class="card-title mb-0">Charge Continuity</h5>
+          <!-- New: quick live indicators (text) for main/drogue without touching existing charts -->
+          <div class="d-flex gap-3 small">
+            <span>Main: <strong id="status-main">—</strong></span>
+            <span>Drogue: <strong id="status-drog">—</strong></span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <!-- Drogue Continuity -->
+            <div class="col-md-6">
+              <div class="continuity-container">
+                <h6 class="text-center mb-2">Drogue Charge</h6>
+                <canvas id="drogueContinuityChart"></canvas>
+              </div>
+            </div>
+            <!-- Main Continuity -->
+            <div class="col-md-6">
+              <div class="continuity-container">
+                <h6 class="text-center mb-2">Main Charge</h6>
+                <canvas id="mainContinuityChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEW: Battery Panel -->
+    <div class="col-12 mt-3">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Battery</h5>
+        </div>
+        <div class="card-body">
+          <div class="row row-cols-2 row-cols-md-4 g-3">
+            <div>
+              Voltage: <strong id="battery-volts">—</strong> <span class="text-muted">V</span>
+            </div>
+            <div>
+              Current: <strong id="battery-curr">—</strong> <span class="text-muted">mA</span>
+            </div>
+            <!-- room for extra battery telemetry later -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Flight Data (fixed + optional) -->
+    <div class="col-12">
+      <div class="card flight-data-container">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Flight Data</h5>
+          <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addGraphModal">
+            <i class="bi bi-plus-circle"></i> Add Graph
+          </button>
+        </div>
+        <div class="card-body">
+          <div id="graphContainer" class="row g-3">
+            <!-- Fixed Graph A -->
+            <div class="col-12 col-md-6">
+              <div class="card graph-card" data-fixed="1">
+                <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                  <span class="fw-semibold">Velocity, Acceleration, Altitude</span>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <!-- Drogue Continuity -->
-                        <div class="col-md-6">
-                            <div class="continuity-container">
-                                <h6 class="text-center mb-2">Drogue Charge</h6>
-                                <canvas id="drogueContinuityChart"></canvas>
-                            </div>
-                        </div>
-                        <!-- Main Continuity -->
-                        <div class="col-md-6">
-                            <div class="continuity-container">
-                                <h6 class="text-center mb-2">Main Charge</h6>
-                                <canvas id="mainContinuityChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
+                  <div class="placeholder text-muted small d-none" data-for="chartVAA">No flight data yet.</div>
+                  <canvas id="chartVAA" height="130"></canvas>
                 </div>
+              </div>
             </div>
-        </div>
-
-        <!-- Flight Data -->
-        <div class="col-12">
-            <div class="card flight-data-container">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="card-title mb-0">Flight Data</h5>
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addGraphModal">
-                        <i class="bi bi-plus-circle"></i> Add Graph
-                    </button>
+            <!-- Fixed Graph B -->
+            <div class="col-12 col-md-6">
+              <div class="card graph-card" data-fixed="1">
+                <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                  <span class="fw-semibold">Acceleration &amp; Velocity</span>
                 </div>
-                <div class="card-body p-0">
-                    <div id="graphContainer">
-                        <!-- Graphs will be dynamically added here -->
-                    </div>
+                <div class="card-body">
+                  <div class="placeholder text-muted small d-none" data-for="chartAV">No flight data yet.</div>
+                  <canvas id="chartAV" height="130"></canvas>
                 </div>
+              </div>
             </div>
+            <!-- Added graphs will append here as col-12 col-md-6 -->
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Add Graph Modal -->
 <div class="modal fade" id="addGraphModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add Telemetry Graph</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label class="form-label">Select Telemetry Data</label>
-                    <select class="form-select" id="telemetrySelect" multiple>
-                        <option value="altitude">Altitude</option>
-                        <option value="velocity">Velocity</option>
-                        <option value="acceleration">Acceleration</option>
-                        <option value="temperature">Temperature</option>
-                        <option value="pressure">Pressure</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="addGraphBtn">Add Graph</button>
-            </div>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Telemetry Graph</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Select Telemetry Data</label>
+          <select class="form-select" id="telemetrySelect" multiple>
+            <option value="velocity">Velocity</option>
+            <option value="acceleration">Acceleration</option>
+            <option value="altitude">Altitude</option>
+            <option value="temperature">Temperature</option>
+            <option value="pressure">Pressure</option>
+          </select>
+          <div class="form-text">Two charts per row are enforced automatically.</div>
         </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="addGraphBtn">Add Graph</button>
+      </div>
     </div>
+  </div>
 </div>

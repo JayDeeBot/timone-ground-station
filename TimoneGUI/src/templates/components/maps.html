@@ -1,93 +1,159 @@
 <div class="maps-container p-3">
-    <div class="row">
-        <!-- GPS Coordinate Panels -->
-        <div class="col-md-3">
-            <!-- Ground Station GPS Panel -->
-            <div class="card mb-3">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h6 class="card-title mb-0">Ground Station GPS</h6>
-                    <button class="btn btn-sm btn-primary" id="editGroundGPS">
-                        <i class="bi bi-pencil"></i> Edit
-                    </button>
-                </div>
-                <div class="card-body">
-                    <!-- View Mode -->
-                    <div id="groundGPSView" class="gps-coordinates">
-                        <div class="coordinate-group">
-                            <span class="coordinate-label">Latitude:</span>
-                            <span id="groundLat" class="coordinate-value">--.----°</span>
-                        </div>
-                        <div class="coordinate-group">
-                            <span class="coordinate-label">Longitude:</span>
-                            <span id="groundLon" class="coordinate-value">---.----°</span>
-                        </div>
-                    </div>
-                    
-                    <!-- Edit Mode (hidden by default) -->
-                    <div id="groundGPSEdit" class="gps-coordinates d-none">
-                        <form id="groundGPSForm">
-                            <div class="mb-2">
-                                <label class="form-label">Latitude:</label>
-                                <input type="number" 
-                                       class="form-control" 
-                                       id="groundLatInput" 
-                                       step="0.0001" 
-                                       min="-90" 
-                                       max="90" 
-                                       required>
-                            </div>
-                            <div class="mb-2">
-                                <label class="form-label">Longitude:</label>
-                                <input type="number" 
-                                       class="form-control" 
-                                       id="groundLonInput" 
-                                       step="0.0001" 
-                                       min="-180" 
-                                       max="180" 
-                                       required>
-                            </div>
-                            <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-sm btn-success">Save</button>
-                                <button type="button" class="btn btn-sm btn-secondary" id="cancelGroundGPS">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+  <div class="row">
+    <!-- Left column: controls -->
+    <div class="col-md-3">
+      <!-- Satellite Map Manager -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="card-title mb-0">Satellite Maps</h6>
+        </div>
+        <div class="card-body">
+          <!-- Select existing map -->
+          <div class="mb-3">
+            <label class="form-label">Select Saved Map</label>
+            <select id="mapSelect" class="form-select">
+              <option value="">-- None --</option>
+            </select>
+            <div class="form-text">Choose a saved satellite image to display.</div>
+          </div>
+
+          <hr>
+
+          <!-- Upload new map -->
+          <form id="mapUploadForm" enctype="multipart/form-data">
+            <div class="mb-2">
+              <label class="form-label">Image file</label>
+              <input type="file" id="mapFile" name="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" required>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h6 class="card-title mb-0">Rocket GPS</h6>
-                </div>
-                <div class="card-body">
-                    <div class="gps-coordinates">
-                        <div class="coordinate-group">
-                            <span class="coordinate-label">Latitude:</span>
-                            <span id="rocketLat" class="coordinate-value">--.----°</span>
-                        </div>
-                        <div class="coordinate-group">
-                            <span class="coordinate-label">Longitude:</span>
-                            <span id="rocketLon" class="coordinate-value">---.----°</span>
-                        </div>
-                        <div class="coordinate-group">
-                            <span class="coordinate-label">Altitude:</span>
-                            <span id="rocketAlt" class="coordinate-value">---- m</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="mb-2">
+              <label class="form-label">Optional name (ID)</label>
+              <input type="text" id="mapName" name="name" class="form-control" placeholder="e.g., Launch_Site_A">
             </div>
-        </div>
 
-        <!-- Map Panel -->
-        <div class="col-md-9">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">NSW Satellite Map</h5>
-                </div>
-                <div class="card-body p-0">
-                    <div id="imageMap" class="map-container"></div>
-                </div>
+            <!-- Corner coordinates (required) -->
+            <div class="border rounded p-2 mb-2">
+              <div class="fw-semibold mb-2">Corner Coordinates (lon,lat)</div>
+
+              <div class="mb-2">
+                <label class="form-label">Top Left</label>
+                <input type="text" class="form-control" id="tlInput" name="top_left"
+                       placeholder="longitude,latitude"
+                       inputmode="decimal" autocomplete="off" required>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label">Top Right</label>
+                <input type="text" class="form-control" id="trInput" name="top_right"
+                       placeholder="longitude,latitude"
+                       inputmode="decimal" autocomplete="off" required>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label">Bottom Right</label>
+                <input type="text" class="form-control" id="brInput" name="bottom_right"
+                       placeholder="longitude,latitude"
+                       inputmode="decimal" autocomplete="off" required>
+              </div>
+
+              <div class="mb-2">
+                <label class="form-label">Bottom Left</label>
+                <input type="text" class="form-control" id="blInput" name="bottom_left"
+                       placeholder="longitude,latitude"
+                       inputmode="decimal" autocomplete="off" required>
+              </div>
+
+              <div class="form-text">
+                Enter each corner as <code>longitude,latitude</code> (decimal). Example: <code>143.1972196299894,-30.67164493379877</code>.
+              </div>
             </div>
+
+            <div class="d-grid mt-3">
+              <button type="submit" class="btn btn-sm btn-success">
+                <i class="bi bi-upload"></i> Upload & Save
+              </button>
+            </div>
+            <div class="form-text mt-2">
+              Images will be stretched to the axis-aligned bounds derived from the four corners.
+            </div>
+          </form>
         </div>
+      </div>
+
+      <!-- Ground Station GPS Panel (unchanged) -->
+      <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h6 class="card-title mb-0">Ground Station GPS</h6>
+          <button class="btn btn-sm btn-primary" id="editGroundGPS">
+            <i class="bi bi-pencil"></i> Edit
+          </button>
+        </div>
+        <div class="card-body">
+          <!-- View Mode -->
+          <div id="groundGPSView" class="gps-coordinates">
+            <div class="coordinate-group">
+              <span class="coordinate-label">Longitude:</span>
+              <span id="groundLon" class="coordinate-value">--.----°</span>
+            </div>
+            <div class="coordinate-group">
+              <span class="coordinate-label">Latitude:</span>
+              <span id="groundLat" class="coordinate-value">---.----°</span>
+            </div>
+          </div>
+          <!-- Edit Mode -->
+          <div id="groundGPSEdit" class="gps-coordinates d-none">
+            <form id="groundGPSForm">
+              <div class="mb-2">
+                <label class="form-label">Longitude:</label>
+                <input type="number" class="form-control" id="groundLonInput" step="0.0001" min="-180" max="180" required>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Latitude:</label>
+                <input type="number" class="form-control" id="groundLatInput" step="0.0001" min="-90" max="90" required>
+              </div>
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-sm btn-success">Save</button>
+                <button type="button" class="btn btn-sm btn-secondary" id="cancelGroundGPS">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rocket GPS (unchanged) -->
+      <div class="card">
+        <div class="card-header">
+          <h6 class="card-title mb-0">Rocket GPS</h6>
+        </div>
+        <div class="card-body">
+          <div class="gps-coordinates">
+            <div class="coordinate-group">
+              <span class="coordinate-label">Longitude:</span>
+              <span id="rocketLon" class="coordinate-value">--.----°</span>
+            </div>
+            <div class="coordinate-group">
+              <span class="coordinate-label">Latitude:</span>
+              <span id="rocketLat" class="coordinate-value">---.----°</span>
+            </div>
+            <div class="coordinate-group">
+              <span class="coordinate-label">Altitude:</span>
+              <span id="rocketAlt" class="coordinate-value">---- m</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Right column: Map -->
+    <div class="col-md-9">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title mb-0">Satellite Map</h5>
+        </div>
+        <div class="card-body p-0">
+          <div id="imageMap" class="map-container"></div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
