@@ -1,0 +1,10 @@
+Feedback Session 4
+
+Date: 2/10/2025
+Stakeholder: Dean (Future Rocketry Team Leader) / Sachin Hanel
+
+Dean:
+    The gui may need to handle tracking multiple rockets at once. Need to discuss this with Adi.
+
+Sachin:
+    Need to consider what is involved in recieving information from both 433 & 915 radios at once. Might need to have instances of both at once. 

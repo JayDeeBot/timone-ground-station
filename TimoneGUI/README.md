@@ -11,7 +11,7 @@ TimoneGUI is a web-based application built using Flask for the backend and a dyn
 
 2. **Run Simulation Tools**:
    ```bash
-   python3 src/log_publisher.py # Sends simulated logs to the Logs Tab
+   python3 log_pusher.py # Sends simulated logs to the Logs Tab
 
-   python3 src/telemetry_publisher.py # Sends simulated telemetry data to Status and Telemetry Tabs (Graphs and fields should populate)
+   python3 telemetry_pusher.py # Sends simulated telemetry data to Status and Telemetry Tabs (Graphs and fields should populate)
    ```
