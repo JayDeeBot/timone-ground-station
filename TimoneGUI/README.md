@@ -15,3 +15,9 @@ TimoneGUI is a web-based application built using Flask for the backend and a dyn
 
    python3 telemetry_pusher.py # Sends simulated telemetry data to Status and Telemetry Tabs (Graphs and fields should populate)
    ```
+
+# Raspberry Pi Login
+
+Username: timone
+Password: rocket
+Default Keyring Password: rocket

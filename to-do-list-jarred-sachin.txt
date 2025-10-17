@@ -1,0 +1,6 @@
+1. Come up with a handshake message for bootup. Send a unique byte (goodmorning); recieve the same uniqe byte back to say everythin is working or an error byte. 
+2. Wire the esp straight into ports (extension task). 
+3. Connect communications up with the UI.
+4. Build a gui to test out the sender messages for the comms. Add this as a debug tab in the flask gui - call it pro settings - password protected. 
+5. Logs Tab - include 6 panels that have logs for: ground station, radio (lora and 433), peripheral 1-4.
+6. Build the launcher.sh script to open firefox/chrome and open the correct webpage etc. 

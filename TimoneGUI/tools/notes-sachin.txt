@@ -1,0 +1,3 @@
+Make sure communicator sends wake up message upon startup to sachin. 
+
+Message structure: Hello_byte, Wakeup_byte, zero length, empty_payload, goodbye_byte
