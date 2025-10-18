@@ -4,8 +4,13 @@
     <div class="col-md-3">
       <!-- Satellite Map Manager -->
       <div class="card mb-3">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h6 class="card-title mb-0">Satellite Maps</h6>
+          <div class="d-flex gap-2">
+            <button id="deleteMapBtn" type="button" class="btn btn-sm btn-outline-danger" title="Delete selected map">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
         </div>
         <div class="card-body">
           <!-- Select existing map -->
@@ -20,7 +25,7 @@
           <hr>
 
           <!-- Upload new map -->
-          <form id="mapUploadForm" enctype="multipart/form-data">
+          <form id="mapUploadForm" enctype="multipart/form-data" method="post" action="javascript:void(0)" novalidate>
             <div class="mb-2">
               <label class="form-label">Image file</label>
               <input type="file" id="mapFile" name="file" class="form-control" accept=".jpg,.jpeg,.png,.webp" required>
@@ -31,7 +36,7 @@
               <input type="text" id="mapName" name="name" class="form-control" placeholder="e.g., Launch_Site_A">
             </div>
 
-            <!-- Corner coordinates (required) -->
+            <!-- Corner coordinates (Top-Left & Bottom-Right only) -->
             <div class="border rounded p-2 mb-2">
               <div class="fw-semibold mb-2">Corner Coordinates (lon,lat)</div>
 
@@ -43,44 +48,34 @@
               </div>
 
               <div class="mb-2">
-                <label class="form-label">Top Right</label>
-                <input type="text" class="form-control" id="trInput" name="top_right"
-                       placeholder="longitude,latitude"
-                       inputmode="decimal" autocomplete="off" required>
-              </div>
-
-              <div class="mb-2">
                 <label class="form-label">Bottom Right</label>
                 <input type="text" class="form-control" id="brInput" name="bottom_right"
                        placeholder="longitude,latitude"
                        inputmode="decimal" autocomplete="off" required>
               </div>
 
-              <div class="mb-2">
-                <label class="form-label">Bottom Left</label>
-                <input type="text" class="form-control" id="blInput" name="bottom_left"
-                       placeholder="longitude,latitude"
-                       inputmode="decimal" autocomplete="off" required>
+              <div class="small text-muted">
+                Enter <code>lon,lat</code> (decimal). Example:
+                <code>143.1972196299894,-30.67164493379877</code><br>
+                • TL must be above/left of BR. • Geofence: Australia or USA (incl. AK/HI). • Numbers only.
               </div>
-
-              <div class="form-text">
-                Enter each corner as <code>longitude,latitude</code> (decimal). Example: <code>143.1972196299894,-30.67164493379877</code>.
-              </div>
+              <div id="cornerError" class="text-danger mt-1 d-none"></div>
             </div>
 
             <div class="d-grid mt-3">
-              <button type="submit" class="btn btn-sm btn-success">
+              <!-- IMPORTANT: type=button to stop native submit -->
+              <button id="uploadSaveBtn" type="button" class="btn btn-sm btn-success">
                 <i class="bi bi-upload"></i> Upload & Save
               </button>
             </div>
             <div class="form-text mt-2">
-              Images will be stretched to the axis-aligned bounds derived from the four corners.
+              Images are stretched to the axis-aligned bounds derived from the two corners.
             </div>
           </form>
         </div>
       </div>
 
-      <!-- Ground Station GPS Panel (unchanged) -->
+      <!-- Ground Station GPS Panel -->
       <div class="card mb-3">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h6 class="card-title mb-0">Ground Station GPS</h6>
@@ -120,7 +115,21 @@
         </div>
       </div>
 
-      <!-- Rocket GPS (unchanged) -->
+      <!-- Ground → Rocket vector -->
+      <div class="card mb-3">
+        <div class="card-header">
+          <h6 class="card-title mb-0">Ground → Rocket (last position)</h6>
+        </div>
+        <div class="card-body">
+          <div class="d-flex flex-column gap-2">
+            <div><span class="text-muted">Distance:</span> <strong id="gsDistance">—</strong></div>
+            <div><span class="text-muted">Bearing:</span> <strong id="gsBearing">—</strong></div>
+            <div class="small text-muted">Bearing is initial great-circle course (° from North). Distance is great-circle.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rocket GPS -->
       <div class="card">
         <div class="card-header">
           <h6 class="card-title mb-0">Rocket GPS</h6>
