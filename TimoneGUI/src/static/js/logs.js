@@ -1,179 +1,224 @@
-class LogManager {
-  constructor() {
-    console.log('[LogManager] init');
-    // Refs (may be null initially if Logs tab not in DOM yet)
-    this.logContainer = document.querySelector('.log-content');
-    this.scrollContainer = document.getElementById('logContent');
-    this.exportButton = document.getElementById('exportLogs');
+(() => {
+  const MAX_ENTRIES = 5000; // storage safety cap
 
-    // State
-    this.isSaving = false;
-    this.autoScroll = true;
-    this.es = null;
-    this.buffer = []; // hold lines until container exists
+  // Map channel => { storageKey, title }
+  const CHANNELS = {
+    ground:  { key: 'timone_log_ground_v1',  title: 'Ground Station (gui_status.py)' },
+    lora:    { key: 'timone_log_lora_v1',    title: 'LoRa Radio (915 & 433)' },
+    periph1: { key: 'timone_log_p1_v1',      title: 'Peripheral 1 (gui_peripherals.py)' },
+    periph2: { key: 'timone_log_p2_v1',      title: 'Peripheral 2 (gui_peripherals.py)' },
+    periph3: { key: 'timone_log_p3_v1',      title: 'Peripheral 3 (gui_peripherals.py)' },
+    periph4: { key: 'timone_log_p4_v1',      title: 'Peripheral 4 (gui_peripherals.py)' }
+  };
 
-    // Export button wiring
-    if (this.exportButton) {
-      this.exportButton.addEventListener('click', () => this.exportLogs());
-    }
+  class PanelLog {
+    /**
+     * @param {string} channel - one of CHANNELS keys
+     * @param {HTMLElement} rootCardEl - the card element for this panel
+     */
+    constructor(channel, rootCardEl) {
+      this.channel = channel;
+      this.cfg = CHANNELS[channel];
+      this.root = rootCardEl;
 
-    // Observe DOM so if the Logs panel is injected later, we rebind refs & flush
-    this.domObserver = new MutationObserver(() => this.refreshRefs());
-    this.domObserver.observe(document.documentElement, { childList: true, subtree: true });
+      // DOM hooks
+      this.exportBtn   = this.root.querySelector(`[data-export="${channel}"]`);
+      this.scrollWrap  = this.root.querySelector(`#logContent-${channel}`);
+      this.logContent  = this.root.querySelector(`.log-content[data-channel="${channel}"]`);
 
-    // Kick off SSE regardless of container presence
-    if (typeof window.EventSource !== 'undefined') {
-      this.connectStream();
-      window.addEventListener('beforeunload', () => this.stopStream());
-    } else {
-      this.consoleAndLog('[log-stream] EventSource not supported in this browser', 'error');
-    }
+      // State
+      this.autoScroll = true;
 
-    // Try initial ref refresh (helps single-page/tab layouts)
-    this.refreshRefs();
-  }
+      // Restore persisted entries
+      this._restore();
 
-  refreshRefs() {
-    const prevHadContainer = !!this.logContainer;
-    if (!this.logContainer) {
-      this.logContainer = document.querySelector('.log-content');
-    }
-    if (!this.scrollContainer) {
-      this.scrollContainer = document.getElementById('logContent');
-    }
-
-    // If the container just showed up, flush any buffered lines
-    if (!prevHadContainer && this.logContainer) {
-      console.log('[LogManager] logs container detected; flushing buffer of', this.buffer.length, 'lines');
-      if (this.buffer.length) {
-        for (const { msg, level } of this.buffer) {
-          this._append(msg, level);
-        }
-        this.buffer = [];
-        this.scrollToBottom();
+      // Wire export
+      if (this.exportBtn) {
+        this.exportBtn.addEventListener('click', () => this.export());
       }
     }
-  }
 
-  connectStream() {
-    try {
-      console.log('[LogManager] connecting SSE → /api/logs/stream');
-      this.es = new EventSource('/api/logs/stream');
+    // Public: add one entry
+    addLogEntry(message, level = 'info', isoTimestamp = null, origin = null) {
+      if (!this.logContent) return;
+      const ts = isoTimestamp || new Date().toISOString();
 
-      this.es.onopen = () => {
-        this.consoleAndLog('[log-stream] connected', 'info');
-      };
+      // If an origin is provided, prefix the message e.g. "[915] link up"
+      const displayMsg = origin ? `[${origin}] ${message}` : message;
 
-      this.es.onmessage = (ev) => {
-        if (typeof ev.data === 'string' && ev.data.length) {
-          this.addLogEntry(ev.data, 'info');
-        }
-      };
+      // UI row (no angle-bracket stamp here; clean UI)
+      const row = document.createElement('div');
+      row.className = 'log-entry';
+      row.innerHTML = `
+        <span class="log-timestamp">${ts}</span>
+        <span class="log-level ${level}">${String(level).toUpperCase()}</span>
+        <span class="log-message">${escapeHtml(displayMsg)}</span>
+      `;
+      this.logContent.appendChild(row);
 
-      this.es.onerror = () => {
-        this.consoleAndLog('[log-stream] disconnected; retrying...', 'warn');
-        try { this.es.close(); } catch (_) {}
-        setTimeout(() => this.connectStream(), 2000);
-      };
-    } catch (e) {
-      console.error(e);
-      this.consoleAndLog(`[log-stream] failed to connect: ${e.message}`, 'error');
+      // Persist compact form
+      this._persist({ ts, level, message: displayMsg });
+
+      // Scroll pin
+      if (this.autoScroll) this._scrollToBottom();
     }
-  }
 
-  stopStream() {
-    if (this.es) {
-      try { this.es.close(); } catch (_) {}
-      this.es = null;
+    clear() {
+      if (this.logContent) this.logContent.innerHTML = '';
+      localStorage.removeItem(this.cfg.key);
     }
-  }
 
-  // unified console + UI log
-  consoleAndLog(message, level = 'info') {
-    (level === 'error' ? console.error : level === 'warn' ? console.warn : console.log)(message);
-    this.addLogEntry(message, level);
-  }
+    // Public: export with the approved format
+    async export() {
+      const entries = this._readAll();
+      const nowIso = new Date().toISOString();
+      const suggestedName = `${this.channel}_logs_${nowIso.replace(/[:.]/g, '-')}.txt`;
 
-  addLogEntry(message, level = 'info') {
-    // If container not ready yet, buffer it
-    if (!this.logContainer) {
-      this.buffer.push({ msg: message, level });
-      return;
-    }
-    this._append(message, level);
-    if (this.autoScroll) this.scrollToBottom();
-  }
-
-  _append(message, level) {
-    const entry = document.createElement('div');
-    entry.className = 'log-entry';
-    const timestamp = new Date().toISOString();
-    entry.innerHTML = `
-      <span class="log-timestamp">${timestamp}</span>
-      <span class="log-level ${level}">${level.toUpperCase()}</span>
-      <span class="log-message">${message}</span>
-    `;
-    this.logContainer.appendChild(entry);
-  }
-
-  scrollToBottom() {
-    const container = this.scrollContainer || document.getElementById('logContent');
-    if (container) container.scrollTop = container.scrollHeight;
-  }
-
-  // existing export feature retained
-  async exportLogs() {
-    if (this.isSaving) return;
-    this.isSaving = true;
-
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const suggestedName = `system_logs_${timestamp}.txt`;
-
-    try {
-      let content = `System Logs Export\n`;
-      content += `Generated: ${new Date().toLocaleString()}\n`;
-      content += `----------------------------------------\n\n`;
-
-      if (this.logContainer && this.logContainer.children.length > 0) {
-        content += Array.from(this.logContainer.children).map(e => e.textContent).join('\n');
-      } else if (this.buffer.length) {
-        content += this.buffer.map(b => `[buffered] ${b.msg}`).join('\n');
-      } else {
-        content += 'No logs recorded.';
+      // Single top "stamp" only
+      let stampTs = nowIso;
+      let stampLevel = 'INFO';
+      let stampMsg = `[export] ${this.channel}-logs`;
+      if (entries.length > 0) {
+        stampTs = entries[0].ts || stampTs;
+        stampLevel = (entries[0].level || 'info').toUpperCase();
+        stampMsg = `[${entries[0].message}]`;
       }
 
-      if (window.showSaveFilePicker) {
+      // Messages with no per-line stamps
+      const body = entries.map(e => e.message).join('\n');
+      const content = `<${stampTs}>\n<${stampLevel}>\n<${stampMsg}>\n\n${body}`;
+
+      try {
         const fileHandle = await window.showSaveFilePicker({
           suggestedName,
-          types: [{ description: 'Text Files', accept: { 'text/plain': ['.txt'] } }],
+          types: [{ description: 'Text Files', accept: { 'text/plain': ['.txt'] } }]
         });
         const writable = await fileHandle.createWritable();
         await writable.write(content);
         await writable.close();
-      } else {
-        const blob = new Blob([content], { type: 'text/plain' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = suggestedName;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
+        // Also add an in-panel info line
+        this.addLogEntry('Logs exported successfully', 'info');
+      } catch (err) {
+        if (err && err.name !== 'AbortError') {
+          console.error(`Export failed (${this.channel}):`, err);
+          this.addLogEntry(`Failed to export logs: ${err.message || err}`, 'error');
+        }
       }
+    }
 
-      this.addLogEntry('Logs exported successfully', 'info');
-    } catch (err) {
-      if (err?.name !== 'AbortError') {
-        console.error('Error exporting logs:', err);
-        this.addLogEntry('Failed to export logs: ' + err.message, 'error');
+    // ---- internals ----
+    _scrollToBottom() {
+      if (!this.scrollWrap) return;
+      requestAnimationFrame(() => {
+        this.scrollWrap.scrollTop = this.scrollWrap.scrollHeight;
+      });
+    }
+
+    _persist(entry) {
+      const all = this._readAll();
+      all.push(entry);
+      if (all.length > MAX_ENTRIES) all.splice(0, all.length - MAX_ENTRIES);
+      localStorage.setItem(this.cfg.key, JSON.stringify(all));
+    }
+
+    _readAll() {
+      try {
+        const raw = localStorage.getItem(this.cfg.key);
+        const arr = raw ? JSON.parse(raw) : [];
+        if (!Array.isArray(arr)) return [];
+        return arr
+          .filter(e => e && typeof e === 'object')
+          .map(e => ({
+            ts: e.ts || new Date().toISOString(),
+            level: e.level || 'info',
+            message: String(e.message ?? '')
+          }));
+      } catch {
+        return [];
       }
-    } finally {
-      this.isSaving = false;
+    }
+
+    _restore() {
+      const entries = this._readAll();
+      if (!this.logContent) return;
+      this.logContent.innerHTML = '';
+      for (const e of entries) {
+        const row = document.createElement('div');
+        row.className = 'log-entry';
+        row.innerHTML = `
+          <span class="log-timestamp">${e.ts}</span>
+          <span class="log-level ${e.level}">${String(e.level).toUpperCase()}</span>
+          <span class="log-message">${escapeHtml(e.message)}</span>
+        `;
+        this.logContent.appendChild(row);
+      }
+      if (entries.length) this._scrollToBottom();
     }
   }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-  window.logManager = new LogManager();
-});
+  class LogsHub {
+    constructor() {
+      /** @type {Record<string, PanelLog>} */
+      this.panels = {};
+      this._initPanels();
+
+      // Expose multi-panel API
+      window.logs = {
+        /**
+         * Add a log line to any panel.
+         * @param {'ground'|'lora'|'periph1'|'periph2'|'periph3'|'periph4'} channel
+         * @param {string} message
+         * @param {'info'|'warn'|'warning'|'error'|'debug'} [level]
+         * @param {string|null} isoTimestamp
+         * @param {string|null} origin - optional origin label (e.g. "915", "433", "GUI")
+         */
+        add: (channel, message, level = 'info', isoTimestamp = null, origin = null) => {
+          const panel = this.panels[channel];
+          if (!panel) return;
+          panel.addLogEntry(message, level, isoTimestamp, origin);
+        },
+        clear: (channel) => {
+          const panel = this.panels[channel];
+          if (!panel) return;
+          panel.clear();
+        },
+        export: (channel) => {
+          const panel = this.panels[channel];
+          if (!panel) return;
+          panel.export();
+        }
+      };
+
+      // Backward compatibility with previous single-panel usage:
+      // window.logManager.addLogEntry(msg, level, ts) -> writes to "ground"
+      window.logManager = {
+        addLogEntry: (message, level = 'info', isoTimestamp = null) => {
+          this.panels.ground?.addLogEntry(message, level, isoTimestamp, null);
+        },
+        clearLog: () => this.panels.ground?.clear(),
+        exportLogs: () => this.panels.ground?.export()
+      };
+    }
+
+    _initPanels() {
+      for (const chan of Object.keys(CHANNELS)) {
+        const root = document.querySelector(`.log-card[data-channel="${chan}"]`);
+        if (!root) continue;
+        this.panels[chan] = new PanelLog(chan, root);
+      }
+    }
+  }
+
+  // Minimal HTML escaping for safe text injection
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  // Instantiate once DOM is ready
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.__logsHub) window.__logsHub = new LogsHub();
+  });
+})();
