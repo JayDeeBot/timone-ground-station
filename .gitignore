@@ -61,3 +61,6 @@ dkms.conf
 
 #other
 tools/sim_port.txt
+
+# Log files
+TimoneGUI/tools/logs/*.log
