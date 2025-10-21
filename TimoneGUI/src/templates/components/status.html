@@ -13,7 +13,7 @@
               <div class="radio-status-container">
                 <!-- 433 MHz Radio -->
                 <div class="radio-module">
-                  <h6 class="radio-title">433 MHz</h6>
+                  <h6 class="radio-title">LoRa (433 MHz)</h6>
                   <div class="status-indicators">
                     <div class="status-indicator-group">
                       <div class="status-indicator disconnected" id="radio433Connected"></div>
@@ -172,6 +172,33 @@
                 </div>
               </div>
             </div>
+
+            <!-- ✅ NEW Fixed Graph C: Voltage -->
+            <div class="col-12 col-md-6">
+              <div class="card graph-card" data-fixed="1">
+                <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                  <span class="fw-semibold">Voltage</span>
+                </div>
+                <div class="card-body">
+                  <div class="placeholder text-muted small d-none" data-for="chartVoltage">No flight data yet.</div>
+                  <canvas id="chartVoltage" height="130"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- ✅ NEW Fixed Graph D: Current -->
+            <div class="col-12 col-md-6">
+              <div class="card graph-card" data-fixed="1">
+                <div class="card-header py-2 d-flex justify-content-between align-items-center">
+                  <span class="fw-semibold">Current</span>
+                </div>
+                <div class="card-body">
+                  <div class="placeholder text-muted small d-none" data-for="chartCurrent">No flight data yet.</div>
+                  <canvas id="chartCurrent" height="130"></canvas>
+                </div>
+              </div>
+            </div>
+
             <!-- Added graphs will append here as col-12 col-md-6 -->
           </div>
         </div>

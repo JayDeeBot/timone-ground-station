@@ -1,17 +1,119 @@
 <div class="logs-container p-3">
-    <div class="card">
+  <div class="row g-3">
+
+    <!-- 1) Ground Station -->
+    <div class="col-12 col-lg-6">
+      <div class="card log-card log-card--grid log-card--ground log-card--shadow log-card--tight" data-channel="ground">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="card-title mb-0">System Logs</h5>
-            <button type="button" id="exportLogs" class="btn btn-sm btn-primary">
-                <i class="bi bi-download"></i> Export Logs
+          <h5 class="card-title mb-0">Ground Station</h5>
+          <div class="d-flex gap-2">
+            <button type="button" data-export="ground" class="btn btn-sm btn-primary">
+              <i class="bi bi-download"></i> Export
             </button>
+          </div>
         </div>
         <div class="card-body p-0">
-            <div id="logContent" class="log-scroll">
-                <div class="log-content">
-                    <!-- Log entries will be added here -->
-                </div>
-            </div>
+          <div id="logContent-ground" class="log-scroll" style="max-height: 320px; overflow:auto;">
+            <div class="log-content" data-channel="ground"></div>
+          </div>
         </div>
+      </div>
     </div>
+
+    <!-- 2) LoRa Radio (combined 915 & 433) -->
+    <div class="col-12 col-lg-6">
+      <div class="card log-card" data-channel="lora">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">LoRa Radio (915 MHz &amp; 433 MHz)</h5>
+          <div class="d-flex gap-2">
+            <button type="button" data-export="lora" class="btn btn-sm btn-primary">
+              <i class="bi bi-download"></i> Export
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div id="logContent-lora" class="log-scroll" style="max-height: 320px; overflow:auto;">
+            <div class="log-content" data-channel="lora"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3) Peripheral 1 -->
+    <div class="col-12 col-lg-6">
+      <div class="card log-card" data-channel="periph1">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Peripheral 1</h5>
+          <div class="d-flex gap-2">
+            <button type="button" data-export="periph1" class="btn btn-sm btn-primary">
+              <i class="bi bi-download"></i> Export
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div id="logContent-periph1" class="log-scroll" style="max-height: 320px; overflow:auto;">
+            <div class="log-content" data-channel="periph1"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4) Peripheral 2 -->
+    <div class="col-12 col-lg-6">
+      <div class="card log-card" data-channel="periph2">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Peripheral 2</h5>
+          <div class="d-flex gap-2">
+            <button type="button" data-export="periph2" class="btn btn-sm btn-primary">
+              <i class="bi bi-download"></i> Export
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div id="logContent-periph2" class="log-scroll" style="max-height: 320px; overflow:auto;">
+            <div class="log-content" data-channel="periph2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5) Peripheral 3 -->
+    <div class="col-12 col-lg-6">
+      <div class="card log-card" data-channel="periph3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Peripheral 3</h5>
+          <div class="d-flex gap-2">
+            <button type="button" data-export="periph3" class="btn btn-sm btn-primary">
+              <i class="bi bi-download"></i> Export
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div id="logContent-periph3" class="log-scroll" style="max-height: 320px; overflow:auto;">
+            <div class="log-content" data-channel="periph3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6) Peripheral 4 -->
+    <div class="col-12 col-lg-6">
+      <div class="card log-card" data-channel="periph4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="card-title mb-0">Peripheral 4</h5>
+          <div class="d-flex gap-2">
+            <button type="button" data-export="periph4" class="btn btn-sm btn-primary">
+              <i class="bi bi-download"></i> Export
+            </button>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <div id="logContent-periph4" class="log-scroll" style="max-height: 320px; overflow:auto;">
+            <div class="log-content" data-channel="periph4"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

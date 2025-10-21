@@ -1,0 +1,340 @@
+12:10:43.183 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+12:10:43.183 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+12:19:27.552 [INFO] MainThread: Shutting down…
+12:19:27.676 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+12:19:27.676 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+12:40:43.094 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+12:40:43.094 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+12:42:21.191 [INFO] MainThread: Shutting down…
+12:52:49.752 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+12:52:49.753 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+12:53:38.959 [INFO] MainThread: Shutting down…
+12:53:39.816 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+12:53:39.817 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+13:05:10.199 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+13:05:10.200 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+13:06:39.901 [WARNING] RX: RX loop error: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 417, in _rx_loop
+    frame = self._framer.read_frame_blocking(timeout_s=1.0)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 271, in read_frame_blocking
+    b = self.ser.read(1)
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+13:06:40.410 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:06:42.255 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+13:06:42.256 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:26:11.547 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+13:26:11.547 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+13:31:19.537 [WARNING] RX: RX loop error: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 417, in _rx_loop
+    frame = self._framer.read_frame_blocking(timeout_s=1.0)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 271, in read_frame_blocking
+    b = self.ser.read(1)
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+13:31:20.039 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:31:21.041 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:31:21.999 [INFO] MainThread: Shutting down…
+13:34:15.026 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+13:34:15.026 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+13:35:41.476 [WARNING] RX: RX loop error: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 417, in _rx_loop
+    frame = self._framer.read_frame_blocking(timeout_s=1.0)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 271, in read_frame_blocking
+    b = self.ser.read(1)
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+13:35:41.978 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:35:42.979 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:35:43.632 [INFO] MainThread: Shutting down…
+13:41:16.326 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+13:41:16.327 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+13:43:19.011 [INFO] MainThread: Shutting down…
+13:51:31.355 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+13:51:31.356 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+13:55:03.581 [WARNING] RX: RX loop error: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 417, in _rx_loop
+    frame = self._framer.read_frame_blocking(timeout_s=1.0)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 271, in read_frame_blocking
+    b = self.ser.read(1)
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+13:55:04.082 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:55:05.084 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:55:07.578 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+13:55:07.578 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+13:59:55.348 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+13:59:55.349 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+14:00:21.939 [WARNING] RX: RX loop error: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 417, in _rx_loop
+    frame = self._framer.read_frame_blocking(timeout_s=1.0)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 271, in read_frame_blocking
+    b = self.ser.read(1)
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+14:00:22.440 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+14:00:23.441 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+14:00:25.443 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+14:00:26.049 [INFO] MainThread: Shutting down…
+Assertion failed: pfd.revents & POLLIN (src/signaler.cpp:238)
+14:00:39.906 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+14:00:39.906 [INFO] RX: Serial connected: /dev/pts/7 @ 115200
+14:01:35.805 [WARNING] RX: RX loop error: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 417, in _rx_loop
+    frame = self._framer.read_frame_blocking(timeout_s=1.0)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 271, in read_frame_blocking
+    b = self.ser.read(1)
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 595, in read
+    raise SerialException(
+serial.serialutil.SerialException: device reports readiness to read but returned no data (device disconnected or multiple access on port?)
+14:01:36.306 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+14:01:37.307 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/7'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'

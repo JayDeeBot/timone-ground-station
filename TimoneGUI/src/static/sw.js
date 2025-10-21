@@ -1,11 +1,11 @@
 /* static/sw.js */
-const CACHE_NAME = 'timonegui-static-v3'; // bump to force update
+const CACHE_NAME = 'timonegui-static-v5'; // bump to force update
 
 const PRECACHE = [
-  // HTML shell
+  // HTML shell (optional; remove if your index changes frequently)
   '/',
 
-  // Vendor CSS/JS
+  // Vendor CSS/JS (mostly static)
   '/static/vendor/bootstrap-5.3.0/css/bootstrap.min.css',
   '/static/vendor/bootstrap-5.3.0/js/bootstrap.bundle.min.js',
   '/static/vendor/bootstrap-icons-1.7.2/bootstrap-icons.css',
@@ -21,18 +21,17 @@ const PRECACHE = [
   // Your CSS
   '/static/css/main.css',
 
-  // Your JS
+  // Your app JS — will be network-first at runtime (but we can still seed)
   '/static/js/graph-interactions.js',
   '/static/js/main.js',
   '/static/js/historical.js',
   '/static/js/maps.js',
   '/static/js/logs.js',
   '/static/js/settings.js',
-  '/static/js/telemetry.js',  // <-- added
+  '/static/js/telemetry.js',
 
-  // Images frequently used
-  '/static/images/favicon.ico',
-  // '/static/images/ground-station.png',
+  // DO NOT precache favicon.ico to avoid manifest confusion
+  // '/static/images/favicon.ico',
 ];
 
 self.addEventListener('install', (event) => {
@@ -59,40 +58,64 @@ self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') self.skipWaiting();
 });
 
-// Cache-first for same-origin static assets; network for APIs
+// Strategy helpers
+async function networkFirst(event) {
+  try {
+    const fresh = await fetch(event.request);
+    const cache = await caches.open(CACHE_NAME);
+    cache.put(event.request, fresh.clone());
+    return fresh;
+  } catch (e) {
+    const cached = await caches.match(event.request);
+    if (cached) return cached;
+    throw e;
+  }
+}
+
+async function cacheFirst(event) {
+  const cached = await caches.match(event.request);
+  if (cached) return cached;
+  const fresh = await fetch(event.request);
+  const cache = await caches.open(CACHE_NAME);
+  cache.put(event.request, fresh.clone());
+  return fresh;
+}
+
+// Cache rules
 self.addEventListener('fetch', (event) => {
   const req = event.request;
   const url = new URL(req.url);
 
-  // --- IMPORTANT: completely bypass SSE / event-streams ---
+  // --- Bypass SSE / event-streams entirely ---
   const accept = req.headers.get('accept') || '';
   if (
     accept.includes('text/event-stream') ||
     url.pathname === '/api/logs/stream' ||
-    url.pathname === '/api/telemetry/stream'   // <-- added explicit bypass
+    url.pathname === '/api/telemetry/stream'
   ) {
-    return; // let the browser hit network directly
+    return; // go straight to network
   }
 
   // Only handle GET
   if (req.method !== 'GET') return;
 
   // API calls: let them hit network (no SW caching)
-  if (url.pathname.startsWith('/api/')) {
-    return; // network default
+  if (url.pathname.startsWith('/api/')) return;
+
+  // Always network-first for manifest and sw (prevents stale)
+  if (url.pathname === '/manifest.json' || url.pathname === '/sw.js') {
+    event.respondWith(networkFirst(event));
+    return;
   }
 
-  // Same-origin static: cache-first
+  // Network-first for your changing JS/CSS during development
+  if (url.pathname.startsWith('/static/js/') || url.pathname.startsWith('/static/css/')) {
+    event.respondWith(networkFirst(event));
+    return;
+  }
+
+  // Everything else same-origin: cache-first
   if (url.origin === self.origin) {
-    event.respondWith(
-      caches.match(req).then(cached => {
-        if (cached) return cached;
-        return fetch(req).then(resp => {
-          const copy = resp.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
-          return resp;
-        }).catch(() => cached);
-      })
-    );
+    event.respondWith(cacheFirst(event));
   }
 });

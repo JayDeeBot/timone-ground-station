@@ -101,7 +101,7 @@ def radio_settings():
 
 
 # ----------------------------
-# Satellite Maps (corners-only)
+# Satellite Maps — store TL/BR only, serve full corners
 # ----------------------------
 MAPS_DIR = ROOT / "static" / "images" / "maps"
 MAPS_DIR.mkdir(parents=True, exist_ok=True)
@@ -138,27 +138,38 @@ def _parse_lon_lat_pair(s: str):
         raise ValueError("lon/lat out of range")
     return lon, lat
 
-def _valid_corners(corners):
-    if not isinstance(corners, dict):
-        return False
-    try:
-        for key in ("top_left", "top_right", "bottom_right", "bottom_left"):
-            val = corners.get(key)
-            if not (isinstance(val, (list, tuple)) and len(val) == 2):
-                return False
-            lon = float(val[0]); lat = float(val[1])
-            if not (-180.0 <= lon <= 180.0 and -90.0 <= lat <= 90.0):
-                return False
-        return True
-    except Exception:
-        return False
+def _serve_corners_from_record(rec: dict):
+    """
+    Backward/forward compatibility:
+    - If record stores four 'corners', return them.
+    - Else derive from 'tl' and 'br' (north-up image).
+    """
+    if "corners" in rec and isinstance(rec["corners"], dict):
+        c = rec["corners"]
+        try:
+            return {
+                "top_left":     [float(c["top_left"][0]),     float(c["top_left"][1])],
+                "top_right":    [float(c["top_right"][0]),    float(c["top_right"][1])],
+                "bottom_right": [float(c["bottom_right"][0]), float(c["bottom_right"][1])],
+                "bottom_left":  [float(c["bottom_left"][0]),  float(c["bottom_left"][1])],
+            }
+        except Exception:
+            pass
 
-def _as_float_corners(c):
+    # New storage format: only TL/BR are persisted
+    tl = rec.get("tl")
+    br = rec.get("br")
+    if not (isinstance(tl, (list, tuple)) and isinstance(br, (list, tuple)) and len(tl) == 2 and len(br) == 2):
+        return None
+    tl_lon, tl_lat = float(tl[0]), float(tl[1])
+    br_lon, br_lat = float(br[0]), float(br[1])
+    tr_lon, tr_lat = br_lon, tl_lat
+    bl_lon, bl_lat = tl_lon, br_lat
     return {
-        "top_left":     [float(c["top_left"][0]),     float(c["top_left"][1])],
-        "top_right":    [float(c["top_right"][0]),    float(c["top_right"][1])],
-        "bottom_right": [float(c["bottom_right"][0]), float(c["bottom_right"][1])],
-        "bottom_left":  [float(c["bottom_left"][0]),  float(c["bottom_left"][1])],
+        "top_left":     [tl_lon, tl_lat],
+        "top_right":    [tr_lon, tr_lat],
+        "bottom_right": [br_lon, br_lat],
+        "bottom_left":  [bl_lon, bl_lat],
     }
 
 @app.route("/api/maps", methods=["GET", "POST"])
@@ -178,15 +189,15 @@ def api_maps():
                 if not filename:
                     continue
 
-                corners = m.get("corners")
-                if not _valid_corners(corners):
+                corners = _serve_corners_from_record(m)
+                if not corners:
                     continue
 
                 rec = {
                     "id": m.get("id") or Path(filename).stem,
                     "filename": filename,
                     "url": f"/static/images/maps/{filename}",
-                    "corners": _as_float_corners(corners),
+                    "corners": corners,
                 }
                 cleaned.append(rec)
 
@@ -197,6 +208,7 @@ def api_maps():
             print("GET /api/maps failed:", e)
             return jsonify({"error": "Failed to list maps"}), 500
 
+    # POST (upload & save)
     file = request.files.get("file")
     if not file:
         return jsonify({"error": "No file uploaded"}), 400
@@ -206,28 +218,38 @@ def api_maps():
     if ext not in ALLOWED_IMG_EXT:
         return jsonify({"error": f"Unsupported image type: {ext}"}), 400
 
+    # Accept either TL/BR or full four corners; normalize to TL/BR storage
     tl_str = request.form.get("top_left") or request.form.get("tl")
-    tr_str = request.form.get("top_right") or request.form.get("tr")
     br_str = request.form.get("bottom_right") or request.form.get("br")
+
+    # Back-compat if the frontend still sends all four
+    tr_str = request.form.get("top_right") or request.form.get("tr")
     bl_str = request.form.get("bottom_left") or request.form.get("bl")
-    if not all([tl_str, tr_str, br_str, bl_str]):
-        return jsonify({"error": "All four corners (top_left, top_right, bottom_right, bottom_left) are required."}), 400
+
+    if not tl_str or not br_str:
+        if all([tr_str, bl_str]):
+            # derive tl/br if only tr/bl + maybe others (rare), but we need tl/br at minimum
+            try:
+                tr_lon, tr_lat = _parse_lon_lat_pair(tr_str)
+                bl_lon, bl_lat = _parse_lon_lat_pair(bl_str)
+                tl_str = f"{bl_lon},{tr_lat}"
+                br_str = f"{tr_lon},{bl_lat}"
+            except Exception:
+                return jsonify({"error": "Provide at least top_left and bottom_right as 'lon,lat'"}), 400
+        else:
+            return jsonify({"error": "Provide at least top_left and bottom_right as 'lon,lat'"}), 400
 
     try:
         tl_lon, tl_lat = _parse_lon_lat_pair(tl_str)
-        tr_lon, tr_lat = _parse_lon_lat_pair(tr_str)
         br_lon, br_lat = _parse_lon_lat_pair(br_str)
-        bl_lon, bl_lat = _parse_lon_lat_pair(bl_str)
     except (TypeError, ValueError) as e:
         return jsonify({"error": f"Invalid coordinates: {e}"}), 400
 
-    corners = {
-        "top_left":     [tl_lon, tl_lat],
-        "top_right":    [tr_lon, tr_lat],
-        "bottom_right": [br_lon, br_lat],
-        "bottom_left":  [bl_lon, bl_lat],
-    }
+    # Orientation: TL above/left of BR
+    if not (tl_lat > br_lat and tl_lon < br_lon):
+        return jsonify({"error": "Top-Left must be above/left of Bottom-Right"}), 400
 
+    # Save image file (avoid overwrite with _n suffix)
     final_name = filename
     i = 1
     while (MAPS_DIR / final_name).exists():
@@ -236,8 +258,9 @@ def api_maps():
         i += 1
     file.save(MAPS_DIR / final_name)
 
+    # Index entry (store only TL/BR now)
     idx = _load_maps_index()
-    map_id = request.form.get("name") or Path(final_name).stem
+    map_id = (request.form.get("name") or Path(final_name).stem).strip() or Path(final_name).stem
     existing_ids = {m["id"] for m in idx.get("maps", []) if isinstance(m, dict) and "id" in m}
     orig_id = map_id
     j = 1
@@ -248,22 +271,80 @@ def api_maps():
     record = {
         "id": map_id,
         "filename": final_name,
-        "corners": corners
+        "tl": [tl_lon, tl_lat],
+        "br": [br_lon, br_lat],
     }
 
     idx.setdefault("maps", []).append(record)
     _save_maps_index(idx)
 
+    # Serve full corners to clients (derived)
+    corners = _serve_corners_from_record(record)
     record_out = {
         "id": map_id,
         "filename": final_name,
         "url": f"/static/images/maps/{final_name}",
-        "corners": _as_float_corners(corners),
+        "corners": corners,
     }
 
     resp = make_response(jsonify({"ok": True, "map": record_out}))
     resp.headers["Cache-Control"] = "no-store"
     return resp, 201
+
+@app.route("/api/maps/<map_id>", methods=["GET"])
+def api_maps_get_one(map_id):
+    try:
+        idx = _load_maps_index()
+        m = next((m for m in idx.get("maps", []) if isinstance(m, dict) and m.get("id") == map_id), None)
+        if not m:
+            return jsonify({"error": "not found"}), 404
+        corners = _serve_corners_from_record(m)
+        out = {
+            "id": m["id"],
+            "filename": m["filename"],
+            "url": f"/static/images/maps/{m['filename']}",
+            "corners": corners,
+        }
+        resp = make_response(jsonify(out))
+        resp.headers["Cache-Control"] = "no-store"
+        return resp
+    except Exception as e:
+        print("GET /api/maps/<id> failed:", e)
+        return jsonify({"error": "failed"}), 500
+
+@app.route("/api/maps/<map_id>", methods=["DELETE"])
+def api_maps_delete(map_id):
+    try:
+        idx = _load_maps_index()
+        maps_list = idx.get("maps", [])
+        if not isinstance(maps_list, list):
+            maps_list = []
+        rec_idx = None
+        for i, m in enumerate(maps_list):
+            if isinstance(m, dict) and m.get("id") == map_id:
+                rec_idx = i
+                break
+        if rec_idx is None:
+            return jsonify({"error": "not found"}), 404
+
+        rec = maps_list.pop(rec_idx)
+        try:
+            fname = rec.get("filename")
+            if fname:
+                p = MAPS_DIR / fname
+                if p.exists() and p.is_file():
+                    p.unlink()
+        except Exception as fe:
+            print(f"File delete error for map {map_id}: {fe}")
+
+        idx["maps"] = maps_list
+        _save_maps_index(idx)
+        resp = make_response(jsonify({"ok": True}))
+        resp.headers["Cache-Control"] = "no-store"
+        return resp
+    except Exception as e:
+        print("DELETE /api/maps/<id> failed:", e)
+        return jsonify({"error": "failed"}), 500
 
 
 # ----------------------------
@@ -360,7 +441,6 @@ def _tele_unsubscribe(q):
         pass
 
 def _tele_publish(d: dict):
-    # keep a compact JSON per event
     try:
         payload = json.dumps(d, separators=(',', ':'))
     except Exception:
@@ -377,18 +457,6 @@ def _tele_publish(d: dict):
 
 @app.route("/api/telemetry/push", methods=["POST"])
 def telemetry_push():
-    """
-    Accepts JSON telemetry:
-    {
-      "time": <number>, "state": <int>,
-      "alt": <number>, "vel": <number>,
-      "ax": <number>, "ay": <number>, "az": <number>,
-      "pres": <number>, "temp": <number>,
-      "main": 0|1, "drog": 0|1,
-      "volts": <number>, "curr": <number>
-    }
-    Can also accept list under {"rows":[...]}.
-    """
     try:
         payload = request.get_json(force=True, silent=False)
         if isinstance(payload, dict) and "rows" in payload and isinstance(payload["rows"], list):

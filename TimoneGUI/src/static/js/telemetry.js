@@ -6,6 +6,7 @@
   const MAX_POINTS = 600;
   const buffer = [];             // recent telemetry window for backfill
   let pendingSelection = null;   // last "Add Graph" selection
+  let current = {};              // <-- last-known values merged across rows
 
   const els = {};
   const charts = {
@@ -23,13 +24,11 @@
   function chartUsable(ch) {
     return !!(ch && ch.canvas && ch.canvas.isConnected);
   }
-  // Is the canvas in the DOM *and* visible (has layout boxes & size)?
   function canvasReady(canvas) {
     if (!canvas || !canvas.isConnected) return false;
     const rects = canvas.getClientRects?.();
     return !!(rects && rects.length > 0 && (canvas.offsetWidth || canvas.offsetHeight));
   }
-  // Destroy and null a chart instance safely
   function nukeChart(ch) {
     try { ch?.destroy?.(); } catch (_) {}
     return null;
@@ -98,7 +97,7 @@
   function lineOpts01(){ const o=baseLineOpts(); o.scales.y.min=0; o.scales.y.max=1; o.scales.y.ticks={stepSize:1}; return o; }
 
   function ensureChart(canvas, configBuilder){
-    if (!hasChart() || !canvasReady(canvas)) return null; // only create when visible & attached
+    if (!hasChart() || !canvasReady(canvas)) return null;
     let inst = Chart.getChart(canvas);
     if (inst) return inst;
     try {
@@ -127,11 +126,9 @@
       ch.update('none');
     } catch (e) {
       console.warn('[telemetry] chart update failed; destroying to recover:', e);
-      // Clear fixed references if this was one of them
       for (const key of ['chartVAA', 'chartAV', 'mainCont', 'drogCont']) {
         if (charts[key] === ch) { charts[key] = nukeChart(ch); return; }
       }
-      // Or clear dynamic entry
       for (const [canvas, meta] of charts.dynamic.entries()) {
         if (meta.chart === ch) { charts.dynamic.delete(canvas); nukeChart(ch); return; }
       }
@@ -266,7 +263,7 @@
 
   // ---------- Dynamic charts ----------
   function initDynamicChartForCanvas(canvas, selectionForFallback){
-    if (!hasChart() || !canvasReady(canvas)) return; // only when visible
+    if (!hasChart() || !canvasReady(canvas)) return;
     let inst = Chart.getChart(canvas);
     if (!inst){
       try {
@@ -306,15 +303,51 @@
     }
   }
 
+  // ---------- Normalization ----------
+  function normalizeRow(r) {
+    const time = (r.time !== undefined) ? r.time : r.t;
+
+    const alt = (r.alt !== undefined) ? r.alt
+              : (r.baro_alt !== undefined ? r.baro_alt : undefined);
+
+    const vel = (r.vel !== undefined) ? r.vel
+              : (r.v   !== undefined ? r.v   : undefined);
+
+    const temp = (r.temp !== undefined) ? r.temp
+               : (r.baro_temp !== undefined ? r.baro_temp : undefined);
+    const pres = (r.pres !== undefined) ? r.pres
+               : (r.baro_press !== undefined ? r.baro_press : undefined);
+
+    const volts = (r.volts !== undefined) ? r.volts
+                : (r.vbat  !== undefined ? r.vbat  : undefined);
+    const curr  = (r.curr  !== undefined) ? r.curr
+                : (r.ibat  !== undefined ? r.ibat  : undefined);
+
+    const ax = r.ax, ay = r.ay, az = r.az;
+    const state = r.state, main = r.main, drog = r.drog;
+    const lat = r.lat, lng = r.lng;
+
+    const out = { time, alt, vel, ax, ay, az, temp, pres, volts, curr, state, main, drog, lat, lng };
+    Object.keys(out).forEach(k => out[k] === undefined && delete out[k]);
+    return out;
+  }
+
   // ---------- Telemetry ingest ----------
-  function onTelemetry(t){
-    buffer.push(t);
+  function onTelemetry(raw){
+    // Normalize this row then merge into `current`
+    const t = normalizeRow(raw);
+    current = { ...current, ...t };
+
+    // Push a snapshot of the merged state for charts/backfill
+    const snap = { ...current };
+    buffer.push(snap);
     if (buffer.length > MAX_POINTS) buffer.shift();
 
-    updateFields(t);
-    updateFixedCharts(t);
-    updateContinuityCharts(t);
-    updateDynamicCharts(t);
+    // Update UI & charts from the merged state
+    updateFields(current);
+    updateFixedCharts(current);
+    updateContinuityCharts(current);
+    updateDynamicCharts(current);
   }
 
   // ---------- Tab / visibility / resize ----------
@@ -328,7 +361,6 @@
     attachOrInitFixedCharts();
     attachOrInitContinuityCharts();
     bindAllDynamicCanvases();
-    // Backfill again in case canvases were recreated
     backfillFixedCharts();
     backfillContinuityCharts();
     for (const c of charts.dynamic.keys()) backfillDynamicChart(c);
@@ -354,7 +386,6 @@
     if (!els.addGraphBtn || !els.telemetrySelect) return;
     els.addGraphBtn.addEventListener('click', () => {
       pendingSelection = Array.from(els.telemetrySelect.selectedOptions).map(o => o.value);
-      // The canvas will appear later; our observer will bind/backfill it.
     });
   }
 
@@ -362,7 +393,6 @@
     if (!els.graphContainer) return;
     els.graphContainer.querySelectorAll('canvas').forEach(canvas => {
       if (!canvas.isConnected) return;
-      // Skip fixed canvases
       if (canvas === els.canvasVAA || canvas === els.canvasAV) return;
 
       const inst = hasChart() ? Chart.getChart(canvas) : null;

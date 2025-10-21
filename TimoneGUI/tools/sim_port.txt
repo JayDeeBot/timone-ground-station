@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 /dev/ttyUSB0
+=======
+/dev/pts/7
+>>>>>>> main
