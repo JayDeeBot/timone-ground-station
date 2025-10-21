@@ -3,46 +3,42 @@
 comm_hub.py — Timone Ground Station communication broker
 
 Single Python program that sits between the embedded ground‑station firmware (over
-serial/USB/UART) and three GUI-facing client apps (433 LoRa, 915 LoRa, Settings).
+serial/USB/UART) and GUI-facing client apps for testing and debugging.
 
-UPDATED to match the EXACT protocol you provided:
+UPDATED to match the NEW PERIPHERAL-BASED PROTOCOL:
 
-General Message Structure (all directions)
-  [SOF=0x7E][MSG_TYPE:1][LEN:1][PAYLOAD:LEN][EOF=0x7F]
+Message Structure:
+  Pi → ESP32 (Command):  [HELLO=0x7E][PERIPHERAL_ID][LENGTH][COMMAND][optional data...][GOODBYE=0x7F]
+  ESP32 → Pi (Response): [RESPONSE=0x7D][PERIPHERAL_ID][LENGTH][data...][GOODBYE=0x7F]
 
-Message Type Key
-  0x01 → 915 MHz LoRa
-  0x02 → 433 MHz LoRa
-  0x03 → AiM Port 1
-  0x04 → AiM Port 2
-  0x05 → AiM Port 3
-  0x06 → AiM Port 4
-  0x07 → Settings
+Peripheral IDs:
+  0x00 → SYSTEM (ESP32 control)
+  0x01 → LORA_915 (915MHz LoRa)
+  0x02 → LORA_433 (433MHz LoRa, also called RADIO_433)
+  0x03 → BAROMETER (MS5607)
+  0x04 → CURRENT (Current/voltage sensor)
+  0x10-0x13 → AIM_1 to AIM_4 (future)
 
-Settings Payload Structure (when MSG_TYPE == 0x07)
-  [SETTING_KEY:1][VALUE:variable]
-  The VALUE size depends on the SETTING_KEY type:
-    - Float → 4 bytes (IEEE‑754 little‑endian)
-    - Int   → 4 bytes (signed little‑endian)
-    - Pair(Int, Int) → 8 bytes (two 4‑byte ints)
-  The LEN byte in the general header MUST equal (1 + VALUE_SIZE) for settings.
+Generic Commands (all peripherals):
+  0x00 → CMD_GET_ALL (get all data from peripheral)
+  0x01 → CMD_GET_STATUS (get status/health)
+  0x02 → CMD_RESET (reset peripheral)
+  0x03 → CMD_CONFIGURE (configure peripheral)
 
-Examples
-- Set 915 MHz LoRa Bandwidth (SETTING_KEY=0x08, float 125.0 kHz):
-  SOF 7E | TYPE 07 | LEN 05 | PAYLOAD: 08 <float32(125.0)> | EOF 7F
-- Set 433 MHz LoRa Coding Rate to "4/7" (SETTING_KEY=0x0C, pair ints [4,7]):
-  SOF 7E | TYPE 07 | LEN 09 | PAYLOAD: 0C <int32(4)> <int32(7)> | EOF 7F
+System Commands (PERIPHERAL_ID=0x00 only):
+  0x20 → CMD_SYSTEM_WAKEUP (wake from low-power)
+  0x21 → CMD_SYSTEM_SLEEP (enter low-power)
+  0x22 → CMD_SYSTEM_RESET (reset ESP32)
 
-No CRC, 1‑byte length, byte‑exact routing by MSG_TYPE.
+Examples:
+  Get LoRa data:  [0x7E][0x01][0x01][0x00][0x7F]
+  Wake system:    [0x7E][0x00][0x01][0x20][0x7F]
+  Get barometer:  [0x7E][0x03][0x01][0x00][0x7F]
 
 Run:
-    python3 comm_hub.py --port /dev/ttyACM0 --baud 115200 \
-        --tcp-433 127.0.0.1:9401 --tcp-915 127.0.0.1:9402 --tcp-settings 127.0.0.1:9403
+    python3 comm_hub.py --port /dev/ttyACM0 --baud 115200
 
-GUI clients speak newline‑delimited JSON. Example to send a 915 frame:
-    {"to_embedded": true, "type_hex": "01", "payload_hex": "DEADBEEF"}
-
-Jarred: this file remains asyncio‑first and single‑file as requested.
+GUI clients (if implemented) speak newline‑delimited JSON.
 """
 
 from __future__ import annotations
@@ -50,18 +46,10 @@ import asyncio
 import argparse
 import json
 import logging
-import os
 import struct
 import sys
 import time
-from dataclasses import dataclass
 from typing import Dict, Optional, Tuple, List
-
-# Optional pandas import for Excel protocol mapping
-try:
-    import pandas as pd  # type: ignore
-except Exception:
-    pd = None
 
 # ----------------------------
 # Logging setup
@@ -73,257 +61,207 @@ LOG.addHandler(handler)
 LOG.setLevel(logging.INFO)
 
 # ----------------------------
-# Protocol framing (embedded link) — EXACT per spec
+# Protocol framing (embedded link) — NEW PERIPHERAL-BASED PROTOCOL
 # ----------------------------
-# Byte layout:
-#   [SOF=0x7E][MSG_TYPE:1][LEN:1][PAYLOAD:LEN][EOF=0x7F]
-SOF = 0x7E
-EOF = 0x7F
+# Framing bytes
+HELLO_BYTE = 0x7E      # Start of Pi → ESP32 message
+RESPONSE_BYTE = 0x7D   # Start of ESP32 → Pi message (different from HELLO to avoid echo)
+GOODBYE_BYTE = 0x7F    # End of message marker
 
-MSG_TYPES = {
-    "915": 0x01,
-    "433": 0x02,
-    "AIM1": 0x03,
-    "AIM2": 0x04,
-    "AIM3": 0x05,
-    "AIM4": 0x06,
-    "SETTINGS": 0x07,
+# Peripheral IDs
+PERIPHERAL_ID_SYSTEM = 0x00
+PERIPHERAL_ID_LORA_915 = 0x01
+PERIPHERAL_ID_LORA_433 = 0x02  # 433MHz is also LoRa (same chip, different freq)
+PERIPHERAL_ID_BAROMETER = 0x03
+PERIPHERAL_ID_CURRENT = 0x04
+PERIPHERAL_ID_AIM_1 = 0x10
+PERIPHERAL_ID_AIM_2 = 0x11
+PERIPHERAL_ID_AIM_3 = 0x12
+PERIPHERAL_ID_AIM_4 = 0x13
+
+# Backward compatibility
+PERIPHERAL_ID_RADIO_433 = PERIPHERAL_ID_LORA_433
+
+# Peripheral name mapping
+PERIPHERAL_NAMES = {
+    PERIPHERAL_ID_SYSTEM: "SYSTEM",
+    PERIPHERAL_ID_LORA_915: "LORA_915",
+    PERIPHERAL_ID_LORA_433: "LORA_433",
+    PERIPHERAL_ID_BAROMETER: "BAROMETER",
+    PERIPHERAL_ID_CURRENT: "CURRENT",
+    PERIPHERAL_ID_AIM_1: "AIM_1",
+    PERIPHERAL_ID_AIM_2: "AIM_2",
+    PERIPHERAL_ID_AIM_3: "AIM_3",
+    PERIPHERAL_ID_AIM_4: "AIM_4",
 }
 
-# Settings keys and types (for convenience helpers)
-SET_KEYS = {
-    # key_name         : (id, type)
-    "L915_BW": (0x08, "float"),           # 7.8 .. 1625 (kHz)
-    "L915_CR": (0x09, "pair_int"),        # e.g. 4/5, 4/6, 4/7, 4/8
-    "L915_SF": (0x0A, "int"),             # 5..12
-    "L433_BW": (0x0B, "float"),
-    "L433_CR": (0x0C, "pair_int"),
-    "L433_SF": (0x0D, "int"),
-}
+# Generic commands (work for ALL peripherals)
+CMD_GET_ALL = 0x00       # Get all available data from peripheral
+CMD_GET_STATUS = 0x01    # Get status/health of peripheral
+CMD_RESET = 0x02         # Reset peripheral
+CMD_CONFIGURE = 0x03     # Configure peripheral
+
+# System-only commands (only for PERIPHERAL_ID = 0x00)
+CMD_SYSTEM_WAKEUP = 0x20  # Wake up system from low-power state
+CMD_SYSTEM_SLEEP = 0x21   # Put system into low-power state
+CMD_SYSTEM_RESET = 0x22   # Reset entire ESP32
+
+# Data structure sizes (for validation)
+SIZE_HEARTBEAT = 6   # WireHeartbeat_t
+SIZE_STATUS = 20     # WireStatus_t
+SIZE_LORA = 74       # WireLoRa_t
+SIZE_433 = 74        # Wire433_t (same as WireLoRa_t)
+SIZE_BAROMETER = 17  # WireBarometer_t
+SIZE_CURRENT = 19    # WireCurrent_t
+
+# ----------------------------
+# Data structure unpacking functions
+# ----------------------------
+def unpack_heartbeat(data: bytes) -> dict:
+    """Unpack WireHeartbeat_t (6 bytes): version(1), uptime(4), state(1)"""
+    if len(data) != SIZE_HEARTBEAT:
+        raise ValueError(f"Invalid heartbeat size: expected {SIZE_HEARTBEAT}, got {len(data)}")
+    version, uptime, state = struct.unpack('<BIB', data)
+    return {
+        'version': version,
+        'uptime_seconds': uptime,
+        'system_state': state
+    }
+
+def unpack_status(data: bytes) -> dict:
+    """Unpack WireStatus_t (20 bytes): version(1), uptime(4), state(1), flags(1),
+       pkt_lora(2), pkt_433(2), wakeup_time(4), heap(4), chip_rev(1)"""
+    if len(data) != SIZE_STATUS:
+        raise ValueError(f"Invalid status size: expected {SIZE_STATUS}, got {len(data)}")
+    values = struct.unpack('<BIBBHHIIB', data)
+    return {
+        'version': values[0],
+        'uptime_seconds': values[1],
+        'system_state': values[2],
+        'sensor_flags': values[3],
+        'pkt_count_lora': values[4],
+        'pkt_count_433': values[5],
+        'wakeup_time': values[6],
+        'heap_free': values[7],
+        'chip_revision': values[8]
+    }
+
+def unpack_lora_data(data: bytes) -> dict:
+    """Unpack WireLoRa_t (74 bytes): version(1), pkt_count(2), rssi(2), snr(4), len(1), data(64)"""
+    if len(data) != SIZE_LORA:
+        raise ValueError(f"Invalid LoRa data size: expected {SIZE_LORA}, got {len(data)}")
+    values = struct.unpack('<BHhfB64s', data)
+    return {
+        'version': values[0],
+        'packet_count': values[1],
+        'rssi': values[2],
+        'snr': values[3],
+        'payload_length': values[4],
+        'payload': values[5][:values[4]]  # trim to actual length
+    }
+
+def unpack_433_data(data: bytes) -> dict:
+    """Unpack Wire433_t (74 bytes) - same as WireLoRa_t"""
+    return unpack_lora_data(data)  # Same structure
+
+def unpack_barometer_data(data: bytes) -> dict:
+    """Unpack WireBarometer_t (17 bytes): version(1), timestamp(4), pressure(4), temp(4), altitude(4)"""
+    if len(data) != SIZE_BAROMETER:
+        raise ValueError(f"Invalid barometer data size: expected {SIZE_BAROMETER}, got {len(data)}")
+    values = struct.unpack('<BIfff', data)
+    return {
+        'version': values[0],
+        'timestamp': values[1],
+        'pressure_pa': values[2],
+        'temperature_c': values[3],
+        'altitude_m': values[4]
+    }
+
+def unpack_current_data(data: bytes) -> dict:
+    """Unpack WireCurrent_t (19 bytes): version(1), timestamp(4), current(4), voltage(4), power(4), raw_adc(2)"""
+    if len(data) != SIZE_CURRENT:
+        raise ValueError(f"Invalid current data size: expected {SIZE_CURRENT}, got {len(data)}")
+    values = struct.unpack('<BIfffh', data)
+    return {
+        'version': values[0],
+        'timestamp': values[1],
+        'current_a': values[2],
+        'voltage_v': values[3],
+        'power_w': values[4],
+        'raw_adc': values[5]
+    }
 
 # ----------------------------
 # Frame codec
 # ----------------------------
 class FrameCodec:
+    """Handles encoding/decoding of the new peripheral-based protocol"""
+
     def __init__(self):
-        # reverse map for routing incoming
-        self.id_to_type = {v: k for k, v in MSG_TYPES.items()}
+        pass
 
-    @staticmethod
-    def _pack_value(val_type: str, value):
-        if val_type == "float":
-            return struct.pack("<f", float(value))
-        if val_type == "int":
-            return struct.pack("<i", int(value))
-        if val_type == "pair_int":
-            a, b = value
-            return struct.pack("<ii", int(a), int(b))
-        raise ValueError(f"Unknown settings value type: {val_type}")
+    def encode_command(self, peripheral_id: int, command: int, data: bytes = b'') -> bytes:
+        """Encode a command to send to ESP32
+        Format: [HELLO][PERIPHERAL_ID][LENGTH][COMMAND][data...][GOODBYE]
+        """
+        payload = bytes([command]) + data
+        if len(payload) > 255:
+            raise ValueError("Payload too large for 1-byte length")
 
-    @staticmethod
-    def _unpack_value(val_type: str, b: bytes):
-        if val_type == "float":
-            return struct.unpack("<f", b)[0]
-        if val_type == "int":
-            return struct.unpack("<i", b)[0]
-        if val_type == "pair_int":
-            return struct.unpack("<ii", b)
-        raise ValueError(f"Unknown settings value type: {val_type}")
+        message = bytes([
+            HELLO_BYTE,
+            peripheral_id & 0xFF,
+            len(payload) & 0xFF
+        ]) + payload + bytes([GOODBYE_BYTE])
 
-    def encode(self, msg_type_hex: int, payload: bytes) -> bytes:
-        if not (0 <= len(payload) <= 255):
-            raise ValueError("Payload too large for 1‑byte length")
-        return bytes([SOF, msg_type_hex & 0xFF, len(payload) & 0xFF]) + payload + bytes([EOF])
+        return message
 
-    def encode_settings(self, key_id: int, value_type: str, value) -> bytes:
-        payload_value = self._pack_value(value_type, value)
-        payload = bytes([key_id & 0xFF]) + payload_value
-        return self.encode(MSG_TYPES["SETTINGS"], payload)
-
-    def try_decode_stream(self, buf: bytearray):
-        """Extract frames: returns list of (msg_type, payload_bytes)."""
+    def try_decode_stream(self, buf: bytearray) -> List[Tuple[int, bytes]]:
+        """Extract response frames from buffer.
+        Returns list of (peripheral_id, payload_bytes).
+        Format: [RESPONSE][PERIPHERAL_ID][LENGTH][payload...][GOODBYE]
+        """
         out = []
         while True:
-            # find SOF
+            # Find RESPONSE_BYTE
             try:
-                i = buf.index(SOF)
-            except ValueError:
-                buf.clear(); break
-            if i > 0:
-                del buf[:i]
-            if len(buf) < 4:  # SOF + TYPE + LEN + EOF min
-                break
-            msg_type = buf[1]
-            length = buf[2]
-            need = 1 + 1 + 1 + length + 1
-            if len(buf) < need:
-                break
-            if buf[need-1] != EOF:
-                # desync; drop SOF
-                del buf[0:1]
-                continue
-            payload = bytes(buf[3:3+length])
-            out.append((msg_type, payload))
-            del buf[:need]
-        return out
-
-# Byte layout (little‑endian):
-#   [SOF=0x7E][channel:1][msg_id:1][len:2][payload:len][crc16:2][EOF=0x7F]
-# CRC16-CCITT (0x1021) over: channel, msg_id, len, payload
-SOF = 0x7E
-EOF = 0x7F
-
-# Default channels (overridable by Excel)
-DEFAULT_CHANNELS = {
-    "433": 0x01,
-    "915": 0x02,
-    "SETTINGS": 0x10,
-    # Reserve A.I.M devices (1..4) if you want them later
-    "AIM1": 0x21,
-    "AIM2": 0x22,
-    "AIM3": 0x23,
-    "AIM4": 0x24,
-}
-
-# Default messages (overridable by Excel)
-DEFAULT_MESSAGES = {
-    # name        : (msg_id)
-    "TELEMETRY"   : 0x01,
-    "DOWNLINK"    : 0x02,
-    "ACK"         : 0x06,
-    "NACK"        : 0x15,
-    "SET_PARAM"   : 0x30,
-    "GET_PARAM"   : 0x31,
-    "HEARTBEAT"   : 0x7A,
-}
-
-# ----------------------------
-# Helpers: CRC16-CCITT (X25 poly 0x1021, init 0xFFFF, no reflect, no xorout)
-# ----------------------------
-def crc16_ccitt(data: bytes, poly: int = 0x1021, init: int = 0xFFFF) -> int:
-    crc = init
-    for b in data:
-        crc ^= (b << 8)
-        for _ in range(8):
-            if (crc & 0x8000) != 0:
-                crc = ((crc << 1) ^ poly) & 0xFFFF
-            else:
-                crc = (crc << 1) & 0xFFFF
-    return crc & 0xFFFF
-
-# ----------------------------
-# Protocol maps (channels, messages)
-# ----------------------------
-@dataclass
-class ProtocolMaps:
-    channels: Dict[str, int]
-    messages: Dict[str, int]
-
-    @classmethod
-    def from_excel(cls, path: str) -> "ProtocolMaps":
-        if pd is None:
-            LOG.warning("pandas not available; using defaults")
-            return cls(DEFAULT_CHANNELS.copy(), DEFAULT_MESSAGES.copy())
-        if not os.path.exists(path):
-            LOG.warning("Excel not found at %s; using defaults", path)
-            return cls(DEFAULT_CHANNELS.copy(), DEFAULT_MESSAGES.copy())
-        try:
-            xls = pd.ExcelFile(path)
-            channels = DEFAULT_CHANNELS.copy()
-            messages = DEFAULT_MESSAGES.copy()
-            # channels sheet
-            if any(s.lower() == "channels" for s in xls.sheet_names):
-                dfc = pd.read_excel(xls, "channels")
-                for _, row in dfc.iterrows():
-                    name = str(row.get("name"))
-                    id_hex = str(row.get("id_hex"))
-                    if name and id_hex:
-                        channels[name.strip().upper()] = int(id_hex, 16)
-            # messages sheet
-            if any(s.lower() == "messages" for s in xls.sheet_names):
-                dfm = pd.read_excel(xls, "messages")
-                for _, row in dfm.iterrows():
-                    name = str(row.get("name"))
-                    id_hex = str(row.get("id_hex"))
-                    if name and id_hex:
-                        messages[name.strip().upper()] = int(id_hex, 16)
-            LOG.info("Loaded protocol from Excel: %d channels, %d messages", len(channels), len(messages))
-            return cls(channels, messages)
-        except Exception as e:
-            LOG.exception("Failed reading Excel; using defaults: %s", e)
-            return cls(DEFAULT_CHANNELS.copy(), DEFAULT_MESSAGES.copy())
-
-# ----------------------------
-# Frame codec
-# ----------------------------
-class FrameCodec:
-    def __init__(self, maps: ProtocolMaps):
-        self.maps = maps
-
-    def encode(self, channel_name: str, msg_name: str, payload: bytes) -> bytes:
-        ch = self.maps.channels[channel_name.upper()]
-        mid = self.maps.messages[msg_name.upper()]
-        header = struct.pack("<BBH", ch, mid, len(payload))
-        crc = crc16_ccitt(header + payload)
-        frame = bytes([SOF]) + header + payload + struct.pack("<H", crc) + bytes([EOF])
-        return frame
-
-    def try_decode_stream(self, buf: bytearray) -> List[Tuple[int, int, bytes]]:
-        """
-        Attempts to extract as many frames as possible from buf.
-        Returns list of (channel_id, msg_id, payload).
-        Consumes bytes from buf.
-        """
-        frames = []
-        while True:
-            # find SOF
-            try:
-                sof_idx = buf.index(SOF)
+                i = buf.index(RESPONSE_BYTE)
             except ValueError:
                 buf.clear()
                 break
-            if sof_idx > 0:
-                del buf[:sof_idx]
-            # need at least SOF + hdr(4) + crc(2) + EOF -> 8 bytes min
-            if len(buf) < 1 + 4 + 2 + 1:
+
+            if i > 0:
+                del buf[:i]
+
+            # Need at least: RESPONSE + PERIPHERAL_ID + LEN + GOODBYE (min 4 bytes)
+            if len(buf) < 4:
                 break
-            # find EOF (we'll parse length properly but EOF helps sanity check)
-            try:
-                eof_idx = buf.index(EOF, 1)
-            except ValueError:
-                # No EOF yet; wait for more bytes
-                break
-            # parse header/length
-            if len(buf) < 1 + 4:
-                break
-            ch = buf[1]
-            mid = buf[2]
-            (length,) = struct.unpack_from("<H", buf, 3)
-            need = 1 + 4 + length + 2 + 1
+
+            peripheral_id = buf[1]
+            length = buf[2]
+            need = 1 + 1 + 1 + length + 1  # RESPONSE + ID + LEN + payload + GOODBYE
+
             if len(buf) < need:
-                # Not enough bytes yet
                 break
-            # Verify EOF at expected position
-            if buf[need - 1] != EOF:
-                # Desync; drop SOF and retry
+
+            if buf[need-1] != GOODBYE_BYTE:
+                # Desync; drop RESPONSE_BYTE and retry
                 del buf[0:1]
                 continue
-            payload = bytes(buf[5:5 + length])
-            (crc_rx,) = struct.unpack_from("<H", buf, 5 + length)
-            crc_calc = crc16_ccitt(bytes(buf[1:5]) + payload)
-            if crc_rx != crc_calc:
-                LOG.warning("CRC mismatch (ch=%02X mid=%02X len=%d) — resync", ch, mid, length)
-                del buf[0:need]
-                continue
-            # Good frame
-            frames.append((ch, mid, payload))
-            del buf[0:need]
-        return frames
+
+            payload = bytes(buf[3:3+length])
+            out.append((peripheral_id, payload))
+            del buf[:need]
+
+        return out
+
 
 # ----------------------------
 # Embedded link (serial or simulated)
 # ----------------------------
 class EmbeddedLink:
+    """Manages serial communication with ESP32 using the new peripheral-based protocol"""
+
     def __init__(self, codec: FrameCodec, serial_port: Optional[str], baud: int, sim: bool = False):
         self.codec = codec
         self.serial_port = serial_port
@@ -342,10 +280,13 @@ class EmbeddedLink:
         except Exception as e:
             LOG.error("serial_asyncio not available: %s", e)
             raise
-        self.reader, self.writer = await serial_asyncio.open_serial_connection(url=self.serial_port, baudrate=self.baud)
+        self.reader, self.writer = await serial_asyncio.open_serial_connection(
+            url=self.serial_port, baudrate=self.baud
+        )
         LOG.info("Serial opened on %s @ %d", self.serial_port, self.baud)
 
-    async def read_frames(self):
+    async def read_frames(self) -> List[Tuple[int, bytes]]:
+        """Read and decode frames from serial. Returns list of (peripheral_id, payload)"""
         if self.sim:
             await asyncio.sleep(0.05)
             return []
@@ -356,31 +297,58 @@ class EmbeddedLink:
             return self.codec.try_decode_stream(self._buf)
         return []
 
-    async def write_raw(self, frame: bytes):
+    async def send_command(self, peripheral_id: int, command: int, data: bytes = b''):
+        """Send a command to a specific peripheral"""
+        frame = self.codec.encode_command(peripheral_id, command, data)
         if self.sim:
-            LOG.info("[SIM] send: %s", frame.hex())
+            LOG.info("[SIM] send command to peripheral 0x%02X: cmd=0x%02X data=%s",
+                     peripheral_id, command, data.hex() if data else "(none)")
             return
         assert self.writer is not None
         self.writer.write(frame)
         await self.writer.drain()
+        LOG.debug("Sent command: peripheral=0x%02X cmd=0x%02X len=%d",
+                  peripheral_id, command, len(data))
 
-    async def write(self, msg_type_hex: int, payload: bytes):
-        frame = self.codec.encode(msg_type_hex, payload)
-        await self.write_raw(frame)
+    # Convenience methods for common commands
+    async def get_lora_data(self):
+        """Get LoRa 915MHz data"""
+        await self.send_command(PERIPHERAL_ID_LORA_915, CMD_GET_ALL)
 
-    async def write_settings(self, key_id: int, value_type: str, value):
-        frame = self.codec.encode_settings(key_id, value_type, value)
-        await self.write_raw(frame)
+    async def get_433_data(self):
+        """Get 433MHz LoRa data"""
+        await self.send_command(PERIPHERAL_ID_LORA_433, CMD_GET_ALL)
+
+    async def get_barometer_data(self):
+        """Get barometer data"""
+        await self.send_command(PERIPHERAL_ID_BAROMETER, CMD_GET_ALL)
+
+    async def get_current_data(self):
+        """Get current sensor data"""
+        await self.send_command(PERIPHERAL_ID_CURRENT, CMD_GET_ALL)
+
+    async def get_system_status(self):
+        """Get system status"""
+        await self.send_command(PERIPHERAL_ID_SYSTEM, CMD_GET_ALL)
+
+    async def wakeup_system(self):
+        """Wake up the ESP32 system"""
+        await self.send_command(PERIPHERAL_ID_SYSTEM, CMD_SYSTEM_WAKEUP)
+        LOG.info("Sent system wakeup command")
+
+    async def sleep_system(self):
+        """Put ESP32 into low-power mode"""
+        await self.send_command(PERIPHERAL_ID_SYSTEM, CMD_SYSTEM_SLEEP)
+        LOG.info("Sent system sleep command")
+
+    async def reset_system(self):
+        """Reset the entire ESP32"""
+        await self.send_command(PERIPHERAL_ID_SYSTEM, CMD_SYSTEM_RESET)
+        LOG.info("Sent system reset command")
 
 # ----------------------------
 # GUI client endpoints (TCP JSON)
 # ----------------------------
-@dataclass
-class GuiEndpoint:
-    name: str
-    host: str
-    port: int
-
 class GuiServer:
     """Each GuiServer handles one role (433, 915, SETTINGS) and accepts multiple clients."""
     def __init__(self, name: str, host: str, port: int):
@@ -439,82 +407,166 @@ class GuiServer:
 # Router / Hub
 # ----------------------------
 class Hub:
-    def __init__(self, link: EmbeddedLink, servers: Dict[str, GuiServer]):
+    """Central message router between ESP32 and GUI/logging"""
+
+    def __init__(self, link: EmbeddedLink, servers: Optional[Dict[str, GuiServer]] = None):
         self.link = link
-        self.servers = servers  # keys: '433','915','SETTINGS'
+        self.servers = servers or {}  # Optional GUI servers
         self.codec = link.codec
 
     async def pump_embedded_rx(self):
+        """Read messages from ESP32 and process them"""
         while True:
             frames = await self.link.read_frames()
-            for msg_type, payload in frames:
-                type_name = self.codec.id_to_type.get(msg_type, f"0x{msg_type:02X}")
+            for peripheral_id, payload in frames:
+                peripheral_name = PERIPHERAL_NAMES.get(peripheral_id, f"UNKNOWN_0x{peripheral_id:02X}")
+
+                # Try to unpack and display the data
+                try:
+                    data_dict = self._unpack_payload(peripheral_id, payload)
+                    LOG.info("Received from %s (0x%02X): %s",
+                             peripheral_name, peripheral_id, data_dict)
+                except Exception as e:
+                    LOG.warning("Failed to unpack payload from %s: %s (raw: %s)",
+                                peripheral_name, e, payload.hex())
+                    data_dict = {"raw_hex": payload.hex()}
+
+                # Create JSON object for GUI clients (if any)
                 obj = {
                     "from_embedded": True,
-                    "type_hex": f"{msg_type:02X}",
-                    "type_name": type_name,
+                    "peripheral_id": peripheral_id,
+                    "peripheral_name": peripheral_name,
                     "payload_hex": payload.hex(),
+                    "data": data_dict,
                     "ts": time.time(),
                 }
-                # Route by msg type
-                target = None
-                if msg_type == MSG_TYPES.get("915"):
-                    target = self.servers.get("915")
-                elif msg_type == MSG_TYPES.get("433"):
-                    target = self.servers.get("433")
-                elif msg_type == MSG_TYPES.get("SETTINGS"):
-                    target = self.servers.get("SETTINGS")
-                # broadcast to target or all if unknown
-                if target:
-                    await target.broadcast(obj)
-                else:
-                    for s in self.servers.values():
-                        await s.broadcast(obj)
+
+                # Route to appropriate GUI server (if configured)
+                await self._route_to_gui(peripheral_id, obj)
+
             await asyncio.sleep(0)
 
+    def _unpack_payload(self, peripheral_id: int, payload: bytes) -> dict:
+        """Attempt to unpack payload based on peripheral ID and size"""
+        payload_len = len(payload)
+
+        if peripheral_id == PERIPHERAL_ID_SYSTEM:
+            if payload_len == SIZE_HEARTBEAT:
+                return unpack_heartbeat(payload)
+            elif payload_len == SIZE_STATUS:
+                return unpack_status(payload)
+            elif payload_len == 1:
+                # ACK response (e.g., wakeup acknowledgment)
+                return {"ack_command": f"0x{payload[0]:02X}"}
+            else:
+                raise ValueError(f"Unknown system payload size: {payload_len}")
+
+        elif peripheral_id == PERIPHERAL_ID_LORA_915:
+            return unpack_lora_data(payload)
+
+        elif peripheral_id == PERIPHERAL_ID_LORA_433:
+            return unpack_433_data(payload)
+
+        elif peripheral_id == PERIPHERAL_ID_BAROMETER:
+            return unpack_barometer_data(payload)
+
+        elif peripheral_id == PERIPHERAL_ID_CURRENT:
+            return unpack_current_data(payload)
+
+        else:
+            raise ValueError(f"Unknown peripheral ID: 0x{peripheral_id:02X}")
+
+    async def _route_to_gui(self, peripheral_id: int, obj: dict):
+        """Route message to appropriate GUI server"""
+        if not self.servers:
+            return  # No GUI servers configured
+
+        target = None
+        if peripheral_id == PERIPHERAL_ID_LORA_915:
+            target = self.servers.get("915")
+        elif peripheral_id == PERIPHERAL_ID_LORA_433:
+            target = self.servers.get("433")
+        elif peripheral_id == PERIPHERAL_ID_SYSTEM:
+            target = self.servers.get("SETTINGS")
+
+        # Broadcast to target or all if unknown
+        if target:
+            await target.broadcast(obj)
+        else:
+            for s in self.servers.values():
+                await s.broadcast(obj)
+
     async def pump_gui_rx(self):
+        """Handle commands from GUI clients"""
         while True:
             kind, server_name, obj = await HUB_EVENTS.get()
             if kind != "gui_in":
                 continue
-            # Accepted forms:
-            # 1) Raw:  {"to_embedded": true, "type_hex": "01", "payload_hex": "DEADBEEF"}
-            # 2) Helper: {"to_embedded": true, "settings": {"key_hex":"08","type":"float","value":125.0}}
-            if not obj.get("to_embedded"):
+
+            # Expected format: {"command": "get_lora", ...} or {"peripheral_id": 1, "command": 0, ...}
+            if not obj:
                 continue
+
             try:
-                if "settings" in obj:
-                    s = obj["settings"]
-                    key_id = int(str(s.get("key_hex", "0")), 16)
-                    vtype = str(s.get("type"))
-                    value = s.get("value")
-                    await self.link.write_settings(key_id, vtype, value)
+                # Check for high-level command names
+                cmd = obj.get("command", "").lower()
+                if cmd == "get_lora" or cmd == "get_915":
+                    await self.link.get_lora_data()
+                elif cmd == "get_433":
+                    await self.link.get_433_data()
+                elif cmd == "get_barometer":
+                    await self.link.get_barometer_data()
+                elif cmd == "get_current":
+                    await self.link.get_current_data()
+                elif cmd == "get_status":
+                    await self.link.get_system_status()
+                elif cmd == "wakeup":
+                    await self.link.wakeup_system()
+                elif cmd == "sleep":
+                    await self.link.sleep_system()
+                elif cmd == "reset":
+                    await self.link.reset_system()
                 else:
-                    t_hex = int(str(obj.get("type_hex")), 16)
-                    payload_hex = obj.get("payload_hex", "")
-                    payload = bytes.fromhex(payload_hex) if payload_hex else b""
-                    await self.link.write(t_hex, payload)
+                    # Raw command format
+                    peripheral_id = int(obj.get("peripheral_id", 0))
+                    command = int(obj.get("command_id", CMD_GET_ALL))
+                    data_hex = obj.get("data_hex", "")
+                    data = bytes.fromhex(data_hex) if data_hex else b''
+                    await self.link.send_command(peripheral_id, command, data)
+
             except Exception as e:
-                LOG.error("GUI→Embedded send error: %s", e)
+                LOG.error("GUI→Embedded command error: %s", e)
 
 HUB_EVENTS: asyncio.Queue = asyncio.Queue()
 
 # ----------------------------
-# Heartbeat task (optional)
+# Polling task for periodic data requests
 # ----------------------------
-async def heartbeat_task(link: EmbeddedLink, period_s: float):
-    # Example heartbeat: SETTINGS key could be used for ping if defined; otherwise send empty to 433
+async def polling_task(link: EmbeddedLink, period_s: float):
+    """Periodically request data from all peripherals (optional, for testing)"""
+    await asyncio.sleep(5.0)  # Wait for startup
     while True:
         try:
-            await link.write(MSG_TYPES["433"], b"")
+            # Request status from system
+            await link.get_system_status()
+            await asyncio.sleep(0.1)
+
+            # Request data from sensors
+            await link.get_lora_data()
+            await asyncio.sleep(0.1)
+
+            await link.get_433_data()
+            await asyncio.sleep(0.1)
+
+            await link.get_barometer_data()
+            await asyncio.sleep(0.1)
+
+            await link.get_current_data()
+            await asyncio.sleep(0.1)
+
         except Exception as e:
-            LOG.debug("Heartbeat send failed: %s", e)
-        await asyncio.sleep(period_s):
-    while True:
-        try:
-            await link.write_frame(channel, "HEARTBEAT", b"")
-        except Exception as e:
-            LOG.debug("Heartbeat send failed: %s", e)
+            LOG.debug("Polling request failed: %s", e)
+
         await asyncio.sleep(period_s)
 
 # ----------------------------
@@ -527,14 +579,16 @@ def parse_host_port(s: str) -> Tuple[str, int]:
 
 
 def main():
-    ap = argparse.ArgumentParser(description="Timone Ground Station comm hub (exact byte protocol)")
+    ap = argparse.ArgumentParser(description="Timone Ground Station comm hub (peripheral-based protocol)")
     ap.add_argument("--port", default=None, help="Serial port for embedded (e.g., /dev/ttyACM0)")
-    ap.add_argument("--baud", type=int, default=115200)
-    ap.add_argument("--tcp-433", default="127.0.0.1:9401")
-    ap.add_argument("--tcp-915", default="127.0.0.1:9402")
-    ap.add_argument("--tcp-settings", default="127.0.0.1:9403")
+    ap.add_argument("--baud", type=int, default=115200, help="Baud rate (default: 115200)")
+    ap.add_argument("--tcp-433", default=None, help="TCP server for 433MHz GUI (e.g., 127.0.0.1:9401)")
+    ap.add_argument("--tcp-915", default=None, help="TCP server for 915MHz GUI (e.g., 127.0.0.1:9402)")
+    ap.add_argument("--tcp-settings", default=None, help="TCP server for settings GUI (e.g., 127.0.0.1:9403)")
     ap.add_argument("--sim", action="store_true", help="Run without serial for local dev")
-    ap.add_argument("-v", "--verbose", action="count", default=0)
+    ap.add_argument("--poll", type=float, default=0, help="Enable polling all sensors every N seconds (0=disabled)")
+    ap.add_argument("--wakeup", action="store_true", help="Send wakeup command on startup")
+    ap.add_argument("-v", "--verbose", action="count", default=0, help="Increase verbosity (-v, -vv)")
     args = ap.parse_args()
 
     if args.verbose == 1:
@@ -545,27 +599,46 @@ def main():
     codec = FrameCodec()
     link = EmbeddedLink(codec, serial_port=args.port, baud=args.baud, sim=args.sim or not args.port)
 
-    # Prepare GUI servers
-    h433, p433 = parse_host_port(args.tcp_433)
-    h915, p915 = parse_host_port(args.tcp_915)
-    hset, pset = parse_host_port(args.tcp_settings)
-
-    servers = {
-        "433": GuiServer("433", h433, p433),
-        "915": GuiServer("915", h915, p915),
-        "SETTINGS": GuiServer("SETTINGS", hset, pset),
-    }
+    # Prepare GUI servers (optional)
+    servers = {}
+    if args.tcp_433:
+        h433, p433 = parse_host_port(args.tcp_433)
+        servers["433"] = GuiServer("433", h433, p433)
+    if args.tcp_915:
+        h915, p915 = parse_host_port(args.tcp_915)
+        servers["915"] = GuiServer("915", h915, p915)
+    if args.tcp_settings:
+        hset, pset = parse_host_port(args.tcp_settings)
+        servers["SETTINGS"] = GuiServer("SETTINGS", hset, pset)
 
     async def runner():
         await link.connect()
-        await asyncio.gather(*(srv.start() for srv in servers.values()))
+
+        # Start GUI servers if configured
+        if servers:
+            await asyncio.gather(*(srv.start() for srv in servers.values()))
+
+        # Send wakeup command if requested
+        if args.wakeup:
+            LOG.info("Sending wakeup command...")
+            await link.wakeup_system()
+            await asyncio.sleep(0.5)  # Give ESP32 time to respond
+
         hub = Hub(link, servers)
         tasks = [
             asyncio.create_task(hub.pump_embedded_rx()),
-            asyncio.create_task(hub.pump_gui_rx()),
-            asyncio.create_task(heartbeat_task(link, 2.0)),
         ]
-        LOG.info("Comm hub running (sim=%s).", args.sim or not args.port)
+
+        # Only start GUI pump if we have servers
+        if servers:
+            tasks.append(asyncio.create_task(hub.pump_gui_rx()))
+
+        # Add polling task if enabled
+        if args.poll > 0:
+            tasks.append(asyncio.create_task(polling_task(link, args.poll)))
+            LOG.info("Polling enabled: every %.1f seconds", args.poll)
+
+        LOG.info("Comm hub running (sim=%s, port=%s).", args.sim or not args.port, args.port or "none")
         await asyncio.gather(*tasks)
 
     try:

@@ -58,3 +58,6 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+#other
+tools/sim_port.txt

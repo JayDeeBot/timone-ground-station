@@ -1,7 +1,7 @@
 python3 communicator.py --port /dev/pts/4 --baud 115200
 
 python3 simulate_embedded.py \
-  --flight-log "/home/jarred/git/timone-ground-station/TimoneGUI/src/data/test_data/goanna flight log" \
-  --state-file  "/home/jarred/git/timone-ground-station/TimoneGUI/src/data/test_data/STATE" \
+  --flight-log "/home/timone/git/timone-ground-station/TimoneGUI/src/data/test_data/goanna flight log" \
+  --state-file  "/home/timone/git/timone-ground-station/TimoneGUI/src/data/test_data/STATE" \
   --rate-hz 5
 
