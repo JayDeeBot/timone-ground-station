@@ -11,14 +11,13 @@ TimoneGUI is a web-based application built using Flask for the backend and a dyn
 
 2. **Run Simulation Tools**:
    ```bash
-   python3 log_pusher.py # Sends simulated logs to the Logs Tab
+   python3 tools/log_pusher.py # Sends simulated logs to the Logs Tab
 
-   python3 telemetry_pusher.py # Sends simulated telemetry data to Status and Telemetry Tabs (Graphs and fields should populate)
+   python3 tools/telemetry_pusher.py # Sends simulated telemetry data to Status and Telemetry Tabs (Graphs and fields should populate)
    
-   python3 simulate_embedded.py \ 
-  --flight-log "~/git/timone-ground-station/TimoneGUI/src/data/test_data/goanna flight log" \
-  --state-file  "~/git/timone-ground-station/TimoneGUI/src/data/test_data/STATE" \
-  --rate-hz 5 # Simulates the embedded routine and sends dummy data
+   python3 ~/git/timone-ground-station/TimoneGUI/tools/simulate_embedded.py \
+  --flight-log ~/git/timone-ground-station/TimoneGUI/src/data/test_data/goanna_flight_log_remapped.txt \
+  --rate-hz 5
    ```
 
 3. **Run the Communication Protocol**:
@@ -26,7 +25,13 @@ TimoneGUI is a web-based application built using Flask for the backend and a dyn
    Set the correct port for the esp board in ~/git/timone-ground-station/TimoneGUI/tools/sim_port.txt - example: /dev/pts/4
 
    ```bash
-   python3 ~/git/timone-ground-station/TimoneGUI/tools/run_all.py
+   python3 tools/run_all.py
+   ```
+
+4. **Run everything (Including Communication Protocol, Web App and Browser) with the Launcher**
+
+   ```bash
+   ./tools/launcher.sh
    ```
 
 # Raspberry Pi Login

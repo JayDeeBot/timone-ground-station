@@ -1,42 +1,46 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Timone Ground Station - Embedded Device Simulator
--------------------------------------------------
+Timone Ground Station - Embedded Device Simulator (updated)
+----------------------------------------------------------
 Emits binary-framed messages on a serial/pty device that match the embedded
-firmware protocol. Intended to drive communicator.py + GUI listeners end-to-end.
+firmware's *wire* structs (little-endian, versioned). Intended to drive
+communicator.py + GUI listeners end-to-end.
 
-Data sources
-- LoRa915 & Radio433: read from a "flight log" text file; each line becomes a
-  raw payload snippet. RSSI and SNR are parsed if present (e.g., "RSSI:-90, SNR:12 | ...").
-- Status & Peripherals (barometer/current): read from a STATE text file; only
-  the required fields are extracted; sensible defaults if missing.
+Simulated structs on the wire (packed, <=255B payload):
+- WireLoRa_t      <B H h f B 64s
+- Wire433_t       <B H h B 64s
+- WireBarometer_t <B I f f f
+- WireCurrent_t   <B I f f f h
+- WireStatus_t    <B I B B H H I I B
 
-Wire payload formats (little-endian, version=1)
-- WireLoRa_t:     <B H h f B 64s  => v, pkt_count, rssi, snr, len, data[64]
-- Wire433_t:      <B H h B 64s     => v, pkt_count, rssi, len, data[64]
-- WireBarometer_t:<B I f f f       => v, ts_ms, P_hPa, T_C, Alt_m
-- WireCurrent_t:  <B I f f f h     => v, ts_ms, I_A, V_V, P_W, raw_adc
-- WireStatus_t:   <B I B B H H I I B
-                  => v, uptime_s, system_state, flags, pc_lora, pc_433,
-                     wakeup_time, free_heap, chip_revision
+What this script does
+- LoRa915 & Radio433: consume lines from a "flight log" text file. Each line
+  contributes RSSI/SNR if present and the raw payload after the first '|'.
+- Status, Barometer, Current: simulated by default, or optionally seeded/overridden
+  by a STATE file (free-form "key: value" entries). Missing keys are defaulted.
 
-Framing:
+Framing on the wire:
     HELLO(0x7E) | PERIPHERAL_ID | LENGTH | PAYLOAD | GOODBYE(0x7F)
 
-Usage:
+Typical usage:
     python3 simulate_embedded.py \
-        --flight-log "/path/to/goanna flight log" \
-        --state-file "/path/to/STATE" \
-        [--baud 115200] [--device /dev/ttyUSB9] [--rate-hz 5] [--port-file sim_port.txt]
+      --flight-log "/path/to/goanna_flight_log_remapped.txt" \
+      --rate-hz 5 \
+      --wait 0.0
 
-If --device is omitted, a PTY will be created and the slave path printed AND saved
-to --port-file (default: sim_port.txt) so communicator.py can read it.
+Optional (seed values / override fields):
+      --state-file "/path/to/STATE"
+
+Device vs PTY:
+- If --device is omitted, a PTY is created and its *slave* path is saved to
+  sim_port.txt so run_all.py/communicator.py can pick it up automatically.
 """
 
 import os
 import re
 import time
+import math
 import pty
 import tty
 import struct
@@ -45,7 +49,7 @@ import argparse
 from pathlib import Path
 
 # ----------------------------
-# Protocol constants
+# Protocol constants (IDs/bytes)
 # ----------------------------
 HELLO_BYTE   = 0x7E
 GOODBYE_BYTE = 0x7F
@@ -72,7 +76,6 @@ logging.basicConfig(
 )
 log = logging.getLogger("sim-embedded")
 
-
 # -----------------------------------------------------------------------------
 # UInt32 helpers (avoid overflow on struct.pack '<I')
 # -----------------------------------------------------------------------------
@@ -83,7 +86,6 @@ def u32(x: int) -> int:
 def now_u32_ms() -> int:
     """Return a ms timestamp masked to uint32 (safe for 'I' in struct.pack)."""
     return u32(int(time.time() * 1000))
-
 
 # -----------------------------------------------------------------------------
 # Helpers: parsing files
@@ -97,10 +99,11 @@ def read_lines_loop(path: Path):
         with path.open("r", errors="ignore") as f:
             for line in f:
                 yield line.rstrip("\n")
-        time.sleep(0.2)  # tiny breather before looping
+        time.sleep(0.1)  # small breather
 
+# The flight log is noisy; pick first RSSI/SNR if present.
 RSSI_RE = re.compile(r"RSSI\s*:\s*(-?\d+)")
-SNR_RE  = re.compile(r"SNR\s*:\s*(-?\d+(\.\d+)?)")
+SNR_RE  = re.compile(r"SNR\s*:\s*(-?\d+(?:\.\d+)?)")
 
 def parse_log_line(line: str):
     """
@@ -111,7 +114,7 @@ def parse_log_line(line: str):
     snr  = 0.0
     m = RSSI_RE.search(line)
     if m:
-        try: rssi = int(m.group(1))
+        try: rssi = int(float(m.group(1)))
         except Exception: pass
     m = SNR_RE.search(line)
     if m:
@@ -119,15 +122,20 @@ def parse_log_line(line: str):
         except Exception: pass
 
     raw = line.split("|", 1)[1].strip() if "|" in line else line.strip()
+    if not raw:
+        raw = "[NO_PAYLOAD]"
     raw_b = raw.encode("utf-8", errors="replace")[:64]  # truncate; padding in packers
     return rssi, snr, raw_b
 
-def parse_state(path: Path):
+def parse_state(path: Path | None):
     """
     Parse the STATE file into a dict of values we care about.
     Accepts loose "key: value" formats. Missing keys default later.
+    If path is None or missing, returns {} (we'll simulate).
     """
-    text = path.read_text(errors="ignore")
+    if not path or not Path(path).exists():
+        return {}
+    text = Path(path).read_text(errors="ignore")
     kv = {}
 
     def grab(key, pattern, cast):
@@ -170,25 +178,30 @@ def parse_state(path: Path):
 
     return kv
 
-
 # -----------------------------------------------------------------------------
 # Wire packers (exact struct layouts)
 # -----------------------------------------------------------------------------
 def pack_wire_lora(pkt_count: int, rssi_dbm: int, snr_db: float, latest: bytes) -> bytes:
     latest_len = min(len(latest), 64)
     latest_padded = latest.ljust(64, b"\x00")
-    return struct.pack("<B H h f B 64s", 1, pkt_count & 0xFFFF, int(rssi_dbm), float(snr_db), latest_len, latest_padded)
+    return struct.pack("<B H h f B 64s",
+                       1, pkt_count & 0xFFFF, int(rssi_dbm), float(snr_db),
+                       latest_len, latest_padded)
 
 def pack_wire_433(pkt_count: int, rssi_dbm: int, latest: bytes) -> bytes:
     latest_len = min(len(latest), 64)
     latest_padded = latest.ljust(64, b"\x00")
-    return struct.pack("<B H h B 64s", 1, pkt_count & 0xFFFF, int(rssi_dbm), latest_len, latest_padded)
+    return struct.pack("<B H h B 64s",
+                       1, pkt_count & 0xFFFF, int(rssi_dbm),
+                       latest_len, latest_padded)
 
 def pack_wire_barometer(ts_ms: int, pressure_hpa: float, temp_c: float, alt_m: float) -> bytes:
-    return struct.pack("<B I f f f", 1, u32(ts_ms), float(pressure_hpa), float(temp_c), float(alt_m))
+    return struct.pack("<B I f f f",
+                       1, u32(ts_ms), float(pressure_hpa), float(temp_c), float(alt_m))
 
 def pack_wire_current(ts_ms: int, current_a: float, voltage_v: float, power_w: float, raw_adc: int) -> bytes:
-    return struct.pack("<B I f f f h", 1, u32(ts_ms), float(current_a), float(voltage_v), float(power_w), int(raw_adc))
+    return struct.pack("<B I f f f h",
+                       1, u32(ts_ms), float(current_a), float(voltage_v), float(power_w), int(raw_adc))
 
 def _flags_byte(lora: bool, r433: bool, baro: bool, curr: bool, pi: bool) -> int:
     b = 0
@@ -213,7 +226,6 @@ def pack_wire_status(uptime_s: int, system_state: int, flags_b: int,
                        u32(free_heap),
                        int(chip_rev) & 0xFF)
 
-
 # -----------------------------------------------------------------------------
 # Framing writer
 # -----------------------------------------------------------------------------
@@ -222,7 +234,6 @@ def frame(peripheral_id: int, payload: bytes) -> bytes:
     if len(payload) > 255:
         raise ValueError("Payload too long (>255) for 1-byte LENGTH")
     return bytes([HELLO_BYTE, peripheral_id, len(payload)]) + payload + bytes([GOODBYE_BYTE])
-
 
 # -----------------------------------------------------------------------------
 # Serial/PTY setup + safe write
@@ -263,15 +274,17 @@ def safe_write(fd: int, data: bytes, retries: int = 50, sleep_s: float = 0.01):
             time.sleep(sleep_s)
             retries -= 1
 
-
 # -----------------------------------------------------------------------------
 # Main loop
 # -----------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser(description="Embedded protocol simulator")
-    ap.add_argument("--flight-log", required=True, help="Path to 'goanna flight log' file")
-    ap.add_argument("--state-file",  required=True, help="Path to STATE file")
-    ap.add_argument("--device",      default=None, help="Existing serial device to write to; if omitted a PTY is created")
+    ap.add_argument("--flight-log", required=True,
+                    help="Path to flight log (LoRa/433 payloads come from here)")
+    ap.add_argument("--state-file",  default=None,
+                    help="Optional STATE file to seed/override fields; if omitted, values are simulated")
+    ap.add_argument("--device",      default=None,
+                    help="Existing serial device to write to; if omitted a PTY is created and saved to sim_port.txt")
     ap.add_argument("--baud",        type=int, default=115200, help="Baud (for info only when using PTY)")
     ap.add_argument("--rate-hz",     type=float, default=5.0, help="Packets per second per channel (approx)")
     ap.add_argument("--baro-period", type=int, default=10, help="Emit barometer every N ticks")
@@ -279,14 +292,12 @@ def main():
     ap.add_argument("--status-period", type=int, default=5, help="Emit status every N ticks")
     ap.add_argument("--port-file",   default=str(Path(__file__).with_name("sim_port.txt")),
                     help="File to write the PTY slave path to (ignored if --device is set)")
+    ap.add_argument("--wait", type=float, default=0.0, help="Sleep seconds before first emit (handy for tooling to attach)")
     args = ap.parse_args()
 
     log_path = Path(args.flight_log)
-    state_path = Path(args.state_file)
     if not log_path.exists():
         raise FileNotFoundError(f"flight log not found: {log_path}")
-    if not state_path.exists():
-        raise FileNotFoundError(f"STATE file not found: {state_path}")
 
     fd, slave_or_dev = open_pty_or_device(args.device, args.baud)
     if args.device:
@@ -298,12 +309,17 @@ def main():
         log.info("Created PTY. Communicator should use --port %s (baud=%d)", slave_or_dev, args.baud)
         log.info("Saved port path to: %s", port_file)
 
+    if args.wait > 0:
+        time.sleep(args.wait)
+
     # Generators & counters
     lines = read_lines_loop(log_path)
     pkt_lora = 0
     pkt_433  = 0
     tick = 0
+    boot_ms = now_u32_ms()
     last_state = {}
+    have_state_file = bool(args.state_file)
 
     # Timing
     period = 1.0 / max(args.rate_hz, 0.5)
@@ -312,52 +328,72 @@ def main():
         while True:
             tick += 1
 
-            # Lora & 433 from the same flight-log line
+            # --- LoRa & 433 from the same flight-log line ---
             line = next(lines)
             rssi, snr, raw = parse_log_line(line)
 
-            # LoRa 915
+            # LoRa 915 → WireLoRa_t
             pkt_lora += 1
             lora_payload = pack_wire_lora(pkt_lora, rssi_dbm=rssi, snr_db=snr, latest=raw)
             lora_frame = frame(PERIPHERAL_ID_LORA_915, lora_payload)
             safe_write(fd, lora_frame)
 
-            # 433 (no SNR field)
+            # 433 (no SNR field) → Wire433_t
             pkt_433 += 1
             rssi_433 = rssi + 2  # tiny variation
             radio_payload = pack_wire_433(pkt_433, rssi_dbm=rssi_433, latest=raw)
             radio_frame = frame(PERIPHERAL_ID_RADIO_433, radio_payload)
             safe_write(fd, radio_frame)
 
-            # Refresh STATE periodically
+            # Refresh STATE periodically (or generate simulated values)
             if tick % max(args.status_period, 1) == 0 or not last_state:
-                last_state = parse_state(state_path)
+                last_state = parse_state(args.state_file)
 
             now_ms = now_u32_ms()
+            sim_t = (now_ms - boot_ms) / 1000.0  # seconds since sim start
 
-            # Barometer
+            # --- Barometer → WireBarometer_t ---
             if args.baro_period > 0 and (tick % args.baro_period == 0):
-                p = float(last_state.get("baro_pressure_hpa", 1013.25))
-                t = float(last_state.get("baro_temperature_c", 22.0))
-                a = float(last_state.get("baro_altitude_m", 50.0))
-                baro_payload = pack_wire_barometer(now_ms, p, t, a)
+                if "baro_pressure_hpa" in last_state:
+                    p = float(last_state.get("baro_pressure_hpa", 1013.25))
+                    tC = float(last_state.get("baro_temperature_c", 22.0))
+                    alt = float(last_state.get("baro_altitude_m", 50.0))
+                else:
+                    # Simulate: gentle temp & pressure drift; altitude small wobble
+                    p = 1013.25 + 0.8 * math.sin(sim_t / 60.0)
+                    tC = 22.0 + 1.5 * math.sin(sim_t / 120.0)
+                    alt = 50.0 + 1.0 * math.sin(sim_t / 15.0)
+                baro_payload = pack_wire_barometer(now_ms, p, tC, alt)
                 baro_frame = frame(PERIPHERAL_ID_BAROMETER, baro_payload)
                 safe_write(fd, baro_frame)
 
-            # Current/Power
+            # --- Current/Power → WireCurrent_t ---
             if args.curr_period > 0 and (tick % args.curr_period == 0):
-                ia = float(last_state.get("current_a", 0.50))
-                vv = float(last_state.get("voltage_v", 12.30))
-                pw = float(last_state.get("power_w", ia * vv))
-                adc = int(last_state.get("adc_raw", 512))
+                if "current_a" in last_state or "voltage_v" in last_state:
+                    ia = float(last_state.get("current_a", 0.5))
+                    vv = float(last_state.get("voltage_v", 12.3))
+                    pw = float(last_state.get("power_w", ia * vv))
+                    adc = int(last_state.get("adc_raw", 512))
+                else:
+                    # Simulate: ~12.3V bus, current 0.3..0.9A, ADC 10-bit-ish wiggle
+                    vv = 12.3 + 0.05 * math.sin(sim_t / 7.0)
+                    ia = 0.6 + 0.3 * math.sin(sim_t / 9.0 + 0.7)
+                    pw = vv * ia
+                    adc = 512 + int(50 * math.sin(sim_t * 2.0))
                 curr_payload = pack_wire_current(now_ms, ia, vv, pw, adc)
                 curr_frame = frame(PERIPHERAL_ID_CURRENT, curr_payload)
                 safe_write(fd, curr_frame)
 
-            # Status
+            # --- System Status → WireStatus_t ---
             if args.status_period > 0 and (tick % args.status_period == 0):
-                uptime = int(last_state.get("uptime_seconds", now_ms // 1000))
-                state  = int(last_state.get("system_state", 1))
+                # Uptime
+                if "uptime_seconds" in last_state:
+                    uptime = int(last_state.get("uptime_seconds", (now_ms - boot_ms) // 1000))
+                else:
+                    uptime = int((now_ms - boot_ms) // 1000)
+
+                # System state & flags
+                state  = int(last_state.get("system_state", 1))  # default OPERATIONAL
                 flags_b = _flags_byte(
                     bool(last_state.get("lora_online", True)),
                     bool(last_state.get("radio433_online", True)),
@@ -365,7 +401,9 @@ def main():
                     bool(last_state.get("current_online", True)),
                     bool(last_state.get("pi_connected", True)),
                 )
-                wake = int(last_state.get("wakeup_time", 0))
+
+                # Counts & miscellany
+                wake = int(last_state.get("wakeup_time", 0 if not have_state_file else last_state.get("wakeup_time")))
                 heap = int(last_state.get("free_heap", 180000))
                 rev  = int(last_state.get("chip_revision", 1))
                 pc_lora = int(last_state.get("packet_count_lora", pkt_lora))
@@ -384,7 +422,6 @@ def main():
             os.close(fd)
         except Exception:
             pass
-
 
 if __name__ == "__main__":
     main()

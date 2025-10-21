@@ -66,171 +66,90 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-GUI Peripherals Listener → Parser → GUI Pusher
-----------------------------------------------
-Subscribes to communicator.py PUB bus for:
-  - "barometer"  → BarometerData_t
-  - "current"    → CurrentData_t
-
-Maps messages into GUI telemetry rows and pushes to /api/telemetry/push.
-Also mirrors concise messages to /api/logs/push for visibility.
-
-Environment:
-  TIMONE_PUB     (default tcp://127.0.0.1:5556)
-  TIMONE_GUI_URL (default http://127.0.0.1:5000)
-
-Telemetry row keys used (GUI-friendly & future-proof):
-  time (s), volts (V), curr (A), power (W),
-  baro_press (hPa), baro_temp (C), baro_alt (m)
-
-Notes:
-- If your GUI’s charts don’t yet bind to baro_* or power, they’ll be safely ignored
-  until you add them in telemetry.js. They won’t break existing plots.
+Peripherals GUI listener
+- Subscribes to ZMQ topics "barometer" and "current"
+- Logs concise lines
+- POSTS telemetry rows with baro_* (mapped by telemetry.js normalizer)
 """
-import os, json, time, argparse, urllib.request
-from typing import Dict, Any, List, Optional
+
+import os
+import json
+import time
 import zmq
+import requests
 
-SERVER_URL = os.getenv("TIMONE_GUI_URL", "http://127.0.0.1:5000")
-TELEM_ENDPOINT = f"{SERVER_URL}/api/telemetry/push"
-LOG_ENDPOINT   = f"{SERVER_URL}/api/logs/push"
+PUB_ENDPOINT = os.getenv("TIMONE_PUB", "tcp://127.0.0.1:5556")
+GUI_BASE     = os.getenv("TIMONE_GUI", "http://127.0.0.1:5000")
 
-# ---------------- HTTP helpers ----------------
-def _post_json(url: str, payload: Dict[str, Any], timeout=5):
-    data = json.dumps(payload).encode("utf-8")
-    req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"}, method="POST")
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        resp.read()
+LOGS_PUSH = f"{GUI_BASE}/api/logs/push"
+TEL_PUSH  = f"{GUI_BASE}/api/telemetry/push"
 
-def push_rows(rows: List[Dict[str, Any]]):
-    if not rows:
-        return
-    try:
-        _post_json(TELEM_ENDPOINT, {"rows": rows})
-    except Exception as e:
-        push_log(f"[Peripherals] telemetry push error: {e}")
+def safe_post(url, payload, timeout=2.0):
+  try:
+    requests.post(url, json=payload, timeout=timeout)
+  except Exception:
+    pass
 
-def push_log(line: str):
-    try:
-        _post_json(LOG_ENDPOINT, {"line": line})
-    except Exception:
-        pass
-
-# ---------------- Mapping helpers ----------------
-def as_float(x: Optional[float]) -> Optional[float]:
-    try:
-        if x is None: return None
-        return float(x)
-    except Exception:
-        return None
-
-def as_int(x: Optional[int]) -> Optional[int]:
-    try:
-        if x is None: return None
-        return int(x)
-    except Exception:
-        return None
-
-def map_barometer(payload: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    BarometerData_t:
-      uint32_t timestamp;   (assume ms since boot or s; we normalize to seconds float)
-      float pressure_hpa;
-      float temperature_c;
-      float altitude_m;
-    """
-    ts = payload.get("timestamp")
-    # Heuristic: treat big values as ms, small as s
-    if isinstance(ts, (int, float)) and ts > 1e6:
-        t_secs = round(float(ts) / 1000.0, 2)
-    else:
-        t_secs = round(float(ts or 0), 2)
-
-    row = {
-        "time":       t_secs,
-        "baro_press": as_float(payload.get("pressure_hpa")),
-        "baro_temp":  as_float(payload.get("temperature_c")),
-        "baro_alt":   as_float(payload.get("altitude_m")),
-    }
-    return {k: v for k, v in row.items() if v is not None}
-
-def map_current(payload: Dict[str, Any]) -> Dict[str, Any]:
-    """
-    CurrentData_t:
-      uint32_t timestamp; (same normalization as above)
-      float current_a;
-      float voltage_v;
-      float power_w;
-    """
-    ts = payload.get("timestamp")
-    if isinstance(ts, (int, float)) and ts > 1e6:
-        t_secs = round(float(ts) / 1000.0, 2)
-    else:
-        t_secs = round(float(ts or 0), 2)
-
-    row = {
-        "time":  t_secs,
-        "curr":  as_float(payload.get("current_a")),
-        "volts": as_float(payload.get("voltage_v")),
-        "power": as_float(payload.get("power_w")),
-    }
-    return {k: v for k, v in row.items() if v is not None}
-
-# ---------------- Main ----------------
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--pub", default=os.getenv("TIMONE_PUB", "tcp://127.0.0.1:5556"),
-                    help="PUB endpoint exposed by communicator.py")
-    ap.add_argument("--batch", type=int, default=6, help="Telemetry batch size for POST")
-    args = ap.parse_args()
+  ctx = zmq.Context.instance()
+  sub = ctx.socket(zmq.SUB)
+  sub.connect(PUB_ENDPOINT)
+  sub.setsockopt_string(zmq.SUBSCRIBE, "barometer")
+  sub.setsockopt_string(zmq.SUBSCRIBE, "current")
 
-    ctx = zmq.Context.instance()
-    sub = ctx.socket(zmq.SUB)
-    sub.connect(args.pub)
-    # Subscribe to both topics
-    sub.setsockopt_string(zmq.SUBSCRIBE, "barometer")
-    sub.setsockopt_string(zmq.SUBSCRIBE, "current")
+  print("[Peripherals] listener running; ZMQ:", PUB_ENDPOINT, "GUI:", GUI_BASE)
 
-    push_log(f"[Peripherals] Subscribed to {args.pub} topics: barometer, current")
-
-    buffer: List[Dict[str, Any]] = []
-
+  while True:
     try:
-        while True:
-            topic_b, payload_b = sub.recv_multipart()
-            topic = topic_b.decode("utf-8", errors="replace")
-            try:
-                msg = json.loads(payload_b.decode("utf-8"))
-            except Exception:
-                # If communicator publishes a tuple-like JSON, wrap fallback
-                msg = {}
+      topic, raw = sub.recv_multipart()
+      topic = topic.decode("utf-8")
+      msg = json.loads(raw.decode("utf-8"))
+      data = msg.get("data", {})
 
-            data = msg.get("data", msg)  # accept either {"data":{...}} or flat object
+      if topic == "barometer":
+        p = data.get("pressure_hpa")
+        t = data.get("temperature_c")
+        alt = data.get("altitude_m")
+        # log
+        parts = []
+        if p is not None: parts.append(f"P={p:.3f} hPa")
+        if t is not None: parts.append(f"T={t:.3f}°C")
+        if alt is not None: parts.append(f"ALT={alt:.2f} m")
+        if parts: safe_post(LOGS_PUSH, {"line": "[Barometer] " + " ".join(parts)})
 
-            if topic == "barometer":
-                row = map_barometer(data)
-                if row:
-                    buffer.append(row)
-                    push_log(f"[Barometer] P={row.get('baro_press')} hPa, T={row.get('baro_temp')}°C, ALT={row.get('baro_alt')} m @t={row.get('time')}")
-            elif topic == "current":
-                row = map_current(data)
-                if row:
-                    buffer.append(row)
-                    push_log(f"[Current] V={row.get('volts')} V, I={row.get('curr')} A, P={row.get('power')} W @t={row.get('time')}")
+        # telemetry row (use baro_* keys; telemetry.js maps -> pres/temp/alt)
+        row = {}
+        if p is not None:   row["baro_press"] = float(p)
+        if t is not None:   row["baro_temp"]  = float(t)
+        if alt is not None: row["baro_alt"]   = float(alt)
+        if row:
+          row.setdefault("time", int(time.time()*1000))
+          safe_post(TEL_PUSH, row)
 
-            if len(buffer) >= args.batch:
-                flush, buffer = buffer, []
-                push_rows(flush)
+      elif topic == "current":
+        ia = data.get("current_a")
+        vv = data.get("voltage_v")
+        pw = data.get("power_w")
+        # log
+        parts = []
+        if vv is not None: parts.append(f"VBAT={vv:.2f} V")
+        if ia is not None: parts.append(f"IBAT={ia:.2f} A")
+        if pw is not None: parts.append(f"P={pw:.1f} W")
+        if parts: safe_post(LOGS_PUSH, {"line": "[Current] " + " ".join(parts)})
+
+        # telemetry row (volts/curr expected by UI)
+        row = {}
+        if vv is not None: row["volts"] = float(vv)
+        if ia is not None: row["curr"]  = float(ia)
+        if row:
+          row.setdefault("time", int(time.time()*1000))
+          safe_post(TEL_PUSH, row)
 
     except KeyboardInterrupt:
-        push_log("[Peripherals] Exiting")
-    finally:
-        try:
-            if buffer:
-                push_rows(buffer)
-        except Exception:
-            pass
-        sub.close(0)
+      break
+    except Exception as e:
+      safe_post(LOGS_PUSH, {"line": f"[Peripherals] error: {e}"})
+      time.sleep(0.25)
 
 if __name__ == "__main__":
-    main()
+  main()
