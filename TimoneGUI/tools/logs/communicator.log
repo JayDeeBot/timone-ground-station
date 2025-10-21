@@ -338,3 +338,8 @@ Traceback (most recent call last):
   File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
     raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
 serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/7: [Errno 2] No such file or directory: '/dev/pts/7'
+14:41:36.817 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+14:41:36.818 [INFO] RX: Serial connected: /dev/pts/9 @ 115200
+14:41:56.381 [INFO] MainThread: Shutting down…
+14:41:56.844 [INFO] MainThread: Starting Communicator… PUB=tcp://127.0.0.1:5556 REP=tcp://127.0.0.1:5557
+14:41:56.844 [INFO] RX: Serial connected: /dev/pts/9 @ 115200
