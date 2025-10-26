@@ -53,11 +53,13 @@ Updated: 2025-10-17 (New peripheral-based protocol)
 """
 
 import sys
+import os
 import time
 import json
 import threading
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
+import requests  # For sending data to web GUI
 
 # Guard pyserial import so the GUI can still open and show a message
 try:
@@ -85,26 +87,28 @@ PERIPHERALS = {
     "AIM_2":       0x11,
     "AIM_3":       0x12,
     "AIM_4":       0x13,
+    "ALL":         0xFF,  # NEW: Special ID for all sensors
 }
 
-# Generic Commands (work for ALL peripherals: 0x00-0x0F)
+# Generic Commands (work for sensor peripherals only: 0x00-0x0F)
 GENERIC_COMMANDS = {
-    "GET_ALL":     0x00,  # Get all available data from peripheral
-    "GET_STATUS":  0x01,  # Get status/health of peripheral
-    "RESET":       0x02,  # Reset peripheral
-    "CONFIGURE":   0x03,  # Configure peripheral
+    "GET_ALL":        0x00,  # Get all available data from peripheral
+    "GET_STATUS":     0x01,  # Health check ping
+    "SET_POLL_RATE":  0x02,  # NEW: Set autonomous polling rate (2-byte interval_ms in payload)
+    "STOP_POLL":      0x03,  # NEW: Stop autonomous polling (alias for SET_POLL_RATE with 0ms)
 }
 
 # System-only Commands (only for PERIPHERAL_ID = 0x00: 0x20-0x2F)
 SYSTEM_COMMANDS = {
-    "WAKEUP":  0x20,  # Wake up system from low-power state
-    "SLEEP":   0x21,  # Put system into low-power state
-    "RESET_SYSTEM":  0x22,  # Reset entire ESP32
+    "SYSTEM_STATUS":  0x20,  # Get full WireStatus_t (20 bytes)
+    "SYSTEM_WAKEUP":  0x21,  # Wake up from low-power state
+    "SYSTEM_SLEEP":   0x22,  # Enter low-power state
+    "SYSTEM_RESET":   0x23,  # Reset entire ESP32
 }
 
 # Mapping of peripherals to their command sets
 PERIPHERAL_COMMANDS = {
-    "SYSTEM": {**GENERIC_COMMANDS, **SYSTEM_COMMANDS},
+    "SYSTEM": SYSTEM_COMMANDS.copy(),  # System only gets system commands
     "LORA_915": GENERIC_COMMANDS.copy(),
     "LORA_433": GENERIC_COMMANDS.copy(),
     "BAROMETER": GENERIC_COMMANDS.copy(),
@@ -113,6 +117,7 @@ PERIPHERAL_COMMANDS = {
     "AIM_2": GENERIC_COMMANDS.copy(),
     "AIM_3": GENERIC_COMMANDS.copy(),
     "AIM_4": GENERIC_COMMANDS.copy(),
+    "ALL": GENERIC_COMMANDS.copy(),  # ALL peripheral uses generic commands
 }
 
 # Data structure sizes (for validation and parsing)
@@ -328,7 +333,19 @@ class SerialClient:
             raise RuntimeError("pyserial not installed. Run: pip install pyserial")
         if self.ser and self.ser.is_open:
             self.ser.close()
-        self.ser = serial.Serial(port=port, baudrate=baudrate, timeout=READ_TIMEOUT_S, write_timeout=READ_TIMEOUT_S)
+        self.ser = serial.Serial(
+            port=port,
+            baudrate=baudrate,
+            timeout=READ_TIMEOUT_S,
+            write_timeout=READ_TIMEOUT_S,
+            # Important: Disable input/output buffering to prevent cumulative lag
+            xonxoff=False,      # No software flow control
+            rtscts=False,       # No hardware flow control
+            dsrdtr=False        # No DSR/DTR flow control
+        )
+        # Flush any stale data from previous session
+        self.ser.reset_input_buffer()
+        self.ser.reset_output_buffer()
 
     def close(self):
         if self.ser:
@@ -340,6 +357,38 @@ class SerialClient:
 
     def is_open(self):
         return bool(self.ser and self.ser.is_open)
+
+    def flush_input_buffer(self):
+        """Flush any stale data from input buffer to prevent desync"""
+        if self.is_open():
+            waiting = self.ser.in_waiting
+            if waiting > 0:
+                flushed = self.ser.read(waiting)
+                print(f"[INFO] Flushed {waiting} bytes from input buffer: {flushed[:20].hex()}{'...' if len(flushed) > 20 else ''}")
+
+    def resync_to_response_byte(self):
+        """Search for next RESPONSE_BYTE to recover from desync. Returns True if found."""
+        if not self.is_open():
+            return False
+
+        print(f"[RESYNC] Searching for RESPONSE_BYTE (0x7D)...")
+        searched = 0
+        start_time = time.time()
+
+        while time.time() - start_time < 2.0 and searched < 1000:
+            b = self.ser.read(1)
+            if not b:
+                time.sleep(0.01)
+                continue
+            searched += 1
+            if b[0] == RESPONSE_BYTE:
+                print(f"[RESYNC] Found RESPONSE after {searched} bytes")
+                # We've consumed the RESPONSE byte, need to handle this in recv_frame
+                return True
+
+        print(f"[RESYNC] Failed to find RESPONSE after {searched} bytes")
+        self.ser.reset_input_buffer()  # Give up, flush everything
+        return False
 
     # Compose protocol frame and send (NEW PROTOCOL)
     # Format: [HELLO][PERIPHERAL_ID][LENGTH][COMMAND][data...][GOODBYE]
@@ -355,28 +404,29 @@ class SerialClient:
 
     # Receive a single full response frame (NEW PROTOCOL)
     # Format: [RESPONSE][PERIPHERAL_ID][LENGTH][payload...][GOODBYE]
-    def recv_frame(self):
+    def recv_frame(self, response_already_consumed=False):
         if not self.is_open():
             raise RuntimeError("Serial port not open")
         start_time = time.time()
 
-        # Wait for RESPONSE_BYTE (0x7D, NOT HELLO_BYTE!)
-        skipped_bytes = []
-        while time.time() - start_time < RX_TOTAL_TIMEOUT_S:
-            b = self.ser.read(1)
-            if not b:
-                continue
-            if b[0] == RESPONSE_BYTE:
-                # Log all skipped bytes if any (helps debug ESP serial pollution)
-                if skipped_bytes:
-                    skipped_hex = ' '.join(f'{x:02X}' for x in skipped_bytes)
-                    skipped_ascii = ''.join(chr(x) if 32 <= x < 127 else '.' for x in skipped_bytes)
-                    print(f"[WARNING] Skipped {len(skipped_bytes)} bytes before RESPONSE: [{skipped_hex}] ASCII: '{skipped_ascii}'")
-                break
-            # Collect unexpected bytes for diagnostics
-            skipped_bytes.append(b[0])
-        else:
-            raise TimeoutError("Timed out waiting for RESPONSE_BYTE (0x7D)")
+        # Wait for RESPONSE_BYTE (0x7D, NOT HELLO_BYTE!) unless already consumed by resync
+        if not response_already_consumed:
+            skipped_bytes = []
+            while time.time() - start_time < RX_TOTAL_TIMEOUT_S:
+                b = self.ser.read(1)
+                if not b:
+                    continue
+                if b[0] == RESPONSE_BYTE:
+                    # Log all skipped bytes if any (helps debug ESP serial pollution)
+                    if skipped_bytes:
+                        skipped_hex = ' '.join(f'{x:02X}' for x in skipped_bytes)
+                        skipped_ascii = ''.join(chr(x) if 32 <= x < 127 else '.' for x in skipped_bytes)
+                        print(f"[WARNING] Skipped {len(skipped_bytes)} bytes before RESPONSE: [{skipped_hex}] ASCII: '{skipped_ascii}'")
+                    break
+                # Collect unexpected bytes for diagnostics
+                skipped_bytes.append(b[0])
+            else:
+                raise TimeoutError("Timed out waiting for RESPONSE_BYTE (0x7D)")
 
         # Read Peripheral ID, Length
         hdr = self.ser.read(2)
@@ -384,32 +434,44 @@ class SerialClient:
             raise TimeoutError("Timed out reading header (PERIPHERAL_ID, LENGTH)")
         pid, length = hdr[0], hdr[1]
 
-        # Read payload
+        # Read payload - be patient, read in chunks if needed
         payload = b""
         if length > 0:
-            payload = self.ser.read(length)
-            # Don't raise error on partial payload - let the unpack functions handle it
-            # Just log a warning if we got less than expected
+            bytes_remaining = length
+            read_deadline = time.time() + 2.0  # 2 second total timeout for payload
+
+            while bytes_remaining > 0 and time.time() < read_deadline:
+                chunk = self.ser.read(bytes_remaining)
+                if chunk:
+                    payload += chunk
+                    bytes_remaining -= len(chunk)
+                else:
+                    # No data available, brief wait before retry
+                    time.sleep(0.01)
+
+            # Check if we got everything
             if len(payload) != length:
                 print(f"[WARNING] Partial payload: expected {length} bytes, got {len(payload)}")
+                raise TimeoutError(f"Partial payload: expected {length} bytes, got {len(payload)}")
 
         # Read GOODBYE
         gb = self.ser.read(1)
         if len(gb) != 1 or gb[0] != GOODBYE_BYTE:
+            # Bad GOODBYE - frame is corrupted, try to resync
             if gb:
+                print(f"[ERROR] Invalid GOODBYE byte (got 0x{gb[0]:02X})")
                 raise TimeoutError(f"Missing/invalid GOODBYE (expected 0x7F, got 0x{gb[0]:02X})")
             else:
+                print(f"[ERROR] Invalid GOODBYE byte (got nothing)")
                 raise TimeoutError(f"Missing/Invalid GOODBYE (expected 0x7F, got nothing)")
 
-        # Check for garbage bytes after GOODBYE (indicates ESP is sending extra data)
-        # Use a small delay to allow any trailing bytes to arrive
-        time.sleep(0.01)  # 10ms delay
+        # DON'T read extra bytes after GOODBYE - they may be the next valid frame!
+        # Just log if we detect them (helps with debugging)
+        time.sleep(0.01)  # 10ms delay to let any trailing bytes arrive
         garbage = self.ser.in_waiting
         if garbage > 0:
-            extra = self.ser.read(garbage)
-            extra_hex = ' '.join(f'{x:02X}' for x in extra)
-            extra_ascii = ''.join(chr(x) if 32 <= x < 127 else '.' for x in extra)
-            print(f"[WARNING] {garbage} extra bytes after GOODBYE: [{extra_hex}] ASCII: '{extra_ascii}'")
+            # Peek at what's there for debugging, but DON'T consume it
+            print(f"[INFO] {garbage} bytes already waiting (likely next frame)")
 
         return pid, payload
 
@@ -439,8 +501,37 @@ class App(tk.Tk):
             'partial': 0
         }
 
+        # Web GUI integration
+        self.web_gui_enabled = False
+        self.web_gui_url = "http://localhost:5000/api/telemetry/push"
+
+        # Throughput tracking per peripheral
+        self.throughput_stats = {}  # {peripheral_name: {'tx': bytes, 'rx': bytes}}
+        self.throughput_log_path = os.path.join(os.path.dirname(__file__), "logs", "throughput.csv")
+
         self._build_ui()
         self._refresh_ports()
+
+        # Register cleanup handler for when window closes
+        self.protocol("WM_DELETE_WINDOW", self._on_closing)
+
+    def _on_closing(self):
+        """Handle window close event - save throughput log and cleanup"""
+        # Save throughput data one final time
+        self._save_throughput_log()
+
+        # Stop reader thread
+        self.reader_running = False
+
+        # Stop polling if active
+        self.polling_active = False
+
+        # Close serial connection
+        if self.client.is_open():
+            self.client.close()
+
+        # Destroy window
+        self.destroy()
 
     def _build_ui(self):
         # ---- Top: Serial connection ----
@@ -486,13 +577,13 @@ class App(tk.Tk):
         self.btn_send.grid(row=0, column=4, padx=6, pady=6, sticky="e")
 
         # Quick actions (updated for new protocol)
-        self.btn_wakeup = ttk.Button(frm_cmd, text="WAKEUP", command=lambda: self._quick_send("SYSTEM", "WAKEUP"))
+        self.btn_wakeup = ttk.Button(frm_cmd, text="SYS_WAKEUP", command=lambda: self._quick_send("SYSTEM", "SYSTEM_WAKEUP"))
         self.btn_wakeup.grid(row=1, column=4, padx=6, pady=6, sticky="e")
         self.btn_getall = ttk.Button(frm_cmd, text="GET_ALL", command=lambda: self._quick_send("LORA_915", "GET_ALL"))
         self.btn_getall.grid(row=1, column=5, padx=6, pady=6, sticky="e")
 
-        # ---- Auto-Polling ----
-        frm_polling = ttk.LabelFrame(self, text="Auto-Polling")
+        # ---- Manual Polling (Pi-side repeated requests) ----
+        frm_polling = ttk.LabelFrame(self, text="Manual Polling (Pi-side)")
         frm_polling.pack(fill="x", padx=10, pady=4)
 
         ttk.Label(frm_polling, text="Interval (ms):").grid(row=0, column=0, padx=6, pady=6, sticky="w")
@@ -512,6 +603,21 @@ class App(tk.Tk):
         self.lbl_polling_stats = ttk.Label(frm_polling, text="Stats: -", foreground="blue")
         self.lbl_polling_stats.grid(row=1, column=0, columnspan=6, padx=6, pady=6, sticky="w")
 
+        # ---- Web GUI Integration ----
+        frm_webgui = ttk.LabelFrame(self, text="Web GUI Integration")
+        frm_webgui.pack(fill="x", padx=10, pady=4)
+
+        self.webgui_enabled_var = tk.BooleanVar(value=False)
+        self.chk_webgui = ttk.Checkbutton(frm_webgui, text="Send data to Web GUI", variable=self.webgui_enabled_var, command=self._toggle_webgui)
+        self.chk_webgui.grid(row=0, column=0, padx=6, pady=6, sticky="w")
+
+        ttk.Label(frm_webgui, text="URL:").grid(row=0, column=1, padx=6, pady=6, sticky="w")
+        self.webgui_url_var = tk.StringVar(value="http://localhost:5000/api/telemetry/push")
+        ttk.Entry(frm_webgui, textvariable=self.webgui_url_var, width=40).grid(row=0, column=2, padx=6, pady=6)
+
+        self.lbl_webgui_status = ttk.Label(frm_webgui, text="Status: Disabled", foreground="gray")
+        self.lbl_webgui_status.grid(row=0, column=3, padx=12, pady=6, sticky="w")
+
         # ---- Presets ----
         frm_presets = ttk.LabelFrame(self, text="Presets")
         frm_presets.pack(fill="x", padx=10, pady=4)
@@ -521,6 +627,14 @@ class App(tk.Tk):
         # ---- Bottom: Log/Output ----
         frm_log = ttk.LabelFrame(self, text="Log")
         frm_log.pack(fill="both", expand=True, padx=10, pady=8)
+
+        # Log control buttons
+        frm_log_controls = ttk.Frame(frm_log)
+        frm_log_controls.pack(fill="x", padx=6, pady=(6, 0))
+        ttk.Button(frm_log_controls, text="Clear Log", command=self._clear_log).pack(side="left", padx=6)
+
+        self.auto_clear_log_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(frm_log_controls, text="Auto-clear before send", variable=self.auto_clear_log_var).pack(side="left", padx=12)
 
         self.txt_log = tk.Text(frm_log, height=20, wrap="word")
         self.txt_log.pack(fill="both", expand=True, padx=6, pady=6)
@@ -571,13 +685,27 @@ class App(tk.Tk):
 
     def _continuous_reader(self):
         """Continuously read from serial port in background thread"""
+        last_buffer_check = time.time()
+
         while self.reader_running and self.client.is_open():
             try:
-                # Only try to read if there's data available (non-blocking check)
-                if self.client.ser.in_waiting > 0:
+                # Periodic buffer health check (every 5 seconds)
+                if time.time() - last_buffer_check > 5.0:
+                    waiting = self.client.ser.in_waiting
+                    if waiting > 500:  # More than 500 bytes waiting is suspicious
+                        self._log_safe(f"[WARNING] Large buffer backlog ({waiting} bytes) - possible desync")
+                        # Reset buffer to recover from desync
+                        self.client.ser.reset_input_buffer()
+                        self._log_safe(f"[INFO] Input buffer reset to recover sync")
+                    last_buffer_check = time.time()
+
+                # Keep reading ALL available frames without sleeping between them
+                # This prevents buffer buildup when ESP sends multiple frames rapidly
+                frames_this_iteration = 0
+                while self.client.ser.in_waiting > 0 and frames_this_iteration < 20:
                     pid, rx_payload = self.client.recv_frame()
                     pid_name = next((k for k, v in PERIPHERALS.items() if v == pid), f"UNKNOWN_0x{pid:02X}")
-
+                    self._log_safe(f"______________________________________________________________")
                     self._log_safe(f"RX: From {pid_name}(0x{pid:02X}) Length={len(rx_payload)} bytes")
                     self._log_safe(f"    Raw: {hexdump(rx_payload)}")
 
@@ -585,8 +713,15 @@ class App(tk.Tk):
                     decoded = decode_payload(pid, rx_payload)
                     self._log_safe(f"    Decoded: {decoded}")
 
-                    # Track statistics if polling is active
-                    if self.polling_active and self.pending_response:
+                    # Extract structured data and send to web GUI
+                    threading.Thread(target=self._extract_and_send_telemetry, args=(pid, rx_payload), daemon=True).start()
+
+                    # Track RX throughput (response frame = 1 + 1 + 1 + payload_len + 1)
+                    rx_frame_len = 1 + 1 + 1 + len(rx_payload) + 1
+                    self._update_throughput(pid_name, 'rx', rx_frame_len)
+
+                    # Track statistics if polling is active (only count first frame as "the response")
+                    if self.polling_active and self.pending_response and frames_this_iteration == 0:
                         # Check if response was partial (look for 'partial': True pattern)
                         is_partial = "'partial': True" in decoded or '"partial": true' in decoded.lower()
                         if is_partial:
@@ -598,13 +733,28 @@ class App(tk.Tk):
                     # Mark response received for polling logic
                     self.last_rx_time = time.time()
                     self.pending_response = False
+
+                    frames_this_iteration += 1
+
+                # If we processed frames, log it and yield briefly
+                if frames_this_iteration > 0:
+                    if frames_this_iteration > 1:
+                        self._log_safe(f"[Processed {frames_this_iteration} frames in burst]")
+                    time.sleep(0.001)  # 1ms yield after processing
                 else:
-                    # No data available, sleep briefly to avoid busy-waiting
-                    time.sleep(0.05)  # 50ms polling interval
+                    # No data available, sleep longer to avoid busy-waiting
+                    time.sleep(0.01)  # 10ms polling interval
 
             except Exception as e:
                 if self.reader_running:  # Only log errors if we're still supposed to be running
                     self._log_safe(f"RX ERROR: {e}")
+
+                    # Try to resync after error
+                    if "GOODBYE" in str(e) or "Partial" in str(e):
+                        if self.client.resync_to_response_byte():
+                            self._log_safe(f"[RECOVERY] Successfully resynced to next frame")
+                        else:
+                            self._log_safe(f"[RECOVERY] Could not resync, flushed buffer")
 
                     # Track error/timeout in polling stats
                     if self.polling_active and self.pending_response:
@@ -654,10 +804,34 @@ class App(tk.Tk):
         # Parse optional extra data (hex bytes)
         payload_text = self.payload_var.get().strip()
         try:
-            extra_data = parse_hex_bytes(payload_text) if payload_text else b''
+            # Special handling for SET_POLL_RATE - expect interval in milliseconds as decimal
+            if cmd_name == "SET_POLL_RATE":
+                if payload_text:
+                    interval_ms = int(payload_text)
+                    if interval_ms < 0 or interval_ms > 65535:
+                        messagebox.showerror("Payload", "Interval must be 0-65535 ms")
+                        return
+                    # Pack as little-endian 2-byte unsigned integer
+                    extra_data = struct.pack('<H', interval_ms)
+                else:
+                    messagebox.showerror("Payload", "SET_POLL_RATE requires interval in ms (e.g., 1000)")
+                    return
+            elif cmd_name == "STOP_POLL":
+                # STOP_POLL is just SET_POLL_RATE with 0ms
+                extra_data = struct.pack('<H', 0)
+            else:
+                # Normal hex byte parsing
+                extra_data = parse_hex_bytes(payload_text) if payload_text else b''
+        except ValueError as e:
+            messagebox.showerror("Payload", f"Invalid interval: {e}")
+            return
         except Exception as e:
             messagebox.showerror("Payload", str(e))
             return
+
+        # Auto-clear log if enabled
+        if self.auto_clear_log_var.get():
+            self._clear_log()
 
         # Disable send button during transmission
         self.btn_send.config(state="disabled")
@@ -677,6 +851,9 @@ class App(tk.Tk):
 
             self.pending_response = True  # Mark that we're waiting for a response
             self.client.send_command(periph_id, cmd_id, extra_data)
+
+            # Track TX throughput
+            self._update_throughput(periph_name, 'tx', total_len)
             # Note: Response will be received and displayed by the continuous reader thread
 
         except Exception as e:
@@ -813,6 +990,12 @@ class App(tk.Tk):
                 count += 1
                 self.poll_stats['total'] += 1
                 payload = bytes([cmd_id]) + extra_data
+
+                # Auto-clear log if enabled (thread-safe)
+                if self.auto_clear_log_var.get():
+                    self.after(0, self._clear_log)
+                    time.sleep(0.05)  # Brief delay to let clear finish
+
                 self._log_safe(f"[POLL {count}] TX: {periph_name}:{cmd_name}")
 
                 self.pending_response = True
@@ -870,9 +1053,130 @@ class App(tk.Tk):
 
         self.after(0, update)
 
+    def _extract_and_send_telemetry(self, peripheral_id, payload):
+        """Extract telemetry from decoded data and send to web GUI in expected format"""
+        if not self.web_gui_enabled:
+            return
+
+        try:
+            telemetry_row = {"time": time.time()}  # Add timestamp
+
+            # Unpack based on peripheral type
+            if peripheral_id == PERIPHERALS["BAROMETER"]:
+                data = unpack_barometer_data(payload)
+                if not data.get('partial'):
+                    telemetry_row["temp"] = data.get('temperature_c', 0)
+                    telemetry_row["pres"] = data.get('pressure_pa', 0)
+                    telemetry_row["alt"] = data.get('altitude_m', 0)
+                    self._send_to_webgui(telemetry_row)
+
+            elif peripheral_id == PERIPHERALS["CURRENT"]:
+                data = unpack_current_data(payload)
+                if not data.get('partial'):
+                    telemetry_row["volts"] = data.get('voltage_v', 0)
+                    telemetry_row["curr"] = data.get('current_a', 0)
+                    self._send_to_webgui(telemetry_row)
+
+            elif peripheral_id == PERIPHERALS["LORA_915"] or peripheral_id == PERIPHERALS["LORA_433"]:
+                data = unpack_lora_data(payload)
+                if not data.get('partial'):
+                    # LoRa/433 data doesn't directly map to flight telemetry
+                    # Could add custom fields if needed
+                    telemetry_row["rssi"] = data.get('rssi', 0)
+                    telemetry_row["snr"] = data.get('snr', 0) if 'snr' in data else None
+                    self._send_to_webgui(telemetry_row)
+
+        except Exception as e:
+            # Silently fail to avoid spam during decoding errors
+            pass
+
+    def _toggle_webgui(self):
+        """Toggle web GUI integration on/off"""
+        self.web_gui_enabled = self.webgui_enabled_var.get()
+        if self.web_gui_enabled:
+            self.lbl_webgui_status.config(text="Status: Enabled", foreground="green")
+            self._log(f"[Web GUI] Enabled - sending to {self.webgui_url_var.get()}")
+        else:
+            self.lbl_webgui_status.config(text="Status: Disabled", foreground="gray")
+            self._log("[Web GUI] Disabled")
+
+    def _send_to_webgui(self, data_dict):
+        """Send telemetry data to the web GUI via HTTP POST"""
+        if not self.web_gui_enabled:
+            return
+
+        try:
+            url = self.webgui_url_var.get()
+            response = requests.post(url, json=data_dict, timeout=1.0)
+            if response.status_code != 200:
+                self._log_safe(f"[Web GUI] Error: HTTP {response.status_code}")
+        except requests.exceptions.Timeout:
+            pass  # Silently ignore timeouts to avoid spam
+        except Exception as e:
+            self._log_safe(f"[Web GUI] Error: {e}")
+
+    def _update_throughput(self, peripheral_name, direction, num_bytes):
+        """Track throughput for a peripheral (direction: 'tx' or 'rx')"""
+        if peripheral_name not in self.throughput_stats:
+            self.throughput_stats[peripheral_name] = {'tx': 0, 'rx': 0}
+
+        self.throughput_stats[peripheral_name][direction] += num_bytes
+
+        # Save to file periodically (every ~1KB to see results sooner)
+        total_updates = sum(stats['tx'] + stats['rx'] for stats in self.throughput_stats.values())
+        if total_updates % 1000 == 0:  # Every ~1KB
+            self._save_throughput_log()
+
+    def _save_throughput_log(self):
+        """Save throughput stats to CSV file (cumulative across sessions)"""
+        try:
+            # Ensure logs directory exists
+            os.makedirs(os.path.dirname(self.throughput_log_path), exist_ok=True)
+
+            # Read existing totals if file exists
+            existing_totals = {}
+            if os.path.exists(self.throughput_log_path):
+                with open(self.throughput_log_path, 'r') as f:
+                    lines = f.readlines()
+                    # Skip header line
+                    for line in lines[1:]:
+                        parts = line.strip().split(',')
+                        if len(parts) == 4:
+                            periph = parts[0]
+                            existing_totals[periph] = {
+                                'tx': int(parts[1]),
+                                'rx': int(parts[2])
+                            }
+
+            # Merge current session stats with existing totals
+            merged_stats = existing_totals.copy()
+            for periph, stats in self.throughput_stats.items():
+                if periph not in merged_stats:
+                    merged_stats[periph] = {'tx': 0, 'rx': 0}
+                merged_stats[periph]['tx'] += stats['tx']
+                merged_stats[periph]['rx'] += stats['rx']
+
+            # Write merged totals to CSV
+            with open(self.throughput_log_path, 'w') as f:
+                f.write("peripheral,tx_bytes,rx_bytes,total_bytes\n")
+                for periph, stats in sorted(merged_stats.items()):
+                    tx = stats['tx']
+                    rx = stats['rx']
+                    total = tx + rx
+                    f.write(f"{periph},{tx},{rx},{total}\n")
+
+        except Exception as e:
+            # Silently fail to avoid interrupting normal operation
+            pass
+
     def _log(self, msg: str):
         self.txt_log.insert("end", msg + "\n")
         self.txt_log.see("end")
+
+    def _clear_log(self):
+        """Clear all text from the log window"""
+        self.txt_log.delete("1.0", "end")
+        self._log("Log cleared.")
 
 if __name__ == "__main__":
     app = App()
