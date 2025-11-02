@@ -8899,3 +8899,633 @@ Traceback (most recent call last):
   File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
     raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
 serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:15.613 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:20.619 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:25.620 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:30.625 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:35.631 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:40.636 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:45.641 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:50.642 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:01:55.647 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:00.652 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:05.657 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:10.662 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:15.667 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:20.672 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:25.677 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:30.682 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:35.687 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:40.693 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:45.698 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:50.704 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:02:55.709 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:00.715 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:05.720 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:10.725 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:15.731 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:20.736 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:25.742 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:30.747 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:35.752 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:40.757 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:45.762 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:50.767 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:03:55.772 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:04:00.777 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+13:04:05.782 [WARNING] RX: RX loop error: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
+Traceback (most recent call last):
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 322, in open
+    self.fd = os.open(self.portstr, os.O_RDWR | os.O_NOCTTY | os.O_NONBLOCK)
+FileNotFoundError: [Errno 2] No such file or directory: '/dev/pts/6'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 413, in _rx_loop
+    self._connect_serial()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/communicator.py", line 385, in _connect_serial
+    ser = serial.Serial(
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialutil.py", line 244, in __init__
+    self.open()
+  File "/home/jarred/.local/lib/python3.10/site-packages/serial/serialposix.py", line 325, in open
+    raise SerialException(msg.errno, "could not open port {}: {}".format(self._port, msg))
+serial.serialutil.SerialException: [Errno 2] could not open port /dev/pts/6: [Errno 2] No such file or directory: '/dev/pts/6'
