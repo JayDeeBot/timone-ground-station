@@ -22,7 +22,6 @@ const PRECACHE = [
   '/static/css/main.css',
 
   // Your app JS — will be network-first at runtime (but we can still seed)
-  '/static/js/graph-interactions.js',
   '/static/js/main.js',
   '/static/js/historical.js',
   '/static/js/maps.js',

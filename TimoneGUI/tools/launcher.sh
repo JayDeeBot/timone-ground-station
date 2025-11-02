@@ -18,7 +18,7 @@ sleep 5
 URL="http://127.0.0.1:5000"
 cd ~/git/timone-ground-station/TimoneGUI || exit
 
-# 1. Start the communication stack
+# # 1. Start the communication stack
 # python3 tools/run_all.py &
 # sleep 2
 
@@ -46,3 +46,7 @@ sleep 3
 # Force full-screen (F11 equivalent):
 # xdotool search --onlyvisible --class "firefox" key F11 # Firefox version
 xdotool search --onlyvisible --class "chromium" key F11 # Chromium version
+sleep 2
+
+# 1. Start the communication stack
+python3 tools/run_all.py &

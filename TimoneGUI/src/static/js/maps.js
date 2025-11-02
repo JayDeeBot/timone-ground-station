@@ -60,9 +60,10 @@ function ensureMap() {
   });
 
   injectGroundPulseStyles();
+  injectLegendStyles();
   ensureGroundMarker();
   ensureRocketMarker();
-
+  addLegendControl();
   initMapManagerUI();
 }
 
@@ -93,6 +94,47 @@ function injectGroundPulseStyles() {
   style.textContent = css;
   document.head.appendChild(style);
 }
+function injectLegendStyles() {
+  if (document.getElementById('legend-style')) return;
+  const css = `
+    .map-legend {
+      background: rgba(255,255,255,0.9);
+      border-radius: .375rem;
+      padding: .35rem .5rem;
+      font-size: .9rem;
+      line-height: 1;
+      box-shadow: 0 1px 2px rgba(0,0,0,.1);
+      display: flex; gap: .75rem; align-items: center;
+    }
+    .legend-item { display: inline-flex; align-items: center; gap: .4rem; white-space: nowrap; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .legend-dot.blue { background: #0d6efd; box-shadow: 0 0 6px rgba(13,110,253,.6); }
+    .legend-dot.red  { background: #dc3545; box-shadow: 0 0 6px rgba(220,53,69,.6); }
+  `;
+  const style = document.createElement('style');
+  style.id = 'legend-style';
+  style.textContent = css;
+  document.head.appendChild(style);
+}
+let _legendControlAdded = false;
+function addLegendControl() {
+  if (!leafletMap || _legendControlAdded) return;
+  const Legend = L.Control.extend({
+    options: { position: 'topright' },
+    onAdd: function() {
+      const div = L.DomUtil.create('div', 'map-legend');
+      div.innerHTML = `
+        <span class="legend-item"><span class="legend-dot blue"></span> Ground station</span>
+        <span class="legend-item"><span class="legend-dot red"></span> Rocket</span>
+      `;
+      // Prevent map drag/zoom when interacting with legend
+      L.DomEvent.disableClickPropagation(div);
+      return div;
+    }
+  });
+  leafletMap.addControl(new Legend());
+  _legendControlAdded = true;
+}
 function ensureGroundMarker() {
   if (!leafletMap || groundMarker) return;
   const icon = L.divIcon({
@@ -105,6 +147,7 @@ function ensureGroundMarker() {
 }
 function ensureRocketMarker() {
   if (!leafletMap || rocketMarker) return;
+  // NOTE: .pulse-dot/.pulse-core/.pulse-ring are defined in main.css
   const icon = L.divIcon({
     className: 'pulse-dot',
     html: '<div class="pulse-core"></div><div class="pulse-ring"></div>',
@@ -344,8 +387,18 @@ function renderSatellite(meta) {
     const padded = bounds.pad(0.05);
     leafletMap.setMaxBounds(padded);
 
+    // Reposition markers after overlay changes
     updateGroundMarkerPosition();
-    if (rocketMarker && leafletMap.hasLayer(rocketMarker)) rocketMarker.bringToFront();
+
+    // If we already have a last rocket fix, add/update it
+    if (window.__lastRocket) {
+      ensureRocketMarker();
+      if (!leafletMap.hasLayer(rocketMarker)) rocketMarker.addTo(leafletMap);
+      rocketMarker.setLatLng([window.__lastRocket.lat, window.__lastRocket.lon]);
+    }
+
+    // Ensure markers visually sit above the overlay (no bringToFront on markers)
+    raiseMarkers();
   } catch (e) {
     console.error('Leaflet failed to apply bounds:', e);
     clearOverlayAndBounds();
@@ -411,13 +464,21 @@ function haversineMeters(lat1, lon1, lat2, lon2) {
   const a = Math.sin(dφ/2)**2 + Math.cos(φ1)*Math.cos(φ2)*Math.sin(dλ/2)**2;
   return 2*R*Math.asin(Math.sqrt(a));
 }
+// Replace your existing initialBearing(...) with this:
 function initialBearing(lat1, lon1, lat2, lon2) {
-  const φ1 = lat1 * Math.PI/180, φ2 = lat2 * Math.PI/180;
-  const λ1 = lon1 * Math.PI/180, λ2 = lon2 * Math.PI/180;
-  const y = Math.sin(λ2-λ1) * Math.cos(φ2);
-  const x = Math.cos(φ1)*Math.sin(φ2) - Math.sin(φ1)*Math.cos(φ2)*Math.cos(λ2-λ1);
-  return toBearingDegrees(Math.atan2(y,x));
+  const φ1 = lat1 * Math.PI / 180;
+  const φ2 = lat2 * Math.PI / 180;
+  const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+  const y = Math.sin(Δλ) * Math.cos(φ2);
+  const x = Math.cos(φ1) * Math.sin(φ2) -
+            Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+
+  let θ = Math.atan2(y, x) * 180 / Math.PI; // convert to degrees
+  if (θ < 0) θ += 360;                       // normalize to [0,360)
+  return θ;
 }
+
 function bearingToCardinal(b) {
   const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW','N'];
   return dirs[Math.round(b/22.5)];
@@ -438,16 +499,44 @@ function updateGSVector(rocketLat, rocketLon) {
   gsDistanceEl.textContent = d >= 1000 ? `${(d/1000).toFixed(2)} km` : `${d.toFixed(0)} m`;
   gsBearingEl.textContent  = `${brg.toFixed(0)}° (${bearingToCardinal(brg)})`;
 }
-window.updateRocketPosition = function(lat, lon) {
+
+/* Ensure markers render above overlay using z-index offsets (safe for markers) */
+function raiseMarkers() {
+  if (!leafletMap) return;
+  if (groundMarker && leafletMap.hasLayer(groundMarker)) {
+    groundMarker.setZIndexOffset(900);
+  }
+  if (rocketMarker && leafletMap.hasLayer(rocketMarker)) {
+    rocketMarker.setZIndexOffset(1000);
+  }
+}
+
+/* Entry point used by the live telemetry.
+   Accepts either (lat, lon) or (lat, lon, alt). */
+window.updateRocketPosition = function(lat, lon, alt) {
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) return;
   if (lat < -90 || lat > 90 || lon < -180 || lon > 180) return;
+
+  // Save last fix immediately so renderSatellite() can apply it later
+  window.__lastRocket = { lat, lon, alt: Number.isFinite(alt) ? alt : undefined };
+
+  // Update panels + distance/bearing regardless of map init state
+  const rLat = document.getElementById('rocketLat');
+  const rLon = document.getElementById('rocketLon');
+  const rAlt = document.getElementById('rocketAlt');
+  if (rLat) rLat.textContent = `${lat.toFixed(4)}°`;
+  if (rLon) rLon.textContent = `${lon.toFixed(4)}°`;
+  if (rAlt && Number.isFinite(alt)) rAlt.textContent = `${Math.round(alt)} m`;
+  updateGSVector(lat, lon);
+
+  // If the map isn't ready yet, stop here — renderSatellite() will place the marker later
+  if (!leafletMap) return;
+
+  // Map is ready → ensure marker and place it
   ensureRocketMarker();
   if (!leafletMap.hasLayer(rocketMarker)) rocketMarker.addTo(leafletMap);
   rocketMarker.setLatLng([lat, lon]);
-  window.__lastRocket = { lat, lon };
-  updateGSVector(lat, lon);
-  const rLat = document.getElementById('rocketLat');
-  const rLon = document.getElementById('rocketLon');
-  if (rLat) rLat.textContent = `${lat.toFixed(4)}°`;
-  if (rLon) rLon.textContent = `${lon.toFixed(4)}°`;
+
+  // Keep markers visually above the overlay
+  if (typeof raiseMarkers === 'function') raiseMarkers();
 };

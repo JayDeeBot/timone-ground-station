@@ -24,13 +24,27 @@
 
       this._restore();
 
+      // Export button event listener
       if (this.exportBtn) {
         this.exportBtn.addEventListener('click', () => this.export());
       }
+
+      // Scroll event listener
       if (this.scrollWrap) {
         this.scrollWrap.addEventListener('scroll', () => {
           const nearBottom = (this.scrollWrap.scrollTop + this.scrollWrap.clientHeight) >= (this.scrollWrap.scrollHeight - 4);
           this.autoScroll = nearBottom;
+        });
+      }
+
+      // Clear button event listener
+      const clearBtn = this.root.querySelector(`[data-clear="${channel}"]`);
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (confirm(`Clear all logs for ${this.cfg.title}?`)
+          ) {
+            this.clear();
+          }
         });
       }
     }
@@ -175,13 +189,15 @@
         channel = 'lora'; origin = '433';
         line = line.replace(/\[Radio433\]\s*/i, '');
       }
-      // Peripheral 1: CURRENT/VOLTAGE (and Barometer if present)
+      // Current/Voltage and Barometer - send only to ground
       else if (/\[(Current|CURR)\]/i.test(line)) {
-        channel = 'periph1'; origin = 'CURR';
-        line = line.replace(/\[(Current|CURR)\]\s*/i, '');
+        const modifiedLine = line.replace(/\[(Current|CURR)\]\s*/i, '');
+        this.panels['ground']?.addLogEntry(modifiedLine, 'info', null, 'CURR');
+        return;
       } else if (/\[(Barometer|BARO)\]/i.test(line)) {
-        channel = 'periph1'; origin = 'BARO';
-        line = line.replace(/\[(Barometer|BARO)\]\s*/i, '');
+        const modifiedLine = line.replace(/\[(Barometer|BARO)\]\s*/i, '');
+        this.panels['ground']?.addLogEntry(modifiedLine, 'info', null, 'BARO');
+        return;
       }
       // Ground/system
       else if (/\[(Status|Ground|Peripherals)\]/i.test(line)) {

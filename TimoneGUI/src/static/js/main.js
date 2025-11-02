@@ -1,16 +1,151 @@
 // Add Chart.js to base.html before this file
 document.addEventListener('DOMContentLoaded', function() {
-  // Registry for continuity charts only (the unified flight charts live in graph-interactions.js)
+  // Only keep continuity charts in main.js registry
   const charts = {};
-  const STORAGE_KEY = 'flightDataDynamicGraphs_v1';
 
   // --- Init panels ---
   initContinuityCharts();
-  initVoltageCurrentCharts();     // fixed Voltage + Current charts
-  restoreSavedGraphs();           // persistence for dynamically-added graphs
-  initAddGraphButton();
 
-  // ---------------- Continuity charts (unchanged) ----------------
+  // --- Notifier (toast-style) + ding sound, app-wide ---
+  (function initNotifier(){
+    if (window.notify) return;
+
+    // Inject minimal styles
+    if (!document.getElementById('notif-style')) {
+      const css = `
+      .notif-wrap{position:fixed;right:16px;bottom:16px;z-index:99999;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+      .notif{
+        pointer-events:auto;background:#fff;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.18);
+        padding:10px 12px;min-width:260px;max-width:360px;border:1px solid rgba(0,0,0,.08);
+        animation:notifSlide .18s ease-out;
+      }
+      .notif h6{margin:0 0 4px;font-size:14px;font-weight:700}
+      .notif p{margin:0;font-size:13px;line-height:1.35;color:#222}
+      .notif .meta{margin-top:6px;font-size:12px;color:#666}
+      .notif.good h6{color:#198754}
+      .notif.warn h6{color:#ffc107}
+      .notif.bad  h6{color:#dc3545}
+      @keyframes notifSlide{from{transform:translateY(6px);opacity:.0}to{transform:translateY(0);opacity:1}}
+      `;
+      const style = document.createElement('style');
+      style.id = 'notif-style';
+      style.textContent = css;
+      document.head.appendChild(style);
+    }
+
+    // Container
+    let wrap = document.getElementById('notif-wrap');
+    if (!wrap) {
+      wrap = document.createElement('div');
+      wrap.id = 'notif-wrap';
+      wrap.className = 'notif-wrap';
+      document.body.appendChild(wrap);
+    }
+
+    // --- WebAudio ding with strict user-gesture gating ---
+    let _ac = null;                 // AudioContext (created only after gesture)
+    let _armed = false;             // has the user interacted?
+    let _pendingDings = 0;          // dings queued before we're armed
+    let _bound = false;             // have we bound the gesture listeners?
+
+    function _cleanupGestureListeners(fn) {
+      document.removeEventListener('click', fn);
+      document.removeEventListener('touchstart', fn);
+      document.removeEventListener('keydown', fn);
+    }
+
+    function _armOnFirstGesture() {
+      if (_armed) return;
+      // If Chrome already reports user activation, arm immediately
+      if (navigator.userActivation && navigator.userActivation.hasBeenActive) {
+        _armed = true;
+        try {
+          _ac = new (window.AudioContext || window.webkitAudioContext)();
+          _ac.resume().catch(()=>{}).finally(_flushPending);
+        } catch { /* ignore */ }
+        return;
+      }
+      if (_bound) return;
+      _bound = true;
+      const onFirst = () => {
+        _armed = true;
+        try {
+          _ac = new (window.AudioContext || window.webkitAudioContext)();
+          _ac.resume().catch(()=>{}).finally(_flushPending);
+        } catch { /* ignore */ }
+        _cleanupGestureListeners(onFirst);
+      };
+      const opts = { once: true, passive: true };
+      document.addEventListener('click', onFirst, opts);
+      document.addEventListener('touchstart', onFirst, opts);
+      document.addEventListener('keydown', onFirst, opts);
+    }
+
+    function _beepOnce(delayMs = 0) {
+      if (!_ac || _ac.state !== 'running') return;
+      try {
+        const o = _ac.createOscillator();
+        const g = _ac.createGain();
+        o.type = 'sine';
+        o.frequency.value = 880; // A5
+        g.gain.value = 0.0001;
+        o.connect(g); g.connect(_ac.destination);
+        const start = _ac.currentTime + (delayMs/1000);
+        const end   = start + 0.32;
+        o.start(start);
+        g.gain.exponentialRampToValueAtTime(0.14, start + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.0001, end - 0.02);
+        o.stop(end);
+      } catch { /* ignore */ }
+    }
+
+    function _flushPending() {
+      if (!_ac || _ac.state !== 'running') return;
+      const n = Math.min(_pendingDings, 3); // cap burst
+      _pendingDings = 0;
+      for (let i = 0; i < n; i++) _beepOnce(i * 60);
+    }
+
+    function playDing() {
+      if (!_armed) {
+        _pendingDings++;
+        _armOnFirstGesture();  // bind listeners and arm later
+        return;
+      }
+      if (!_ac) {
+        try {
+          _ac = new (window.AudioContext || window.webkitAudioContext)();
+        } catch { return; }
+      }
+      if (_ac.state !== 'running') {
+        _pendingDings++;
+        _ac.resume().catch(()=>{}).finally(_flushPending);
+        return;
+      }
+      _beepOnce();
+    }
+
+    // public API
+    window.notify = function(title, message, opts = {}) {
+      const level = opts.level || ''; // '', 'good', 'warn', 'bad'
+      const el = document.createElement('div');
+      el.className = `notif ${level}`;
+      el.innerHTML = `<h6>${title}</h6><p>${message}</p>`;
+      wrap.appendChild(el);
+
+      if (!opts.silent) playDing();
+
+      const ttl = Number.isFinite(opts.ttl) ? opts.ttl : 5000;
+      setTimeout(() => {
+        el.style.transition = 'opacity .2s ease, transform .2s ease';
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(6px)';
+        setTimeout(() => el.remove(), 220);
+      }, ttl);
+    };
+  })();
+
+  // Keep only continuity charts logic
   function initContinuityCharts() {
     const drogueContinuityCtx = document.getElementById('drogueContinuityChart');
     const mainContinuityCtx   = document.getElementById('mainContinuityChart');
@@ -42,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           }
         }
-      });
+        });
 
       // Main continuity
       const mainChart = new Chart(mainContinuityCtx, {
@@ -70,173 +205,69 @@ document.addEventListener('DOMContentLoaded', function() {
             }
           }
         }
-      });
+        });
 
       charts['drogueContinuityChart'] = drogueChart;
       charts['mainContinuityChart']   = mainChart;
 
-      // Keep continuity charts responsive to container size
+      // Keep continuity charts responsive
       initResize(drogueContinuityCtx.parentElement);
       initResize(mainContinuityCtx.parentElement);
     }
   }
 
-  // ---------------- Fixed Voltage & Current charts ----------------
-  function initVoltageCurrentCharts() {
-    const vCtx = document.getElementById('chartVoltage');
-    const cCtx = document.getElementById('chartCurrent');
-    if (!vCtx || !cCtx) return;
+  // Keep the resize observer logic for continuity charts
+  function initResize(graphElement) {
+    const resizeObserver = new ResizeObserver(entries => {
+      requestAnimationFrame(() => {  // Wrap in rAF for better performance
+        for (const entry of entries) {
+          const canvas = entry.target.querySelector('canvas');
+          if (!canvas || !canvas.isConnected) {
+            try { resizeObserver.unobserve(entry.target); } catch (_) {}
+            continue;
+          }
 
-    const baseOpts = {
-      type: 'line',
-      data: { labels: [], datasets: [{ label: '', data: [], tension: 0.1, pointRadius: 0 }] },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: { y: { beginAtZero: false } },
-        plugins: { legend: { display: true } }
-      }
-    };
+          const id = canvas.id;
+          if (!id) continue;
 
-    const voltageChart = new Chart(vCtx, JSON.parse(JSON.stringify(baseOpts)));
-    voltageChart.data.datasets[0].label = 'Voltage (V)';
-
-    const currentChart = new Chart(cCtx, JSON.parse(JSON.stringify(baseOpts)));
-    currentChart.data.datasets[0].label = 'Current (A)';
-
-    // Expose for live updates from telemetry stream
-    window.flightCharts = window.flightCharts || {};
-    window.flightCharts['chartVoltage'] = voltageChart;
-    window.flightCharts['chartCurrent'] = currentChart;
-
-    // Convenience updater (optional use from your telemetry)
-    // Also updates Battery panel text (#battery-volts, #battery-curr) if present.
-    window.updateVoltageCurrent = function(tsISO, voltage, current) {
-      const v = window.flightCharts['chartVoltage'];
-      const c = window.flightCharts['chartCurrent'];
-      if (v) {
-        v.data.labels.push(tsISO);
-        v.data.datasets[0].data.push(voltage);
-        v.update('none');
-      }
-      if (c) {
-        c.data.labels.push(tsISO);
-        c.data.datasets[0].data.push(current);
-        c.update('none');
-      }
-
-      const voltsEl = document.getElementById('battery-volts');
-      const currEl  = document.getElementById('battery-curr');
-      if (voltsEl && typeof voltage !== 'undefined' && voltage !== null) {
-        voltsEl.textContent = String(voltage);
-      }
-      if (currEl && typeof current !== 'undefined' && current !== null) {
-        currEl.textContent = String(current);
-      }
-    };
-  }
-
-  // ---------------- Add Graph button (persist selections) ----------------
-  function initAddGraphButton() {
-    const addGraphBtn = document.getElementById('addGraphBtn');
-    if (!addGraphBtn) return;
-
-    addGraphBtn.addEventListener('click', () => {
-      const select = document.getElementById('telemetrySelect');
-      if (!select) return;
-
-      const selectedMetrics = Array.from(select.selectedOptions).map(o => o.value);
-      if (!selectedMetrics.length) return;
-
-      // Delegate to GraphManager so titles, legend, styles, and layout match fixed charts
-      selectedMetrics.forEach(metric => {
-        if (window.graphManager && typeof window.graphManager.addGraph === 'function') {
-          window.graphManager.addGraph(metric); // e.g., 'acceleration', 'velocity', etc.
+          // Check local registry first
+          const chart = charts[id];
+          if (chart) {
+            try {
+              if (chart.canvas && chart.canvas.isConnected) {
+                chart.resize();
+              } else {
+                try { resizeObserver.unobserve(entry.target); } catch (_) {}
+              }
+            } catch (e) {
+              console.warn('[charts] resize failed:', e);
+              try { resizeObserver.unobserve(entry.target); } catch (_) {}
+            }
+          }
         }
       });
-
-      // PERSIST: merge into saved metric list (avoid duplicates)
-      addSavedMetrics(selectedMetrics);
-
-      // Close modal & reset selection
-      const modal = bootstrap.Modal.getInstance(document.getElementById('addGraphModal'));
-      if (modal) modal.hide();
-      select.selectedIndex = -1;
     });
 
-    // OPTIONAL: if GraphManager dispatches a custom removal event, persist the removal.
-    // Emit from GraphManager: document.dispatchEvent(new CustomEvent('graph:removed', { detail: { metric } }));
-    document.addEventListener('graph:removed', (e) => {
-      if (e?.detail?.metric) removeSavedMetric(e.detail.metric);
-    });
-  }
-
-  // ---------------- Persistence helpers (localStorage) ----------------
-  function restoreSavedGraphs() {
-    const saved = readSavedMetrics();
-    if (!Array.isArray(saved) || !saved.length) return;
-
-    // Recreate each saved metric graph via GraphManager
-    saved.forEach(metric => {
-      if (window.graphManager && typeof window.graphManager.addGraph === 'function') {
-        window.graphManager.addGraph(metric);
+    if (graphElement && graphElement.isConnected) {
+      try {
+        resizeObserver.observe(graphElement);
+      } catch (e) {
+        console.warn('[charts] observe failed:', e);
       }
-    });
-  }
-
-  function readSavedMetrics() {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      const parsed = raw ? JSON.parse(raw) : { metrics: [] };
-      return parsed.metrics || [];
-    } catch {
-      return [];
     }
+
+    // Return for cleanup
+    return resizeObserver;
   }
 
-  function writeSavedMetrics(metricsArr) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ metrics: metricsArr }));
-    } catch { /* no-op */ }
-  }
+  // Cleanup on page unload
+  const observers = new Set();
+  window.addEventListener('pagehide', () => {
+    observers.forEach(o => { try { o.disconnect(); } catch (_) {} });
+    observers.clear();
+  }, { capture: true });
 
-  function addSavedMetrics(newOnes) {
-    const existing = new Set(readSavedMetrics());
-    newOnes.forEach(m => existing.add(m));
-    writeSavedMetrics(Array.from(existing));
-  }
-
-  function removeSavedMetric(metric) {
-    const existing = readSavedMetrics().filter(m => m !== metric);
-    writeSavedMetrics(existing);
-  }
-
-  // ---------------- Legacy charts (safe no-ops unless canvases exist) ----------------
-  const legacyFlightCtx = document.getElementById('flightChart');
-  if (legacyFlightCtx) {
-    new Chart(legacyFlightCtx, {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [
-          { label: 'Altitude (m)',            data: [], borderColor: 'rgb(75, 192, 192)',  tension: 0.1, pointRadius: 0 },
-          { label: 'Vertical Velocity (m/s)', data: [], borderColor: 'rgb(255, 99, 132)', tension: 0.1, pointRadius: 0 }
-        ]
-      },
-      options: { responsive: true, scales: { y: { beginAtZero: true } } }
-    });
-  }
-
-  const legacyTelemetryCtx = document.getElementById('telemetryChart');
-  if (legacyTelemetryCtx) {
-    new Chart(legacyTelemetryCtx, {
-      type: 'line',
-      data: { labels: [], datasets: [] },
-      options: { responsive: true, scales: { y: { beginAtZero: true } } }
-    });
-  }
-
-  // ---------------- Radio status helpers (unchanged) ----------------
+  // Keep radio status helper
   function updateRadioStatus(radio, connected, healthy) {
     const connectedEl = document.getElementById(`${radio}Connected`);
     const healthEl    = document.getElementById(`${radio}Health`);
@@ -244,18 +275,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (healthEl)    healthEl.className    = `status-indicator ${healthy ? 'healthy' : 'unhealthy'}`;
   }
   window.updateRadioStatus = updateRadioStatus;
-
-  function initResize(graphElement) {
-    const resizeObserver = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        const canvas = entry.target.querySelector('canvas');
-        if (!canvas) continue;
-        const id = canvas.id;
-        if (charts[id]) charts[id].resize(); // only continuity charts are in this local registry
-      }
-    });
-    if (graphElement) resizeObserver.observe(graphElement);
-  }
 });
 
 // Keep any tab-change logging you had before (muted)

@@ -1,3 +1,62 @@
+<!-- Local layout fixes for Status page -->
+<style>
+  /* Let cards expand to fit content and never clip */
+  .status-container .card { overflow: visible; }
+  .status-container .card .card-body {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* Ensure IBIS card sits above subsequent cards (prevents overlap) */
+  #ibisCard { 
+    position: relative; 
+    z-index: 2; 
+    /* >>> Force the IBIS card to be taller <<< */
+    min-height: 180px; 
+    margin-bottom: 1rem; 
+  }
+  /* Give the IBIS body its own guaranteed space */
+  #ibisCard .card-body { 
+    min-height: 120px; 
+    padding-bottom: 1rem; 
+  }
+
+  #chargeCard { position: relative; z-index: 1; }
+
+  /* Make numbers align nicely */
+  .kv-mono { font-variant-numeric: tabular-nums; }
+
+  /* --- IBIS FSM layout tweaks (kept compact) --- */
+  #ibisCardBody .fsm-status { display: block; }
+  #ibisCardBody .fsm-states { line-height: 1.1; }
+  #ibisCardBody .progress { height: 26px; }
+
+  /* Voltage/Current neatly fitted just under Raw state */
+  #ibisCardBody .fsm-metrics {
+    display: grid;
+    grid-template-columns: 1fr;     /* stack by default for max fit */
+    row-gap: .4rem;
+    column-gap: 1rem;
+    align-items: baseline;
+    margin-top: .5rem;
+  }
+  @media (min-width: 768px) {
+    #ibisCardBody .fsm-metrics { grid-template-columns: 1fr 1fr; }
+  }
+  #ibisCardBody .fsm-metrics .metric {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: .35rem;
+    line-height: 1.2;
+    white-space: nowrap;            /* keep value + unit together */
+  }
+  #ibisCardBody .fsm-metrics .label {
+    color: #6c757d;
+    font-size: .9rem;
+  }
+</style>
+
 <div class="status-container p-3">
   <div class="row">
     <!-- Radio and IBIS Status Row -->
@@ -11,37 +70,45 @@
             </div>
             <div class="card-body">
               <div class="radio-status-container">
+
                 <!-- 433 MHz Radio -->
-                <div class="radio-module">
-                  <h6 class="radio-title">LoRa (433 MHz)</h6>
-                  <div class="status-indicators">
-                    <div class="status-indicator-group">
-                      <div class="status-indicator disconnected" id="radio433Connected"></div>
-                      <span class="status-label">Connection</span>
+                <div class="radio-module mb-3">
+                  <h6 class="radio-title">LoRa (433&nbsp;MHz)</h6>
+                  <div class="row g-2 align-items-center">
+                    <div class="col-4">
+                      <div class="small text-muted">RSSI</div>
+                      <div id="radio433RSSI" class="fw-semibold kv-mono">—</div>
                     </div>
-                    <div class="status-indicator-group">
-                      <div class="status-indicator unhealthy" id="radio433Health"></div>
-                      <span class="status-label">Health</span>
+                    <div class="col-4">
+                      <div class="small text-muted">SNR</div>
+                      <div id="radio433SNR" class="fw-semibold kv-mono">—</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="small text-muted">Health</div>
+                      <span id="radio433HealthLabel" class="badge">—</span>
                     </div>
                   </div>
-                  <small class="text-muted" id="radio433LastHeartbeat">Last: --:--:--</small>
                 </div>
 
                 <!-- 915 MHz Radio -->
                 <div class="radio-module">
-                  <h6 class="radio-title">LoRa (915 MHz)</h6>
-                  <div class="status-indicators">
-                    <div class="status-indicator-group">
-                      <div class="status-indicator disconnected" id="radio915Connected"></div>
-                      <span class="status-label">Connection</span>
+                  <h6 class="radio-title">LoRa (915&nbsp;MHz)</h6>
+                  <div class="row g-2 align-items-center">
+                    <div class="col-4">
+                      <div class="small text-muted">RSSI</div>
+                      <div id="radio915RSSI" class="fw-semibold kv-mono">—</div>
                     </div>
-                    <div class="status-indicator-group">
-                      <div class="status-indicator unhealthy" id="radio915Health"></div>
-                      <span class="status-label">Health</span>
+                    <div class="col-4">
+                      <div class="small text-muted">SNR</div>
+                      <div id="radio915SNR" class="fw-semibold kv-mono">—</div>
+                    </div>
+                    <div class="col-4">
+                      <div class="small text-muted">Health</div>
+                      <span id="radio915HealthLabel" class="badge">—</span>
                     </div>
                   </div>
-                  <small class="text-muted" id="radio915LastHeartbeat">Last: --:--:--</small>
                 </div>
+
               </div>
             </div>
           </div>
@@ -49,11 +116,11 @@
 
         <!-- IBIS FSM Status -->
         <div class="col-md-6">
-          <div class="card status-card">
+          <div class="card status-card" id="ibisCard">
             <div class="card-header py-2">
               <h5 class="card-title mb-0">IBIS FSM Status</h5>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="ibisCardBody">
               <div class="fsm-status">
                 <div class="progress mb-2">
                   <!-- Keep existing id="currentState" for your old code -->
@@ -74,26 +141,41 @@
                   </div>
                 </div>
 
-                <!-- New: raw state value for live telemetry (doesn't replace currentState) -->
-                <div class="small text-muted">
-                  Raw state: <strong id="status-state">—</strong>
+                <!-- Raw state value for live telemetry -->
+                <div class="small text-muted mb-1">
+                  Raw state: <strong id="status-state" class="kv-mono">—</strong>
                 </div>
-              </div>
+
+                <!-- Voltage/Current neatly fitted here -->
+                <div class="fsm-metrics">
+                  <div class="metric">
+                    <span class="label">Voltage:</span>
+                    <strong id="battery-volts" class="kv-mono">—</strong>
+                    <span class="text-muted">V</span>
+                  </div>
+                  <div class="metric">
+                    <span class="label">Current:</span>
+                    <strong id="battery-curr" class="kv-mono">—</strong>
+                    <span class="text-muted">mA</span>
+                  </div>
+                </div>
+              </div><!-- /.fsm-status -->
             </div>
           </div>
         </div>
-      </div>
-    </div>
+
+      </div><!-- /.row -->
+    </div><!-- /.col-12 -->
 
     <!-- Charge Continuity -->
     <div class="col-12">
-      <div class="card">
+      <div class="card" id="chargeCard">
         <div class="card-header d-flex align-items-center justify-content-between">
           <h5 class="card-title mb-0">Charge Continuity</h5>
-          <!-- New: quick live indicators (text) for main/drogue without touching existing charts -->
+          <!-- Quick live indicators (text) for main/drogue -->
           <div class="d-flex gap-3 small">
-            <span>Main: <strong id="status-main">—</strong></span>
-            <span>Drogue: <strong id="status-drog">—</strong></span>
+            <span>Main: <strong id="status-main" class="kv-mono">—</strong></span>
+            <span>Drogue: <strong id="status-drog" class="kv-mono">—</strong></span>
           </div>
         </div>
         <div class="card-body">
@@ -117,7 +199,7 @@
       </div>
     </div>
 
-    <!-- NEW: Battery Panel -->
+    <!-- Battery Panel (now: % + Charging only) -->
     <div class="col-12 mt-3">
       <div class="card">
         <div class="card-header">
@@ -126,12 +208,15 @@
         <div class="card-body">
           <div class="row row-cols-2 row-cols-md-4 g-3">
             <div>
-              Voltage: <strong id="battery-volts">—</strong> <span class="text-muted">V</span>
+              Battery: <strong id="battery-percent" class="kv-mono">—</strong> <span class="text-muted">%</span>
             </div>
             <div>
-              Current: <strong id="battery-curr">—</strong> <span class="text-muted">mA</span>
+              Charging: <strong id="battery-charging">—</strong>
             </div>
-            <!-- room for extra battery telemetry later -->
+            <div>
+              Voltage: <strong id="battery-voltage">—</strong>
+            </div>
+            <!-- Room for future battery telemetry -->
           </div>
         </div>
       </div>
@@ -173,7 +258,7 @@
               </div>
             </div>
 
-            <!-- ✅ NEW Fixed Graph C: Voltage -->
+            <!-- Fixed Graph C: Voltage -->
             <div class="col-12 col-md-6">
               <div class="card graph-card" data-fixed="1">
                 <div class="card-header py-2 d-flex justify-content-between align-items-center">
@@ -186,7 +271,7 @@
               </div>
             </div>
 
-            <!-- ✅ NEW Fixed Graph D: Current -->
+            <!-- Fixed Graph D: Current -->
             <div class="col-12 col-md-6">
               <div class="card graph-card" data-fixed="1">
                 <div class="card-header py-2 d-flex justify-content-between align-items-center">
@@ -217,15 +302,15 @@
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label class="form-label">Select Telemetry Data</label>
           <select class="form-select" id="telemetrySelect" multiple>
             <option value="velocity">Velocity</option>
             <option value="acceleration">Acceleration</option>
             <option value="altitude">Altitude</option>
             <option value="temperature">Temperature</option>
             <option value="pressure">Pressure</option>
+            <option value="voltage">Voltage</option>
+            <option value="current">Current</option>
           </select>
-          <div class="form-text">Two charts per row are enforced automatically.</div>
         </div>
       </div>
       <div class="modal-footer">

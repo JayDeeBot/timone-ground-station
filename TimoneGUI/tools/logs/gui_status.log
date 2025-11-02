@@ -1,0 +1,2760 @@
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 156, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 122, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 156, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 122, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sent telemetry: {'time': 1761359359779, 'temp': 23.409, 'pres': 101.27340000000001, 'alt': 50.334}
+Failed to post telemetry: <urlopen error [Errno 111] Connection refused>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 163, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 149, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sent telemetry: {'time': 1761359363886, 'temp': 23.391, 'pres': 101.26939999999999, 'alt': 50.066}
+Sent telemetry: {'time': 1761359365890, 'temp': 23.381, 'pres': 101.2675, 'alt': 49.933}
+Sent telemetry: {'time': 1761359367894, 'temp': 23.371, 'pres': 101.26570000000001, 'alt': 49.8}
+Sent telemetry: {'time': 1761359369897, 'temp': 23.361, 'pres': 101.2639, 'alt': 49.672}
+Sent telemetry: {'time': 1761359371900, 'temp': 23.35, 'pres': 101.26219999999999, 'alt': 49.549}
+Sent telemetry: {'time': 1761359373904, 'temp': 23.339, 'pres': 101.2606, 'alt': 49.434}
+Sent telemetry: {'time': 1761359375908, 'temp': 23.327, 'pres': 101.259, 'alt': 49.329}
+Sent telemetry: {'time': 1761359377912, 'temp': 23.315, 'pres': 101.2576, 'alt': 49.236}
+Sent telemetry: {'time': 1761359379916, 'temp': 23.303, 'pres': 101.2562, 'alt': 49.157}
+Sent telemetry: {'time': 1761359381920, 'temp': 23.291, 'pres': 101.2548, 'alt': 49.093}
+Sent telemetry: {'time': 1761359383924, 'temp': 23.278, 'pres': 101.25359999999999, 'alt': 49.045}
+Sent telemetry: {'time': 1761359385928, 'temp': 23.264, 'pres': 101.2524, 'alt': 49.014}
+Sent telemetry: {'time': 1761359387931, 'temp': 23.251, 'pres': 101.2514, 'alt': 49.001}
+Sent telemetry: {'time': 1761359389934, 'temp': 23.237, 'pres': 101.25030000000001, 'alt': 49.005}
+Sent telemetry: {'time': 1761359391937, 'temp': 23.222, 'pres': 101.24940000000001, 'alt': 49.027}
+Sent telemetry: {'time': 1761359393940, 'temp': 23.208, 'pres': 101.2486, 'alt': 49.066}
+Sent telemetry: {'time': 1761359395944, 'temp': 23.193, 'pres': 101.2479, 'alt': 49.122}
+Sent telemetry: {'time': 1761359397953, 'temp': 23.177, 'pres': 101.24719999999999, 'alt': 49.194}
+Sent telemetry: {'time': 1761359399952, 'temp': 23.162, 'pres': 101.2466, 'alt': 49.28}
+Sent telemetry: {'time': 1761359401955, 'temp': 23.146, 'pres': 101.2461, 'alt': 49.379}
+Sent telemetry: {'time': 1761359404060, 'temp': 23.128, 'pres': 101.2457, 'alt': 49.495}
+Sent telemetry: {'time': 1761359406063, 'temp': 23.112, 'pres': 101.24539999999999, 'alt': 49.614}
+Sent telemetry: {'time': 1761359408066, 'temp': 23.095, 'pres': 101.2452, 'alt': 49.741}
+Sent telemetry: {'time': 1761359410070, 'temp': 23.078, 'pres': 101.245, 'alt': 49.872}
+Sent telemetry: {'time': 1761359412074, 'temp': 23.06, 'pres': 101.245, 'alt': 50.005}
+Sent telemetry: {'time': 1761359414078, 'temp': 23.042, 'pres': 101.24510000000001, 'alt': 50.138}
+Sent telemetry: {'time': 1761359416082, 'temp': 23.024, 'pres': 101.2452, 'alt': 50.269}
+Sent telemetry: {'time': 1761359418086, 'temp': 23.006, 'pres': 101.24539999999999, 'alt': 50.394}
+Sent telemetry: {'time': 1761359420090, 'temp': 22.987, 'pres': 101.2457, 'alt': 50.513}
+Sent telemetry: {'time': 1761359422094, 'temp': 22.968, 'pres': 101.2461, 'alt': 50.623}
+Sent telemetry: {'time': 1761359424098, 'temp': 22.949, 'pres': 101.2466, 'alt': 50.722}
+Sent telemetry: {'time': 1761359426102, 'temp': 22.929, 'pres': 101.24719999999999, 'alt': 50.808}
+Sent telemetry: {'time': 1761359428106, 'temp': 22.909, 'pres': 101.2479, 'alt': 50.879}
+Sent telemetry: {'time': 1761359430110, 'temp': 22.889, 'pres': 101.2486, 'alt': 50.935}
+Sent telemetry: {'time': 1761359432114, 'temp': 22.869, 'pres': 101.2495, 'alt': 50.974}
+Sent telemetry: {'time': 1761359434117, 'temp': 22.848, 'pres': 101.2504, 'alt': 50.995}
+Sent telemetry: {'time': 1761359436120, 'temp': 22.828, 'pres': 101.2514, 'alt': 50.999}
+Sent telemetry: {'time': 1761359438124, 'temp': 22.807, 'pres': 101.2525, 'alt': 50.985}
+Sent telemetry: {'time': 1761359440127, 'temp': 22.785, 'pres': 101.25359999999999, 'alt': 50.954}
+Sent telemetry: {'time': 1761359442131, 'temp': 22.764, 'pres': 101.25489999999999, 'alt': 50.906}
+Sent telemetry: {'time': 1761359444235, 'temp': 22.741, 'pres': 101.2563, 'alt': 50.838}
+Sent telemetry: {'time': 1761359446239, 'temp': 22.719, 'pres': 101.2577, 'alt': 50.757}
+Sent telemetry: {'time': 1761359448242, 'temp': 22.697, 'pres': 101.25919999999999, 'alt': 50.664}
+Sent telemetry: {'time': 1761359450246, 'temp': 22.675, 'pres': 101.2607, 'alt': 50.558}
+Sent telemetry: {'time': 1761359452249, 'temp': 22.652, 'pres': 101.26230000000001, 'alt': 50.443}
+Sent telemetry: {'time': 1761359454253, 'temp': 22.63, 'pres': 101.264, 'alt': 50.319}
+Failed to post telemetry: <urlopen error [Errno 111] Connection refused>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 163, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 149, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Failed to post telemetry: <urlopen error [Errno 111] Connection refused>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 163, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 149, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Failed to post telemetry: <urlopen error [Errno 111] Connection refused>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 163, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 149, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Failed to post telemetry: <urlopen error [Errno 111] Connection refused>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 163, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 149, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Failed to post telemetry: <urlopen error [Errno 111] Connection refused>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 163, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 149, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sent telemetry: {'time': 1761359514468, 'temp': 21.897, 'pres': 101.33590000000001, 'alt': 50.521}
+Sent telemetry: {'time': 1761359516472, 'temp': 21.872, 'pres': 101.3386, 'alt': 50.63}
+Sent telemetry: {'time': 1761359518475, 'temp': 21.847, 'pres': 101.3412, 'alt': 50.728}
+Sent telemetry: {'time': 1761359520478, 'temp': 21.823, 'pres': 101.3438, 'alt': 50.813}
+Sent telemetry: {'time': 1761359522481, 'temp': 21.798, 'pres': 101.3464, 'alt': 50.883}
+Sent telemetry: {'time': 1761359524585, 'temp': 21.772, 'pres': 101.34909999999999, 'alt': 50.94}
+Sent telemetry: {'time': 1761359526588, 'temp': 21.747, 'pres': 101.35159999999999, 'alt': 50.977}
+Sent telemetry: {'time': 1761359528592, 'temp': 21.722, 'pres': 101.3541, 'alt': 50.997}
+Sent telemetry: {'time': 1761359530596, 'temp': 21.698, 'pres': 101.3566, 'alt': 50.999}
+Sent telemetry: {'time': 1761359532600, 'temp': 21.673, 'pres': 101.35900000000001, 'alt': 50.983}
+Sent telemetry: {'time': 1761359534605, 'temp': 21.649, 'pres': 101.3614, 'alt': 50.949}
+Sent telemetry: {'time': 1761359536608, 'temp': 21.625, 'pres': 101.3638, 'alt': 50.899}
+Sent telemetry: {'time': 1761359538612, 'temp': 21.6, 'pres': 101.36609999999999, 'alt': 50.833}
+Sent telemetry: {'time': 1761359540615, 'temp': 21.576, 'pres': 101.3684, 'alt': 50.752}
+Sent telemetry: {'time': 1761359542619, 'temp': 21.552, 'pres': 101.3706, 'alt': 50.657}
+Sent telemetry: {'time': 1761359544622, 'temp': 21.528, 'pres': 101.3727, 'alt': 50.551}
+Sent telemetry: {'time': 1761359546626, 'temp': 21.505, 'pres': 101.3749, 'alt': 50.435}
+Sent telemetry: {'time': 1761359548630, 'temp': 21.481, 'pres': 101.3769, 'alt': 50.311}
+Sent telemetry: {'time': 1761359550634, 'temp': 21.458, 'pres': 101.3789, 'alt': 50.182}
+Sent telemetry: {'time': 1761359552637, 'temp': 21.434, 'pres': 101.3809, 'alt': 50.049}
+Sent telemetry: {'time': 1761359554641, 'temp': 21.411, 'pres': 101.3828, 'alt': 49.916}
+Sent telemetry: {'time': 1761359556644, 'temp': 21.388, 'pres': 101.3846, 'alt': 49.784}
+Sent telemetry: {'time': 1761359558648, 'temp': 21.366, 'pres': 101.3863, 'alt': 49.656}
+Sent telemetry: {'time': 1761359560651, 'temp': 21.343, 'pres': 101.388, 'alt': 49.534}
+Sent telemetry: {'time': 1761359562655, 'temp': 21.321, 'pres': 101.3896, 'alt': 49.42}
+Sent telemetry: {'time': 1761359564759, 'temp': 21.297, 'pres': 101.3912, 'alt': 49.312}
+Sent telemetry: {'time': 1761359566762, 'temp': 21.275, 'pres': 101.3927, 'alt': 49.221}
+Sent telemetry: {'time': 1761359568766, 'temp': 21.253, 'pres': 101.39410000000001, 'alt': 49.145}
+Sent telemetry: {'time': 1761359570770, 'temp': 21.232, 'pres': 101.3954, 'alt': 49.083}
+Sent telemetry: {'time': 1761359572774, 'temp': 21.21, 'pres': 101.3966, 'alt': 49.038}
+Sent telemetry: {'time': 1761359574777, 'temp': 21.189, 'pres': 101.39779999999999, 'alt': 49.01}
+Sent telemetry: {'time': 1761359576781, 'temp': 21.168, 'pres': 101.39880000000001, 'alt': 49.0}
+Sent telemetry: {'time': 1761359578785, 'temp': 21.148, 'pres': 101.3998, 'alt': 49.008}
+Sent telemetry: {'time': 1761359580789, 'temp': 21.127, 'pres': 101.4007, 'alt': 49.033}
+Sent telemetry: {'time': 1761359582792, 'temp': 21.107, 'pres': 101.4015, 'alt': 49.075}
+Sent telemetry: {'time': 1761359584795, 'temp': 21.087, 'pres': 101.4023, 'alt': 49.134}
+Sent telemetry: {'time': 1761359586800, 'temp': 21.067, 'pres': 101.4029, 'alt': 49.209}
+Sent telemetry: {'time': 1761359588803, 'temp': 21.048, 'pres': 101.4035, 'alt': 49.297}
+Sent telemetry: {'time': 1761359590807, 'temp': 21.028, 'pres': 101.404, 'alt': 49.398}
+Sent telemetry: {'time': 1761359592811, 'temp': 21.009, 'pres': 101.4043, 'alt': 49.51}
+Sent telemetry: {'time': 1761359594815, 'temp': 20.991, 'pres': 101.4046, 'alt': 49.63}
+Sent telemetry: {'time': 1761359596818, 'temp': 20.972, 'pres': 101.4049, 'alt': 49.757}
+Sent telemetry: {'time': 1761359598822, 'temp': 20.954, 'pres': 101.405, 'alt': 49.888}
+Sent telemetry: {'time': 1761359600826, 'temp': 20.936, 'pres': 101.405, 'alt': 50.022}
+Sent telemetry: {'time': 1761359602830, 'temp': 20.919, 'pres': 101.4049, 'alt': 50.155}
+Sent telemetry: {'time': 1761359604934, 'temp': 20.901, 'pres': 101.4048, 'alt': 50.291}
+Sent telemetry: {'time': 1761359606937, 'temp': 20.884, 'pres': 101.4045, 'alt': 50.416}
+Sent telemetry: {'time': 1761359608942, 'temp': 20.867, 'pres': 101.4042, 'alt': 50.534}
+Sent telemetry: {'time': 1761359610948, 'temp': 20.851, 'pres': 101.4038, 'alt': 50.642}
+Sent telemetry: {'time': 1761359612951, 'temp': 20.835, 'pres': 101.4033, 'alt': 50.738}
+Sent telemetry: {'time': 1761359614954, 'temp': 20.82, 'pres': 101.40270000000001, 'alt': 50.821}
+Sent telemetry: {'time': 1761359616958, 'temp': 20.804, 'pres': 101.402, 'alt': 50.89}
+Sent telemetry: {'time': 1761359618962, 'temp': 20.789, 'pres': 101.40119999999999, 'alt': 50.943}
+Sent telemetry: {'time': 1761359620965, 'temp': 20.775, 'pres': 101.4004, 'alt': 50.979}
+Sent telemetry: {'time': 1761359622969, 'temp': 20.76, 'pres': 101.3995, 'alt': 50.997}
+Sent telemetry: {'time': 1761359624972, 'temp': 20.746, 'pres': 101.39840000000001, 'alt': 50.998}
+Sent telemetry: {'time': 1761359626976, 'temp': 20.733, 'pres': 101.3973, 'alt': 50.981}
+Sent telemetry: {'time': 1761359628980, 'temp': 20.72, 'pres': 101.3962, 'alt': 50.947}
+Sent telemetry: {'time': 1761359630984, 'temp': 20.707, 'pres': 101.39489999999999, 'alt': 50.895}
+Sent telemetry: {'time': 1761359632987, 'temp': 20.694, 'pres': 101.3936, 'alt': 50.828}
+Sent telemetry: {'time': 1761359634991, 'temp': 20.682, 'pres': 101.3921, 'alt': 50.746}
+Sent telemetry: {'time': 1761359636995, 'temp': 20.67, 'pres': 101.39059999999999, 'alt': 50.651}
+Sent telemetry: {'time': 1761359639002, 'temp': 20.659, 'pres': 101.3891, 'alt': 50.544}
+Sent telemetry: {'time': 1761359641007, 'temp': 20.648, 'pres': 101.3875, 'alt': 50.427}
+Sent telemetry: {'time': 1761359643010, 'temp': 20.637, 'pres': 101.3857, 'alt': 50.303}
+Sent telemetry: {'time': 1761359645114, 'temp': 20.626, 'pres': 101.38390000000001, 'alt': 50.166}
+Sent telemetry: {'time': 1761359647117, 'temp': 20.617, 'pres': 101.382, 'alt': 50.034}
+Sent telemetry: {'time': 1761359649120, 'temp': 20.607, 'pres': 101.3801, 'alt': 49.9}
+Sent telemetry: {'time': 1761359651124, 'temp': 20.598, 'pres': 101.3782, 'alt': 49.769}
+Sent telemetry: {'time': 1761359653127, 'temp': 20.589, 'pres': 101.3761, 'alt': 49.641}
+Sent telemetry: {'time': 1761359655130, 'temp': 20.581, 'pres': 101.3741, 'alt': 49.52}
+Sent telemetry: {'time': 1761359657136, 'temp': 20.573, 'pres': 101.37190000000001, 'alt': 49.407}
+Sent telemetry: {'time': 1761359659140, 'temp': 20.566, 'pres': 101.3697, 'alt': 49.305}
+Sent telemetry: {'time': 1761359661143, 'temp': 20.558, 'pres': 101.36749999999999, 'alt': 49.216}
+Sent telemetry: {'time': 1761359663147, 'temp': 20.552, 'pres': 101.3652, 'alt': 49.14}
+Sent telemetry: {'time': 1761359665150, 'temp': 20.545, 'pres': 101.3629, 'alt': 49.08}
+Sent telemetry: {'time': 1761359667153, 'temp': 20.539, 'pres': 101.3605, 'alt': 49.036}
+Sent telemetry: {'time': 1761359669159, 'temp': 20.534, 'pres': 101.35810000000001, 'alt': 49.009}
+Sent telemetry: {'time': 1761359671161, 'temp': 20.529, 'pres': 101.35560000000001, 'alt': 49.0}
+Sent telemetry: {'time': 1761359673164, 'temp': 20.524, 'pres': 101.3532, 'alt': 49.009}
+Sent telemetry: {'time': 1761359675168, 'temp': 20.52, 'pres': 101.3506, 'alt': 49.035}
+Sent telemetry: {'time': 1761359677171, 'temp': 20.516, 'pres': 101.3481, 'alt': 49.079}
+Sent telemetry: {'time': 1761359679175, 'temp': 20.513, 'pres': 101.3455, 'alt': 49.139}
+Sent telemetry: {'time': 1761359681179, 'temp': 20.51, 'pres': 101.3429, 'alt': 49.214}
+Sent telemetry: {'time': 1761359683183, 'temp': 20.507, 'pres': 101.3403, 'alt': 49.303}
+Sent telemetry: {'time': 1761359685186, 'temp': 20.505, 'pres': 101.3377, 'alt': 49.405}
+Sent telemetry: {'time': 1761359687290, 'temp': 20.503, 'pres': 101.3349, 'alt': 49.523}
+Sent telemetry: {'time': 1761359689293, 'temp': 20.502, 'pres': 101.3323, 'alt': 49.644}
+Sent telemetry: {'time': 1761359691297, 'temp': 20.501, 'pres': 101.3296, 'alt': 49.772}
+Sent telemetry: {'time': 1761359693301, 'temp': 20.5, 'pres': 101.3269, 'alt': 49.904}
+Sending telemetry: {'type': 'baro', 'temp': 20.518, 'pres': 101.3006}
+Sending telemetry: {'type': 'baro', 'temp': 20.522, 'pres': 101.2981}
+Sending telemetry: {'type': 'baro', 'temp': 20.527, 'pres': 101.29560000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.531, 'pres': 101.29310000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.537, 'pres': 101.2907}
+Sending telemetry: {'type': 'baro', 'temp': 20.542, 'pres': 101.2883}
+Sending telemetry: {'type': 'baro', 'temp': 20.549, 'pres': 101.2859}
+Sending telemetry: {'type': 'baro', 'temp': 20.555, 'pres': 101.2835}
+Sending telemetry: {'type': 'baro', 'temp': 20.562, 'pres': 101.2812}
+Sending telemetry: {'type': 'baro', 'temp': 20.57, 'pres': 101.279}
+Sending telemetry: {'type': 'baro', 'temp': 20.577, 'pres': 101.2769}
+Sending telemetry: {'type': 'baro', 'temp': 20.586, 'pres': 101.2748}
+Sending telemetry: {'type': 'baro', 'temp': 20.594, 'pres': 101.2727}
+Sending telemetry: {'type': 'baro', 'temp': 20.603, 'pres': 101.2707}
+Sending telemetry: {'type': 'baro', 'temp': 20.612, 'pres': 101.2688}
+Sending telemetry: {'type': 'baro', 'temp': 20.622, 'pres': 101.26689999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.632, 'pres': 101.26509999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.643, 'pres': 101.2634}
+Sending telemetry: {'type': 'baro', 'temp': 20.653, 'pres': 101.26169999999999}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.676, 'pres': 101.2586}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.701, 'pres': 101.2558}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.726, 'pres': 101.2532}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.753, 'pres': 101.251}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.712, 'pres': 101.2948}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.736, 'pres': 101.29729999999999}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.761, 'pres': 101.2998}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.786, 'pres': 101.3024}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.81, 'pres': 101.3049}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 22.233, 'pres': 101.3005}
+Sending telemetry: {'type': 'baro', 'temp': 22.208, 'pres': 101.3031}
+Sending telemetry: {'type': 'baro', 'temp': 22.183, 'pres': 101.3056}
+Sending telemetry: {'type': 'baro', 'temp': 22.158, 'pres': 101.3082}
+Sending telemetry: {'type': 'baro', 'temp': 22.133, 'pres': 101.3109}
+Sending telemetry: {'type': 'baro', 'temp': 22.108, 'pres': 101.3135}
+Sending telemetry: {'type': 'baro', 'temp': 22.083, 'pres': 101.31609999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.058, 'pres': 101.3188}
+Sending telemetry: {'type': 'baro', 'temp': 22.033, 'pres': 101.3215}
+Sending telemetry: {'type': 'baro', 'temp': 22.008, 'pres': 101.3241}
+Sending telemetry: {'type': 'baro', 'temp': 21.983, 'pres': 101.3268}
+Sending telemetry: {'type': 'baro', 'temp': 21.958, 'pres': 101.3295}
+Sending telemetry: {'type': 'baro', 'temp': 21.933, 'pres': 101.3321}
+Sending telemetry: {'type': 'baro', 'temp': 21.908, 'pres': 101.3348}
+Sending telemetry: {'type': 'baro', 'temp': 21.883, 'pres': 101.3374}
+Sending telemetry: {'type': 'baro', 'temp': 21.858, 'pres': 101.34009999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.833, 'pres': 101.34270000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.808, 'pres': 101.3453}
+Sending telemetry: {'type': 'baro', 'temp': 21.783, 'pres': 101.34790000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.759, 'pres': 101.35040000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.733, 'pres': 101.3531}
+Sending telemetry: {'type': 'baro', 'temp': 21.708, 'pres': 101.35549999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.684, 'pres': 101.358}
+Sending telemetry: {'type': 'baro', 'temp': 21.659, 'pres': 101.3604}
+Sending telemetry: {'type': 'baro', 'temp': 21.635, 'pres': 101.36280000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.611, 'pres': 101.3651}
+Sending telemetry: {'type': 'baro', 'temp': 21.587, 'pres': 101.3674}
+Sending telemetry: {'type': 'baro', 'temp': 21.562, 'pres': 101.3696}
+Sending telemetry: {'type': 'baro', 'temp': 21.539, 'pres': 101.3718}
+Sending telemetry: {'type': 'baro', 'temp': 21.515, 'pres': 101.374}
+Sending telemetry: {'type': 'baro', 'temp': 21.491, 'pres': 101.3761}
+Sending telemetry: {'type': 'baro', 'temp': 21.468, 'pres': 101.37809999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.444, 'pres': 101.3801}
+Sending telemetry: {'type': 'baro', 'temp': 21.421, 'pres': 101.382}
+Sending telemetry: {'type': 'baro', 'temp': 21.398, 'pres': 101.3838}
+Sending telemetry: {'type': 'baro', 'temp': 21.375, 'pres': 101.3856}
+Sending telemetry: {'type': 'baro', 'temp': 21.353, 'pres': 101.38730000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.33, 'pres': 101.3889}
+Sending telemetry: {'type': 'baro', 'temp': 21.308, 'pres': 101.3905}
+Sending telemetry: {'type': 'baro', 'temp': 21.286, 'pres': 101.392}
+Sending telemetry: {'type': 'baro', 'temp': 21.263, 'pres': 101.39349999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.241, 'pres': 101.3948}
+Sending telemetry: {'type': 'baro', 'temp': 21.219, 'pres': 101.3961}
+Sending telemetry: {'type': 'baro', 'temp': 21.198, 'pres': 101.3973}
+Sending telemetry: {'type': 'baro', 'temp': 21.177, 'pres': 101.39840000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.156, 'pres': 101.3994}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.136, 'pres': 101.4004}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.892, 'pres': 101.4047}
+Sending telemetry: {'type': 'baro', 'temp': 20.875, 'pres': 101.4044}
+Sending telemetry: {'type': 'baro', 'temp': 20.858, 'pres': 101.404}
+Sending telemetry: {'type': 'baro', 'temp': 20.842, 'pres': 101.4035}
+Sending telemetry: {'type': 'baro', 'temp': 20.826, 'pres': 101.4029}
+Sending telemetry: {'type': 'baro', 'temp': 20.811, 'pres': 101.4023}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.796, 'pres': 101.4016}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.892, 'pres': 101.2453}
+Sending telemetry: {'type': 'baro', 'temp': 20.909, 'pres': 101.24510000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.927, 'pres': 101.245}
+Sending telemetry: {'type': 'baro', 'temp': 20.944, 'pres': 101.245}
+Sending telemetry: {'type': 'baro', 'temp': 20.962, 'pres': 101.24510000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.98, 'pres': 101.2452}
+Sending telemetry: {'type': 'baro', 'temp': 20.999, 'pres': 101.2455}
+Sending telemetry: {'type': 'baro', 'temp': 21.018, 'pres': 101.2458}
+Sending telemetry: {'type': 'baro', 'temp': 21.037, 'pres': 101.2462}
+Sending telemetry: {'type': 'baro', 'temp': 21.056, 'pres': 101.2468}
+Sending telemetry: {'type': 'baro', 'temp': 21.076, 'pres': 101.2474}
+Sending telemetry: {'type': 'baro', 'temp': 21.096, 'pres': 101.248}
+Sending telemetry: {'type': 'baro', 'temp': 21.117, 'pres': 101.2488}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.242, 'pres': 101.2553}
+Sending telemetry: {'type': 'baro', 'temp': 21.264, 'pres': 101.2566}
+Sending telemetry: {'type': 'baro', 'temp': 21.286, 'pres': 101.25800000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.308, 'pres': 101.2595}
+Sending telemetry: {'type': 'baro', 'temp': 21.33, 'pres': 101.2611}
+Sending telemetry: {'type': 'baro', 'temp': 21.353, 'pres': 101.2627}
+Sending telemetry: {'type': 'baro', 'temp': 21.376, 'pres': 101.2644}
+Sending telemetry: {'type': 'baro', 'temp': 21.399, 'pres': 101.2662}
+Sending telemetry: {'type': 'baro', 'temp': 21.422, 'pres': 101.2681}
+Sending telemetry: {'type': 'baro', 'temp': 21.445, 'pres': 101.27000000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.468, 'pres': 101.2719}
+Sending telemetry: {'type': 'baro', 'temp': 21.492, 'pres': 101.274}
+Sending telemetry: {'type': 'baro', 'temp': 21.515, 'pres': 101.2761}
+Sending telemetry: {'type': 'baro', 'temp': 21.539, 'pres': 101.2782}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.563, 'pres': 101.3696}
+Sending telemetry: {'type': 'baro', 'temp': 21.539, 'pres': 101.3718}
+Sending telemetry: {'type': 'baro', 'temp': 21.515, 'pres': 101.374}
+Sending telemetry: {'type': 'baro', 'temp': 21.49, 'pres': 101.3761}
+Sending telemetry: {'type': 'baro', 'temp': 21.467, 'pres': 101.3782}
+Sending telemetry: {'type': 'baro', 'temp': 21.443, 'pres': 101.3801}
+Sending telemetry: {'type': 'baro', 'temp': 21.42, 'pres': 101.382}
+Sending telemetry: {'type': 'baro', 'temp': 21.397, 'pres': 101.38390000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.374, 'pres': 101.3857}
+Sending telemetry: {'type': 'baro', 'temp': 21.352, 'pres': 101.3874}
+Sending telemetry: {'type': 'baro', 'temp': 21.329, 'pres': 101.389}
+Sending telemetry: {'type': 'baro', 'temp': 21.307, 'pres': 101.39059999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.285, 'pres': 101.3921}
+Sending telemetry: {'type': 'baro', 'temp': 21.263, 'pres': 101.39349999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.241, 'pres': 101.3948}
+Sending telemetry: {'type': 'baro', 'temp': 21.22, 'pres': 101.3961}
+Sending telemetry: {'type': 'baro', 'temp': 21.198, 'pres': 101.3973}
+Sending telemetry: {'type': 'baro', 'temp': 21.177, 'pres': 101.39840000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.156, 'pres': 101.3994}
+Sending telemetry: {'type': 'baro', 'temp': 21.136, 'pres': 101.4003}
+Sending telemetry: {'type': 'baro', 'temp': 21.115, 'pres': 101.40119999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.095, 'pres': 101.402}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 21.075, 'pres': 101.40270000000001}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 22.879, 'pres': 101.401}
+Sending telemetry: {'type': 'baro', 'temp': 22.899, 'pres': 101.40180000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.919, 'pres': 101.4025}
+Sending telemetry: {'type': 'baro', 'temp': 22.939, 'pres': 101.4031}
+Sending telemetry: {'type': 'baro', 'temp': 22.958, 'pres': 101.4036}
+Sending telemetry: {'type': 'baro', 'temp': 22.977, 'pres': 101.4041}
+Sending telemetry: {'type': 'baro', 'temp': 22.996, 'pres': 101.4044}
+Sending telemetry: {'type': 'baro', 'temp': 23.015, 'pres': 101.4047}
+Sending telemetry: {'type': 'baro', 'temp': 23.033, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 23.051, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 23.069, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 23.086, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 23.103, 'pres': 101.4047}
+Sending telemetry: {'type': 'baro', 'temp': 23.121, 'pres': 101.4044}
+Sending telemetry: {'type': 'baro', 'temp': 23.138, 'pres': 101.4041}
+Sending telemetry: {'type': 'baro', 'temp': 23.154, 'pres': 101.4036}
+Sending telemetry: {'type': 'baro', 'temp': 23.17, 'pres': 101.4031}
+Sending telemetry: {'type': 'baro', 'temp': 23.185, 'pres': 101.4025}
+Sending telemetry: {'type': 'baro', 'temp': 23.2, 'pres': 101.40180000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.215, 'pres': 101.401}
+Sending telemetry: {'type': 'baro', 'temp': 23.23, 'pres': 101.4001}
+Sending telemetry: {'type': 'baro', 'temp': 23.244, 'pres': 101.3992}
+Sending telemetry: {'type': 'baro', 'temp': 23.258, 'pres': 101.3981}
+Sending telemetry: {'type': 'baro', 'temp': 23.271, 'pres': 101.397}
+Sending telemetry: {'type': 'baro', 'temp': 23.284, 'pres': 101.3958}
+Sending telemetry: {'type': 'baro', 'temp': 23.297, 'pres': 101.39450000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.309, 'pres': 101.3931}
+Sending telemetry: {'type': 'baro', 'temp': 23.321, 'pres': 101.3917}
+Sending telemetry: {'type': 'baro', 'temp': 23.333, 'pres': 101.39020000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.344, 'pres': 101.3886}
+Sending telemetry: {'type': 'baro', 'temp': 23.355, 'pres': 101.3869}
+Sending telemetry: {'type': 'baro', 'temp': 23.366, 'pres': 101.3852}
+Sending telemetry: {'type': 'baro', 'temp': 23.376, 'pres': 101.3834}
+Sending telemetry: {'type': 'baro', 'temp': 23.386, 'pres': 101.3815}
+Sending telemetry: {'type': 'baro', 'temp': 23.396, 'pres': 101.37960000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.405, 'pres': 101.3776}
+Sending telemetry: {'type': 'baro', 'temp': 23.413, 'pres': 101.3755}
+Sending telemetry: {'type': 'baro', 'temp': 23.421, 'pres': 101.3734}
+Sending telemetry: {'type': 'baro', 'temp': 23.429, 'pres': 101.37129999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.437, 'pres': 101.3691}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 23.444, 'pres': 101.3668}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 23.45, 'pres': 101.36449999999999}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 23.456, 'pres': 101.3622}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 23.462, 'pres': 101.35979999999999}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 22.622, 'pres': 101.3854}
+Sending telemetry: {'type': 'baro', 'temp': 22.645, 'pres': 101.3871}
+Sending telemetry: {'type': 'baro', 'temp': 22.668, 'pres': 101.3888}
+Sending telemetry: {'type': 'baro', 'temp': 22.69, 'pres': 101.3904}
+Sending telemetry: {'type': 'baro', 'temp': 22.712, 'pres': 101.39189999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.734, 'pres': 101.3933}
+Sending telemetry: {'type': 'baro', 'temp': 22.756, 'pres': 101.3946}
+Sending telemetry: {'type': 'baro', 'temp': 22.777, 'pres': 101.3959}
+Sending telemetry: {'type': 'baro', 'temp': 22.799, 'pres': 101.3971}
+Sending telemetry: {'type': 'baro', 'temp': 22.82, 'pres': 101.3982}
+Sending telemetry: {'type': 'baro', 'temp': 22.841, 'pres': 101.39930000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.861, 'pres': 101.4002}
+Sending telemetry: {'type': 'baro', 'temp': 22.882, 'pres': 101.4011}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 23.362, 'pres': 101.38579999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.373, 'pres': 101.384}
+Sending telemetry: {'type': 'baro', 'temp': 23.383, 'pres': 101.3822}
+Sending telemetry: {'type': 'baro', 'temp': 23.392, 'pres': 101.3803}
+Sending telemetry: {'type': 'baro', 'temp': 23.401, 'pres': 101.3783}
+Sending telemetry: {'type': 'baro', 'temp': 23.41, 'pres': 101.3763}
+Sending telemetry: {'type': 'baro', 'temp': 23.418, 'pres': 101.3742}
+Sending telemetry: {'type': 'baro', 'temp': 23.426, 'pres': 101.3721}
+Sending telemetry: {'type': 'baro', 'temp': 23.434, 'pres': 101.3699}
+Sending telemetry: {'type': 'baro', 'temp': 23.441, 'pres': 101.3677}
+Sending telemetry: {'type': 'baro', 'temp': 23.448, 'pres': 101.3654}
+Sending telemetry: {'type': 'baro', 'temp': 23.454, 'pres': 101.3631}
+Sending telemetry: {'type': 'baro', 'temp': 23.46, 'pres': 101.3607}
+Sending telemetry: {'type': 'baro', 'temp': 23.466, 'pres': 101.3583}
+Sending telemetry: {'type': 'baro', 'temp': 23.471, 'pres': 101.3558}
+Sending telemetry: {'type': 'baro', 'temp': 23.476, 'pres': 101.3532}
+Sending telemetry: {'type': 'baro', 'temp': 23.48, 'pres': 101.35069999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.484, 'pres': 101.34819999999999}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 22.519, 'pres': 101.2731}
+Sending telemetry: {'type': 'baro', 'temp': 22.495, 'pres': 101.2751}
+Sending telemetry: {'type': 'baro', 'temp': 22.472, 'pres': 101.27720000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.448, 'pres': 101.2794}
+Sending telemetry: {'type': 'baro', 'temp': 22.424, 'pres': 101.2816}
+Sending telemetry: {'type': 'baro', 'temp': 22.4, 'pres': 101.2839}
+Sending telemetry: {'type': 'baro', 'temp': 22.376, 'pres': 101.2862}
+Sending telemetry: {'type': 'baro', 'temp': 22.351, 'pres': 101.2886}
+Sending telemetry: {'type': 'baro', 'temp': 22.327, 'pres': 101.291}
+Sending telemetry: {'type': 'baro', 'temp': 22.302, 'pres': 101.29339999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.278, 'pres': 101.29589999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.253, 'pres': 101.2984}
+Sending telemetry: {'type': 'baro', 'temp': 22.228, 'pres': 101.3009}
+Sending telemetry: {'type': 'baro', 'temp': 22.204, 'pres': 101.3035}
+Sending telemetry: {'type': 'baro', 'temp': 22.179, 'pres': 101.3061}
+Sending telemetry: {'type': 'baro', 'temp': 22.154, 'pres': 101.3087}
+Sending telemetry: {'type': 'baro', 'temp': 22.129, 'pres': 101.3113}
+Sending telemetry: {'type': 'baro', 'temp': 22.104, 'pres': 101.3139}
+Sending telemetry: {'type': 'baro', 'temp': 22.079, 'pres': 101.31660000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.054, 'pres': 101.3192}
+Sending telemetry: {'type': 'baro', 'temp': 22.028, 'pres': 101.322}
+Sending telemetry: {'type': 'baro', 'temp': 22.003, 'pres': 101.32469999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.978, 'pres': 101.3274}
+Sending telemetry: {'type': 'baro', 'temp': 21.953, 'pres': 101.3301}
+Sending telemetry: {'type': 'baro', 'temp': 21.928, 'pres': 101.3327}
+Sending telemetry: {'type': 'baro', 'temp': 21.903, 'pres': 101.3354}
+Sending telemetry: {'type': 'baro', 'temp': 21.878, 'pres': 101.338}
+Sending telemetry: {'type': 'baro', 'temp': 21.853, 'pres': 101.3406}
+Sending telemetry: {'type': 'baro', 'temp': 21.828, 'pres': 101.3432}
+Sending telemetry: {'type': 'baro', 'temp': 21.803, 'pres': 101.3458}
+Sending telemetry: {'type': 'baro', 'temp': 21.778, 'pres': 101.3484}
+Sending telemetry: {'type': 'baro', 'temp': 21.753, 'pres': 101.351}
+Sending telemetry: {'type': 'baro', 'temp': 21.729, 'pres': 101.3535}
+Sending telemetry: {'type': 'baro', 'temp': 21.704, 'pres': 101.35589999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.68, 'pres': 101.35839999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.655, 'pres': 101.3608}
+Sending telemetry: {'type': 'baro', 'temp': 21.631, 'pres': 101.36319999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.607, 'pres': 101.3655}
+Sending telemetry: {'type': 'baro', 'temp': 21.583, 'pres': 101.3678}
+Sending telemetry: {'type': 'baro', 'temp': 21.559, 'pres': 101.37}
+Sending telemetry: {'type': 'baro', 'temp': 21.533, 'pres': 101.3723}
+Sending telemetry: {'type': 'baro', 'temp': 21.51, 'pres': 101.37440000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.486, 'pres': 101.3765}
+Sending telemetry: {'type': 'baro', 'temp': 21.463, 'pres': 101.3785}
+Sending telemetry: {'type': 'baro', 'temp': 21.439, 'pres': 101.3805}
+Sending telemetry: {'type': 'baro', 'temp': 21.416, 'pres': 101.38239999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.393, 'pres': 101.38419999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.37, 'pres': 101.386}
+Sending telemetry: {'type': 'baro', 'temp': 21.348, 'pres': 101.3877}
+Sending telemetry: {'type': 'baro', 'temp': 21.325, 'pres': 101.3893}
+Sending telemetry: {'type': 'baro', 'temp': 21.303, 'pres': 101.3908}
+Sending telemetry: {'type': 'baro', 'temp': 21.281, 'pres': 101.3923}
+Sending telemetry: {'type': 'baro', 'temp': 21.259, 'pres': 101.3937}
+Sending telemetry: {'type': 'baro', 'temp': 21.237, 'pres': 101.3951}
+Sending telemetry: {'type': 'baro', 'temp': 21.216, 'pres': 101.3963}
+Sending telemetry: {'type': 'baro', 'temp': 21.195, 'pres': 101.39750000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.174, 'pres': 101.3986}
+Sending telemetry: {'type': 'baro', 'temp': 21.153, 'pres': 101.39959999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.132, 'pres': 101.4005}
+Sending telemetry: {'type': 'baro', 'temp': 21.112, 'pres': 101.4013}
+Sending telemetry: {'type': 'baro', 'temp': 21.091, 'pres': 101.40209999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.071, 'pres': 101.4028}
+Sending telemetry: {'type': 'baro', 'temp': 21.052, 'pres': 101.4034}
+Sending telemetry: {'type': 'baro', 'temp': 21.032, 'pres': 101.4039}
+Sending telemetry: {'type': 'baro', 'temp': 21.013, 'pres': 101.4043}
+Sending telemetry: {'type': 'baro', 'temp': 20.995, 'pres': 101.4046}
+Sending telemetry: {'type': 'baro', 'temp': 20.976, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 20.958, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 20.94, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 20.923, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 20.905, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 20.888, 'pres': 101.4046}
+Sending telemetry: {'type': 'baro', 'temp': 20.872, 'pres': 101.4043}
+Sending telemetry: {'type': 'baro', 'temp': 20.855, 'pres': 101.4039}
+Sending telemetry: {'type': 'baro', 'temp': 20.839, 'pres': 101.4034}
+Sending telemetry: {'type': 'baro', 'temp': 20.824, 'pres': 101.4029}
+Sending telemetry: {'type': 'baro', 'temp': 20.808, 'pres': 101.40220000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.793, 'pres': 101.4014}
+Sending telemetry: {'type': 'baro', 'temp': 20.778, 'pres': 101.4006}
+Sending telemetry: {'type': 'baro', 'temp': 20.764, 'pres': 101.3997}
+Sending telemetry: {'type': 'baro', 'temp': 20.749, 'pres': 101.39869999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.736, 'pres': 101.3976}
+Sending telemetry: {'type': 'baro', 'temp': 20.722, 'pres': 101.3964}
+Sending telemetry: {'type': 'baro', 'temp': 20.709, 'pres': 101.3952}
+Sending telemetry: {'type': 'baro', 'temp': 20.697, 'pres': 101.3938}
+Sending telemetry: {'type': 'baro', 'temp': 20.685, 'pres': 101.3924}
+Sending telemetry: {'type': 'baro', 'temp': 20.673, 'pres': 101.39099999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.661, 'pres': 101.3894}
+Sending telemetry: {'type': 'baro', 'temp': 20.65, 'pres': 101.3878}
+Sending telemetry: {'type': 'baro', 'temp': 20.639, 'pres': 101.3861}
+Sending telemetry: {'type': 'baro', 'temp': 20.629, 'pres': 101.3843}
+Sending telemetry: {'type': 'baro', 'temp': 20.619, 'pres': 101.38250000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.61, 'pres': 101.3806}
+Sending telemetry: {'type': 'baro', 'temp': 20.6, 'pres': 101.37870000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.592, 'pres': 101.3767}
+Sending telemetry: {'type': 'baro', 'temp': 20.583, 'pres': 101.3746}
+Sending telemetry: {'type': 'baro', 'temp': 20.575, 'pres': 101.3725}
+Sending telemetry: {'type': 'baro', 'temp': 20.567, 'pres': 101.3703}
+Sending telemetry: {'type': 'baro', 'temp': 20.56, 'pres': 101.3681}
+Sending telemetry: {'type': 'baro', 'temp': 20.553, 'pres': 101.36580000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.547, 'pres': 101.3634}
+Sending telemetry: {'type': 'baro', 'temp': 20.541, 'pres': 101.361}
+Sending telemetry: {'type': 'baro', 'temp': 20.535, 'pres': 101.3586}
+Sending telemetry: {'type': 'baro', 'temp': 20.53, 'pres': 101.3561}
+Sending telemetry: {'type': 'baro', 'temp': 20.525, 'pres': 101.3537}
+Sending telemetry: {'type': 'baro', 'temp': 20.521, 'pres': 101.35119999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.517, 'pres': 101.3486}
+Sending telemetry: {'type': 'baro', 'temp': 20.513, 'pres': 101.3461}
+Sending telemetry: {'type': 'baro', 'temp': 20.51, 'pres': 101.34349999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.507, 'pres': 101.3409}
+Sending telemetry: {'type': 'baro', 'temp': 20.505, 'pres': 101.3382}
+Sending telemetry: {'type': 'baro', 'temp': 20.503, 'pres': 101.3356}
+Sending telemetry: {'type': 'baro', 'temp': 20.502, 'pres': 101.3329}
+Sending telemetry: {'type': 'baro', 'temp': 20.501, 'pres': 101.3303}
+Sending telemetry: {'type': 'baro', 'temp': 20.5, 'pres': 101.32759999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.5, 'pres': 101.3249}
+Sending telemetry: {'type': 'baro', 'temp': 20.5, 'pres': 101.3223}
+Sending telemetry: {'type': 'baro', 'temp': 20.501, 'pres': 101.31960000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.502, 'pres': 101.3169}
+Sending telemetry: {'type': 'baro', 'temp': 20.503, 'pres': 101.3143}
+Sending telemetry: {'type': 'baro', 'temp': 20.505, 'pres': 101.3115}
+Sending telemetry: {'type': 'baro', 'temp': 20.508, 'pres': 101.30890000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.51, 'pres': 101.3063}
+Sending telemetry: {'type': 'baro', 'temp': 20.514, 'pres': 101.3037}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 22.345, 'pres': 101.3608}
+Sending telemetry: {'type': 'baro', 'temp': 22.37, 'pres': 101.36319999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.394, 'pres': 101.3655}
+Sending telemetry: {'type': 'baro', 'temp': 22.418, 'pres': 101.3678}
+Sending telemetry: {'type': 'baro', 'temp': 22.442, 'pres': 101.37}
+Sending telemetry: {'type': 'baro', 'temp': 22.466, 'pres': 101.37219999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.489, 'pres': 101.37440000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.513, 'pres': 101.3764}
+Sending telemetry: {'type': 'baro', 'temp': 22.537, 'pres': 101.3784}
+Sending telemetry: {'type': 'baro', 'temp': 22.561, 'pres': 101.3805}
+Sending telemetry: {'type': 'baro', 'temp': 22.584, 'pres': 101.38239999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.607, 'pres': 101.38419999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.63, 'pres': 101.386}
+Sending telemetry: {'type': 'baro', 'temp': 22.653, 'pres': 101.3877}
+Sending telemetry: {'type': 'baro', 'temp': 22.675, 'pres': 101.3893}
+Sending telemetry: {'type': 'baro', 'temp': 22.697, 'pres': 101.3909}
+Sending telemetry: {'type': 'baro', 'temp': 22.719, 'pres': 101.3923}
+Sending telemetry: {'type': 'baro', 'temp': 22.741, 'pres': 101.3937}
+Sending telemetry: {'type': 'baro', 'temp': 22.763, 'pres': 101.3951}
+Sending telemetry: {'type': 'baro', 'temp': 22.784, 'pres': 101.3963}
+Sending telemetry: {'type': 'baro', 'temp': 22.806, 'pres': 101.39750000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.827, 'pres': 101.3986}
+Sending telemetry: {'type': 'baro', 'temp': 22.847, 'pres': 101.39959999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.868, 'pres': 101.4005}
+Sending telemetry: {'type': 'baro', 'temp': 22.888, 'pres': 101.4013}
+Sending telemetry: {'type': 'baro', 'temp': 22.908, 'pres': 101.40209999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.928, 'pres': 101.4028}
+Sending telemetry: {'type': 'baro', 'temp': 22.948, 'pres': 101.4034}
+Sending telemetry: {'type': 'baro', 'temp': 22.967, 'pres': 101.4039}
+Sending telemetry: {'type': 'baro', 'temp': 22.987, 'pres': 101.4043}
+Sending telemetry: {'type': 'baro', 'temp': 23.006, 'pres': 101.4046}
+Sending telemetry: {'type': 'baro', 'temp': 23.024, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 23.042, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 23.06, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 23.078, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 23.095, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 23.112, 'pres': 101.4046}
+Sending telemetry: {'type': 'baro', 'temp': 23.129, 'pres': 101.4043}
+Sending telemetry: {'type': 'baro', 'temp': 23.145, 'pres': 101.4039}
+Sending telemetry: {'type': 'baro', 'temp': 23.161, 'pres': 101.4034}
+Sending telemetry: {'type': 'baro', 'temp': 23.177, 'pres': 101.4028}
+Sending telemetry: {'type': 'baro', 'temp': 23.192, 'pres': 101.40220000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.207, 'pres': 101.4014}
+Sending telemetry: {'type': 'baro', 'temp': 23.222, 'pres': 101.4006}
+Sending telemetry: {'type': 'baro', 'temp': 23.236, 'pres': 101.3997}
+Sending telemetry: {'type': 'baro', 'temp': 23.25, 'pres': 101.39869999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.264, 'pres': 101.3976}
+Sending telemetry: {'type': 'baro', 'temp': 23.277, 'pres': 101.3965}
+Sending telemetry: {'type': 'baro', 'temp': 23.29, 'pres': 101.3952}
+Sending telemetry: {'type': 'baro', 'temp': 23.303, 'pres': 101.3938}
+Sending telemetry: {'type': 'baro', 'temp': 23.315, 'pres': 101.3924}
+Sending telemetry: {'type': 'baro', 'temp': 23.327, 'pres': 101.3909}
+Sending telemetry: {'type': 'baro', 'temp': 23.339, 'pres': 101.3894}
+Sending telemetry: {'type': 'baro', 'temp': 23.35, 'pres': 101.3878}
+Sending telemetry: {'type': 'baro', 'temp': 23.361, 'pres': 101.3861}
+Sending telemetry: {'type': 'baro', 'temp': 23.371, 'pres': 101.3843}
+Sending telemetry: {'type': 'baro', 'temp': 23.381, 'pres': 101.38250000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.391, 'pres': 101.3806}
+Sending telemetry: {'type': 'baro', 'temp': 23.4, 'pres': 101.37870000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.409, 'pres': 101.3767}
+Sending telemetry: {'type': 'baro', 'temp': 23.417, 'pres': 101.3746}
+Sending telemetry: {'type': 'baro', 'temp': 23.425, 'pres': 101.3725}
+Sending telemetry: {'type': 'baro', 'temp': 23.433, 'pres': 101.3703}
+Sending telemetry: {'type': 'baro', 'temp': 23.44, 'pres': 101.3681}
+Sending telemetry: {'type': 'baro', 'temp': 23.447, 'pres': 101.36580000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.453, 'pres': 101.3635}
+Sending telemetry: {'type': 'baro', 'temp': 23.459, 'pres': 101.3611}
+Sending telemetry: {'type': 'baro', 'temp': 23.465, 'pres': 101.3587}
+Sending telemetry: {'type': 'baro', 'temp': 23.47, 'pres': 101.3563}
+Sending telemetry: {'type': 'baro', 'temp': 23.475, 'pres': 101.3537}
+Sending telemetry: {'type': 'baro', 'temp': 23.479, 'pres': 101.3511}
+Sending telemetry: {'type': 'baro', 'temp': 23.483, 'pres': 101.3486}
+Sending telemetry: {'type': 'baro', 'temp': 23.487, 'pres': 101.346}
+Sending telemetry: {'type': 'baro', 'temp': 23.49, 'pres': 101.34349999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.493, 'pres': 101.3408}
+Sending telemetry: {'type': 'baro', 'temp': 23.495, 'pres': 101.3382}
+Sending telemetry: {'type': 'baro', 'temp': 23.497, 'pres': 101.3356}
+Sending telemetry: {'type': 'baro', 'temp': 23.498, 'pres': 101.3329}
+Sending telemetry: {'type': 'baro', 'temp': 23.499, 'pres': 101.3303}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.32759999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.3249}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.3222}
+Sending telemetry: {'type': 'baro', 'temp': 23.499, 'pres': 101.31960000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.498, 'pres': 101.3169}
+Sending telemetry: {'type': 'baro', 'temp': 23.497, 'pres': 101.3143}
+Sending telemetry: {'type': 'baro', 'temp': 23.495, 'pres': 101.3116}
+Sending telemetry: {'type': 'baro', 'temp': 23.492, 'pres': 101.309}
+Sending telemetry: {'type': 'baro', 'temp': 23.49, 'pres': 101.3064}
+Sending telemetry: {'type': 'baro', 'temp': 23.487, 'pres': 101.3038}
+Sending telemetry: {'type': 'baro', 'temp': 23.483, 'pres': 101.30109999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.479, 'pres': 101.2986}
+Sending telemetry: {'type': 'baro', 'temp': 23.474, 'pres': 101.2961}
+Sending telemetry: {'type': 'baro', 'temp': 23.47, 'pres': 101.2936}
+Sending telemetry: {'type': 'baro', 'temp': 23.464, 'pres': 101.2912}
+Sending telemetry: {'type': 'baro', 'temp': 23.459, 'pres': 101.28880000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.453, 'pres': 101.2864}
+Sending telemetry: {'type': 'baro', 'temp': 23.446, 'pres': 101.2841}
+Sending telemetry: {'type': 'baro', 'temp': 23.439, 'pres': 101.2818}
+Sending telemetry: {'type': 'baro', 'temp': 23.432, 'pres': 101.2796}
+Sending telemetry: {'type': 'baro', 'temp': 23.425, 'pres': 101.2774}
+Sending telemetry: {'type': 'baro', 'temp': 23.416, 'pres': 101.2753}
+Sending telemetry: {'type': 'baro', 'temp': 23.408, 'pres': 101.2732}
+Sending telemetry: {'type': 'baro', 'temp': 23.399, 'pres': 101.2712}
+Sending telemetry: {'type': 'baro', 'temp': 23.39, 'pres': 101.2693}
+Sending telemetry: {'type': 'baro', 'temp': 23.38, 'pres': 101.2674}
+Sending telemetry: {'type': 'baro', 'temp': 23.37, 'pres': 101.26559999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.36, 'pres': 101.2638}
+Sending telemetry: {'type': 'baro', 'temp': 23.349, 'pres': 101.2621}
+Sending telemetry: {'type': 'baro', 'temp': 23.338, 'pres': 101.26050000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.326, 'pres': 101.25890000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.314, 'pres': 101.25739999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.302, 'pres': 101.256}
+Sending telemetry: {'type': 'baro', 'temp': 23.289, 'pres': 101.2547}
+Sending telemetry: {'type': 'baro', 'temp': 23.276, 'pres': 101.2535}
+Sending telemetry: {'type': 'baro', 'temp': 21.616, 'pres': 101.3646}
+Sending telemetry: {'type': 'baro', 'temp': 21.592, 'pres': 101.3669}
+Sending telemetry: {'type': 'baro', 'temp': 21.568, 'pres': 101.3691}
+Sending telemetry: {'type': 'baro', 'temp': 21.543, 'pres': 101.37140000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.519, 'pres': 101.3736}
+Sending telemetry: {'type': 'baro', 'temp': 21.495, 'pres': 101.3757}
+Sending telemetry: {'type': 'baro', 'temp': 21.472, 'pres': 101.3777}
+Sending telemetry: {'type': 'baro', 'temp': 21.449, 'pres': 101.3797}
+Sending telemetry: {'type': 'baro', 'temp': 21.425, 'pres': 101.3816}
+Sending telemetry: {'type': 'baro', 'temp': 21.402, 'pres': 101.3835}
+Sending telemetry: {'type': 'baro', 'temp': 21.379, 'pres': 101.3853}
+Sending telemetry: {'type': 'baro', 'temp': 21.357, 'pres': 101.387}
+Sending telemetry: {'type': 'baro', 'temp': 21.334, 'pres': 101.3886}
+Sending telemetry: {'type': 'baro', 'temp': 21.312, 'pres': 101.39020000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.29, 'pres': 101.3917}
+Sending telemetry: {'type': 'baro', 'temp': 21.268, 'pres': 101.39320000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.246, 'pres': 101.39450000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.224, 'pres': 101.3958}
+Sending telemetry: {'type': 'baro', 'temp': 21.203, 'pres': 101.397}
+Sending telemetry: {'type': 'baro', 'temp': 21.182, 'pres': 101.3981}
+Sending telemetry: {'type': 'baro', 'temp': 21.161, 'pres': 101.3992}
+Sending telemetry: {'type': 'baro', 'temp': 21.14, 'pres': 101.4001}
+Sending telemetry: {'type': 'baro', 'temp': 21.12, 'pres': 101.401}
+Sending telemetry: {'type': 'baro', 'temp': 21.099, 'pres': 101.40180000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.079, 'pres': 101.4025}
+Sending telemetry: {'type': 'baro', 'temp': 21.059, 'pres': 101.4032}
+Sending telemetry: {'type': 'baro', 'temp': 21.04, 'pres': 101.4037}
+Sending telemetry: {'type': 'baro', 'temp': 21.021, 'pres': 101.4041}
+Sending telemetry: {'type': 'baro', 'temp': 21.002, 'pres': 101.4045}
+Sending telemetry: {'type': 'baro', 'temp': 20.983, 'pres': 101.4047}
+Sending telemetry: {'type': 'baro', 'temp': 20.965, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 20.947, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 20.929, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 20.912, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 20.895, 'pres': 101.4047}
+Sending telemetry: {'type': 'baro', 'temp': 20.878, 'pres': 101.4044}
+Sending telemetry: {'type': 'baro', 'temp': 20.862, 'pres': 101.4041}
+Sending telemetry: {'type': 'baro', 'temp': 20.846, 'pres': 101.4036}
+Sending telemetry: {'type': 'baro', 'temp': 20.83, 'pres': 101.4031}
+Sending telemetry: {'type': 'baro', 'temp': 20.814, 'pres': 101.4025}
+Sending telemetry: {'type': 'baro', 'temp': 20.799, 'pres': 101.40180000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.784, 'pres': 101.401}
+Sending telemetry: {'type': 'baro', 'temp': 20.77, 'pres': 101.4001}
+Sending telemetry: {'type': 'baro', 'temp': 20.755, 'pres': 101.3991}
+Sending telemetry: {'type': 'baro', 'temp': 20.741, 'pres': 101.398}
+Sending telemetry: {'type': 'baro', 'temp': 20.728, 'pres': 101.3969}
+Sending telemetry: {'type': 'baro', 'temp': 20.715, 'pres': 101.3957}
+Sending telemetry: {'type': 'baro', 'temp': 20.702, 'pres': 101.39439999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.689, 'pres': 101.393}
+Sending telemetry: {'type': 'baro', 'temp': 20.677, 'pres': 101.39160000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.666, 'pres': 101.39}
+Sending telemetry: {'type': 'baro', 'temp': 20.655, 'pres': 101.3885}
+Sending telemetry: {'type': 'baro', 'temp': 20.644, 'pres': 101.38680000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.633, 'pres': 101.3851}
+Sending telemetry: {'type': 'baro', 'temp': 20.623, 'pres': 101.38329999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.613, 'pres': 101.3814}
+Sending telemetry: {'type': 'baro', 'temp': 20.604, 'pres': 101.3795}
+Sending telemetry: {'type': 'baro', 'temp': 20.595, 'pres': 101.3775}
+Sending telemetry: {'type': 'baro', 'temp': 20.586, 'pres': 101.3754}
+Sending telemetry: {'type': 'baro', 'temp': 20.578, 'pres': 101.3733}
+Sending telemetry: {'type': 'baro', 'temp': 20.57, 'pres': 101.3712}
+Sending telemetry: {'type': 'baro', 'temp': 20.563, 'pres': 101.369}
+Sending telemetry: {'type': 'baro', 'temp': 20.556, 'pres': 101.36670000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.549, 'pres': 101.3643}
+Sending telemetry: {'type': 'baro', 'temp': 20.543, 'pres': 101.362}
+Sending telemetry: {'type': 'baro', 'temp': 20.537, 'pres': 101.3596}
+Sending telemetry: {'type': 'baro', 'temp': 20.532, 'pres': 101.3571}
+Sending telemetry: {'type': 'baro', 'temp': 20.527, 'pres': 101.35470000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.522, 'pres': 101.35220000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.518, 'pres': 101.3497}
+Sending telemetry: {'type': 'baro', 'temp': 20.515, 'pres': 101.3471}
+Sending telemetry: {'type': 'baro', 'temp': 20.511, 'pres': 101.34450000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.509, 'pres': 101.3419}
+Sending telemetry: {'type': 'baro', 'temp': 20.506, 'pres': 101.33930000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.504, 'pres': 101.3367}
+Sending telemetry: {'type': 'baro', 'temp': 20.502, 'pres': 101.334}
+Sending telemetry: {'type': 'baro', 'temp': 20.501, 'pres': 101.3314}
+Sending telemetry: {'type': 'baro', 'temp': 20.5, 'pres': 101.3287}
+Sending telemetry: {'type': 'baro', 'temp': 20.5, 'pres': 101.326}
+Sending telemetry: {'type': 'baro', 'temp': 20.5, 'pres': 101.32329999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.501, 'pres': 101.3207}
+Sending telemetry: {'type': 'baro', 'temp': 20.501, 'pres': 101.318}
+Sending telemetry: {'type': 'baro', 'temp': 20.503, 'pres': 101.3154}
+Sending telemetry: {'type': 'baro', 'temp': 20.505, 'pres': 101.3126}
+Sending telemetry: {'type': 'baro', 'temp': 20.507, 'pres': 101.3099}
+Sending telemetry: {'type': 'baro', 'temp': 20.509, 'pres': 101.3073}
+Sending telemetry: {'type': 'baro', 'temp': 20.512, 'pres': 101.3047}
+Sending telemetry: {'type': 'baro', 'temp': 20.516, 'pres': 101.3022}
+Sending telemetry: {'type': 'baro', 'temp': 20.52, 'pres': 101.2996}
+Sending telemetry: {'type': 'baro', 'temp': 20.524, 'pres': 101.2971}
+Sending telemetry: {'type': 'baro', 'temp': 20.528, 'pres': 101.2946}
+Sending telemetry: {'type': 'baro', 'temp': 20.533, 'pres': 101.29220000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.539, 'pres': 101.28970000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.545, 'pres': 101.2874}
+Sending telemetry: {'type': 'baro', 'temp': 20.551, 'pres': 101.285}
+Sending telemetry: {'type': 'baro', 'temp': 20.558, 'pres': 101.2827}
+Sending telemetry: {'type': 'baro', 'temp': 20.565, 'pres': 101.28049999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.572, 'pres': 101.2783}
+Sending telemetry: {'type': 'baro', 'temp': 20.58, 'pres': 101.2761}
+Sending telemetry: {'type': 'baro', 'temp': 20.588, 'pres': 101.2741}
+Sending telemetry: {'type': 'baro', 'temp': 20.597, 'pres': 101.272}
+Sending telemetry: {'type': 'baro', 'temp': 20.606, 'pres': 101.2701}
+Sending telemetry: {'type': 'baro', 'temp': 20.616, 'pres': 101.2681}
+Sending telemetry: {'type': 'baro', 'temp': 20.625, 'pres': 101.2663}
+Sending telemetry: {'type': 'baro', 'temp': 20.636, 'pres': 101.2644}
+Sending telemetry: {'type': 'baro', 'temp': 20.647, 'pres': 101.2627}
+Sending telemetry: {'type': 'baro', 'temp': 20.658, 'pres': 101.2611}
+Sending telemetry: {'type': 'baro', 'temp': 20.669, 'pres': 101.2595}
+Sending telemetry: {'type': 'baro', 'temp': 20.681, 'pres': 101.25800000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.693, 'pres': 101.2566}
+Sending telemetry: {'type': 'baro', 'temp': 20.706, 'pres': 101.2552}
+Sending telemetry: {'type': 'baro', 'temp': 20.718, 'pres': 101.25399999999999}
+Sending telemetry: {'type': 'baro', 'temp': 20.732, 'pres': 101.25280000000001}
+Sending telemetry: {'type': 'baro', 'temp': 20.745, 'pres': 101.2517}
+Sending telemetry: {'type': 'baro', 'temp': 22.073, 'pres': 101.3327}
+Sending telemetry: {'type': 'baro', 'temp': 22.098, 'pres': 101.3354}
+Sending telemetry: {'type': 'baro', 'temp': 22.123, 'pres': 101.338}
+Sending telemetry: {'type': 'baro', 'temp': 22.148, 'pres': 101.3407}
+Sending telemetry: {'type': 'baro', 'temp': 22.172, 'pres': 101.3433}
+Sending telemetry: {'type': 'baro', 'temp': 22.197, 'pres': 101.3459}
+Sending telemetry: {'type': 'baro', 'temp': 22.222, 'pres': 101.3484}
+Sending telemetry: {'type': 'baro', 'temp': 22.247, 'pres': 101.351}
+Sending telemetry: {'type': 'baro', 'temp': 22.272, 'pres': 101.3535}
+Sending telemetry: {'type': 'baro', 'temp': 22.296, 'pres': 101.356}
+Sending telemetry: {'type': 'baro', 'temp': 22.321, 'pres': 101.35839999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.345, 'pres': 101.3608}
+Sending telemetry: {'type': 'baro', 'temp': 22.369, 'pres': 101.36319999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.394, 'pres': 101.3655}
+Sending telemetry: {'type': 'baro', 'temp': 22.418, 'pres': 101.3678}
+Sending telemetry: {'type': 'baro', 'temp': 22.442, 'pres': 101.37}
+Sending telemetry: {'type': 'baro', 'temp': 22.466, 'pres': 101.37219999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.489, 'pres': 101.3743}
+Sending telemetry: {'type': 'baro', 'temp': 22.514, 'pres': 101.3765}
+Sending telemetry: {'type': 'baro', 'temp': 22.538, 'pres': 101.3785}
+Sending telemetry: {'type': 'baro', 'temp': 22.561, 'pres': 101.3805}
+Sending telemetry: {'type': 'baro', 'temp': 22.584, 'pres': 101.38239999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.607, 'pres': 101.38419999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.63, 'pres': 101.386}
+Sending telemetry: {'type': 'baro', 'temp': 22.652, 'pres': 101.3877}
+Sending telemetry: {'type': 'baro', 'temp': 22.675, 'pres': 101.3893}
+Sending telemetry: {'type': 'baro', 'temp': 22.697, 'pres': 101.3908}
+Sending telemetry: {'type': 'baro', 'temp': 22.719, 'pres': 101.3923}
+Sending telemetry: {'type': 'baro', 'temp': 22.741, 'pres': 101.3937}
+Sending telemetry: {'type': 'baro', 'temp': 22.763, 'pres': 101.3951}
+Sending telemetry: {'type': 'baro', 'temp': 22.784, 'pres': 101.3963}
+Sending telemetry: {'type': 'baro', 'temp': 22.805, 'pres': 101.39750000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.826, 'pres': 101.3986}
+Sending telemetry: {'type': 'baro', 'temp': 22.847, 'pres': 101.39959999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.868, 'pres': 101.4005}
+Sending telemetry: {'type': 'baro', 'temp': 22.888, 'pres': 101.4013}
+Sending telemetry: {'type': 'baro', 'temp': 22.908, 'pres': 101.40209999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.928, 'pres': 101.4028}
+Sending telemetry: {'type': 'baro', 'temp': 22.949, 'pres': 101.4034}
+Sending telemetry: {'type': 'baro', 'temp': 22.968, 'pres': 101.4039}
+Sending telemetry: {'type': 'baro', 'temp': 22.987, 'pres': 101.4043}
+Sending telemetry: {'type': 'baro', 'temp': 23.005, 'pres': 101.4046}
+Sending telemetry: {'type': 'baro', 'temp': 23.024, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 23.042, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 23.06, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 23.078, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 23.095, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 23.112, 'pres': 101.4046}
+Sending telemetry: {'type': 'baro', 'temp': 23.128, 'pres': 101.4043}
+Sending telemetry: {'type': 'baro', 'temp': 23.145, 'pres': 101.4039}
+Sending telemetry: {'type': 'baro', 'temp': 23.161, 'pres': 101.4034}
+Sending telemetry: {'type': 'baro', 'temp': 23.176, 'pres': 101.4029}
+Sending telemetry: {'type': 'baro', 'temp': 23.192, 'pres': 101.40220000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.207, 'pres': 101.4014}
+Sending telemetry: {'type': 'baro', 'temp': 23.222, 'pres': 101.4006}
+Sending telemetry: {'type': 'baro', 'temp': 23.236, 'pres': 101.3997}
+Sending telemetry: {'type': 'baro', 'temp': 23.25, 'pres': 101.39869999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.264, 'pres': 101.3976}
+Sending telemetry: {'type': 'baro', 'temp': 23.278, 'pres': 101.3964}
+Sending telemetry: {'type': 'baro', 'temp': 23.291, 'pres': 101.3952}
+Sending telemetry: {'type': 'baro', 'temp': 23.303, 'pres': 101.3938}
+Sending telemetry: {'type': 'baro', 'temp': 23.315, 'pres': 101.3924}
+Sending telemetry: {'type': 'baro', 'temp': 23.327, 'pres': 101.39099999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.339, 'pres': 101.3894}
+Sending telemetry: {'type': 'baro', 'temp': 23.35, 'pres': 101.3878}
+Sending telemetry: {'type': 'baro', 'temp': 23.361, 'pres': 101.3861}
+Sending telemetry: {'type': 'baro', 'temp': 23.371, 'pres': 101.3843}
+Sending telemetry: {'type': 'baro', 'temp': 23.381, 'pres': 101.38250000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.39, 'pres': 101.3806}
+Sending telemetry: {'type': 'baro', 'temp': 23.4, 'pres': 101.37870000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.409, 'pres': 101.3767}
+Sending telemetry: {'type': 'baro', 'temp': 23.417, 'pres': 101.3746}
+Sending telemetry: {'type': 'baro', 'temp': 23.425, 'pres': 101.3725}
+Sending telemetry: {'type': 'baro', 'temp': 23.433, 'pres': 101.3703}
+Sending telemetry: {'type': 'baro', 'temp': 23.44, 'pres': 101.3681}
+Sending telemetry: {'type': 'baro', 'temp': 23.447, 'pres': 101.36580000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.453, 'pres': 101.3635}
+Sending telemetry: {'type': 'baro', 'temp': 23.459, 'pres': 101.3611}
+Sending telemetry: {'type': 'baro', 'temp': 23.465, 'pres': 101.3586}
+Sending telemetry: {'type': 'baro', 'temp': 23.47, 'pres': 101.3561}
+Sending telemetry: {'type': 'baro', 'temp': 23.475, 'pres': 101.3537}
+Sending telemetry: {'type': 'baro', 'temp': 23.479, 'pres': 101.35119999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.483, 'pres': 101.3486}
+Sending telemetry: {'type': 'baro', 'temp': 23.487, 'pres': 101.3461}
+Sending telemetry: {'type': 'baro', 'temp': 23.49, 'pres': 101.34349999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.493, 'pres': 101.3409}
+Sending telemetry: {'type': 'baro', 'temp': 23.495, 'pres': 101.3382}
+Sending telemetry: {'type': 'baro', 'temp': 23.497, 'pres': 101.3356}
+Sending telemetry: {'type': 'baro', 'temp': 23.498, 'pres': 101.3329}
+Sending telemetry: {'type': 'baro', 'temp': 23.499, 'pres': 101.3303}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.32759999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.3249}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.3223}
+Sending telemetry: {'type': 'baro', 'temp': 23.499, 'pres': 101.31960000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.498, 'pres': 101.3169}
+Sending telemetry: {'type': 'baro', 'temp': 23.497, 'pres': 101.3143}
+Sending telemetry: {'type': 'baro', 'temp': 23.495, 'pres': 101.3116}
+Sending telemetry: {'type': 'baro', 'temp': 23.492, 'pres': 101.309}
+Sending telemetry: {'type': 'baro', 'temp': 23.49, 'pres': 101.3063}
+Sending telemetry: {'type': 'baro', 'temp': 23.486, 'pres': 101.3037}
+Sending telemetry: {'type': 'baro', 'temp': 23.483, 'pres': 101.30109999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.479, 'pres': 101.2986}
+Sending telemetry: {'type': 'baro', 'temp': 23.474, 'pres': 101.2961}
+Sending telemetry: {'type': 'baro', 'temp': 23.47, 'pres': 101.2936}
+Sending telemetry: {'type': 'baro', 'temp': 23.464, 'pres': 101.2912}
+Sending telemetry: {'type': 'baro', 'temp': 23.459, 'pres': 101.28880000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.453, 'pres': 101.2864}
+Sending telemetry: {'type': 'baro', 'temp': 23.446, 'pres': 101.2841}
+Sending telemetry: {'type': 'baro', 'temp': 23.439, 'pres': 101.2818}
+Sending telemetry: {'type': 'baro', 'temp': 23.432, 'pres': 101.2796}
+Sending telemetry: {'type': 'baro', 'temp': 23.425, 'pres': 101.2774}
+Sending telemetry: {'type': 'baro', 'temp': 23.416, 'pres': 101.2753}
+Sending telemetry: {'type': 'baro', 'temp': 23.408, 'pres': 101.2732}
+Sending telemetry: {'type': 'baro', 'temp': 23.399, 'pres': 101.2712}
+Sending telemetry: {'type': 'baro', 'temp': 23.39, 'pres': 101.2693}
+Sending telemetry: {'type': 'baro', 'temp': 23.38, 'pres': 101.2674}
+Sending telemetry: {'type': 'baro', 'temp': 23.37, 'pres': 101.26559999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.36, 'pres': 101.2638}
+Sending telemetry: {'type': 'baro', 'temp': 23.349, 'pres': 101.262}
+Sending telemetry: {'type': 'baro', 'temp': 23.338, 'pres': 101.2604}
+Sending telemetry: {'type': 'baro', 'temp': 23.326, 'pres': 101.25890000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.314, 'pres': 101.25739999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.302, 'pres': 101.256}
+Sending telemetry: {'type': 'baro', 'temp': 23.289, 'pres': 101.2547}
+Sending telemetry: {'type': 'baro', 'temp': 23.276, 'pres': 101.2535}
+Sending telemetry: {'type': 'baro', 'temp': 23.263, 'pres': 101.2523}
+Sending telemetry: {'type': 'baro', 'temp': 23.249, 'pres': 101.2512}
+Sending telemetry: {'type': 'baro', 'temp': 23.235, 'pres': 101.25030000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.221, 'pres': 101.2493}
+Sending telemetry: {'type': 'baro', 'temp': 23.206, 'pres': 101.2485}
+Sending telemetry: {'type': 'baro', 'temp': 23.191, 'pres': 101.2478}
+Sending telemetry: {'type': 'baro', 'temp': 23.176, 'pres': 101.2471}
+Sending telemetry: {'type': 'baro', 'temp': 23.16, 'pres': 101.2466}
+Sending telemetry: {'type': 'baro', 'temp': 23.144, 'pres': 101.2461}
+Sending telemetry: {'type': 'baro', 'temp': 23.128, 'pres': 101.2457}
+Sending telemetry: {'type': 'baro', 'temp': 23.111, 'pres': 101.24539999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.094, 'pres': 101.2452}
+Sending telemetry: {'type': 'baro', 'temp': 23.077, 'pres': 101.245}
+Sending telemetry: {'type': 'baro', 'temp': 23.058, 'pres': 101.245}
+Sending telemetry: {'type': 'baro', 'temp': 23.04, 'pres': 101.24510000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.022, 'pres': 101.2452}
+Sending telemetry: {'type': 'baro', 'temp': 23.004, 'pres': 101.24539999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.985, 'pres': 101.2458}
+Sending telemetry: {'type': 'baro', 'temp': 22.966, 'pres': 101.2462}
+Sending telemetry: {'type': 'baro', 'temp': 22.947, 'pres': 101.2467}
+Sending telemetry: {'type': 'baro', 'temp': 22.927, 'pres': 101.2473}
+Sending telemetry: {'type': 'baro', 'temp': 22.907, 'pres': 101.2479}
+Sending telemetry: {'type': 'baro', 'temp': 22.887, 'pres': 101.2487}
+Sending telemetry: {'type': 'baro', 'temp': 22.867, 'pres': 101.2495}
+Sending telemetry: {'type': 'baro', 'temp': 22.846, 'pres': 101.2505}
+Sending telemetry: {'type': 'baro', 'temp': 22.825, 'pres': 101.2515}
+Sending telemetry: {'type': 'baro', 'temp': 22.804, 'pres': 101.2526}
+Sending telemetry: {'type': 'baro', 'temp': 22.783, 'pres': 101.2538}
+Sending telemetry: {'type': 'baro', 'temp': 22.762, 'pres': 101.255}
+Sending telemetry: {'type': 'baro', 'temp': 22.74, 'pres': 101.2563}
+Sending telemetry: {'type': 'baro', 'temp': 22.718, 'pres': 101.2578}
+Sending telemetry: {'type': 'baro', 'temp': 22.696, 'pres': 101.25919999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.674, 'pres': 101.26079999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.65, 'pres': 101.2625}
+Sending telemetry: {'type': 'baro', 'temp': 22.628, 'pres': 101.2642}
+Sending telemetry: {'type': 'baro', 'temp': 22.605, 'pres': 101.26599999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.582, 'pres': 101.2678}
+Sending telemetry: {'type': 'baro', 'temp': 22.559, 'pres': 101.2697}
+Sending telemetry: {'type': 'baro', 'temp': 22.535, 'pres': 101.2717}
+Sending telemetry: {'type': 'baro', 'temp': 22.512, 'pres': 101.27369999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.488, 'pres': 101.2758}
+Sending telemetry: {'type': 'baro', 'temp': 22.464, 'pres': 101.2779}
+Sending telemetry: {'type': 'baro', 'temp': 22.44, 'pres': 101.2801}
+Sending telemetry: {'type': 'baro', 'temp': 22.416, 'pres': 101.28229999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.392, 'pres': 101.2846}
+Sending telemetry: {'type': 'baro', 'temp': 22.368, 'pres': 101.2869}
+Sending telemetry: {'type': 'baro', 'temp': 22.344, 'pres': 101.2893}
+Sending telemetry: {'type': 'baro', 'temp': 22.319, 'pres': 101.2917}
+Sending telemetry: {'type': 'baro', 'temp': 22.295, 'pres': 101.2942}
+Sending telemetry: {'type': 'baro', 'temp': 22.27, 'pres': 101.2966}
+Sending telemetry: {'type': 'baro', 'temp': 22.246, 'pres': 101.2992}
+Sending telemetry: {'type': 'baro', 'temp': 22.221, 'pres': 101.30170000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.196, 'pres': 101.3043}
+Sending telemetry: {'type': 'baro', 'temp': 22.17, 'pres': 101.307}
+Sending telemetry: {'type': 'baro', 'temp': 22.145, 'pres': 101.3096}
+Sending telemetry: {'type': 'baro', 'temp': 22.12, 'pres': 101.31219999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.095, 'pres': 101.3149}
+Sending telemetry: {'type': 'baro', 'temp': 22.07, 'pres': 101.3175}
+Sending telemetry: {'type': 'baro', 'temp': 22.045, 'pres': 101.3202}
+Sending telemetry: {'type': 'baro', 'temp': 22.02, 'pres': 101.3229}
+Sending telemetry: {'type': 'baro', 'temp': 21.995, 'pres': 101.3255}
+Sending telemetry: {'type': 'baro', 'temp': 21.97, 'pres': 101.32820000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.945, 'pres': 101.3309}
+Sending telemetry: {'type': 'baro', 'temp': 21.92, 'pres': 101.3335}
+Sending telemetry: {'type': 'baro', 'temp': 21.895, 'pres': 101.33619999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.87, 'pres': 101.3388}
+Sending telemetry: {'type': 'baro', 'temp': 21.845, 'pres': 101.3414}
+Sending telemetry: {'type': 'baro', 'temp': 21.82, 'pres': 101.34400000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.795, 'pres': 101.3466}
+Sending telemetry: {'type': 'baro', 'temp': 21.771, 'pres': 101.3492}
+Sending telemetry: {'type': 'baro', 'temp': 21.746, 'pres': 101.35170000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.721, 'pres': 101.3542}
+Sending telemetry: {'type': 'baro', 'temp': 21.697, 'pres': 101.3567}
+Sending telemetry: {'type': 'baro', 'temp': 21.672, 'pres': 101.3591}
+Sending telemetry: {'type': 'baro', 'temp': 21.646, 'pres': 101.3616}
+Sending telemetry: {'type': 'baro', 'temp': 21.622, 'pres': 101.364}
+Sending telemetry: {'type': 'baro', 'temp': 21.598, 'pres': 101.3663}
+Sending telemetry: {'type': 'baro', 'temp': 21.574, 'pres': 101.3686}
+Sending telemetry: {'type': 'baro', 'temp': 21.55, 'pres': 101.3708}
+Sending telemetry: {'type': 'baro', 'temp': 21.526, 'pres': 101.373}
+Sending telemetry: {'type': 'baro', 'temp': 21.502, 'pres': 101.3751}
+Sending telemetry: {'type': 'baro', 'temp': 21.479, 'pres': 101.3771}
+Sending telemetry: {'type': 'baro', 'temp': 21.455, 'pres': 101.37910000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.432, 'pres': 101.3811}
+Sending telemetry: {'type': 'baro', 'temp': 21.409, 'pres': 101.38289999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.386, 'pres': 101.3847}
+Sending telemetry: {'type': 'baro', 'temp': 21.363, 'pres': 101.3865}
+Sending telemetry: {'type': 'baro', 'temp': 21.341, 'pres': 101.3882}
+Sending telemetry: {'type': 'baro', 'temp': 21.318, 'pres': 101.38980000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.296, 'pres': 101.3913}
+Sending telemetry: {'type': 'baro', 'temp': 21.274, 'pres': 101.3928}
+Sending telemetry: {'type': 'baro', 'temp': 21.252, 'pres': 101.39410000000001}
+Sending telemetry: {'type': 'baro', 'temp': 21.231, 'pres': 101.3954}
+Sending telemetry: {'type': 'baro', 'temp': 21.209, 'pres': 101.3967}
+Sending telemetry: {'type': 'baro', 'temp': 21.187, 'pres': 101.3979}
+Sending telemetry: {'type': 'baro', 'temp': 21.166, 'pres': 101.3989}
+Sending telemetry: {'type': 'baro', 'temp': 21.145, 'pres': 101.3999}
+Sending telemetry: {'type': 'baro', 'temp': 21.125, 'pres': 101.4008}
+Sending telemetry: {'type': 'baro', 'temp': 21.105, 'pres': 101.4016}
+Sending telemetry: {'type': 'baro', 'temp': 21.085, 'pres': 101.4023}
+Sending telemetry: {'type': 'baro', 'temp': 21.065, 'pres': 101.40299999999999}
+Sending telemetry: {'type': 'baro', 'temp': 21.046, 'pres': 101.4035}
+Sending telemetry: {'type': 'baro', 'temp': 21.026, 'pres': 101.404}
+Sending telemetry: {'type': 'baro', 'temp': 20.803, 'pres': 101.4019}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.788, 'pres': 101.40119999999999}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 20.773, 'pres': 101.4003}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+16:43:41 [gui_status] Connected to PUB tcp://127.0.0.1:5556
+16:43:42 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:43:43 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:43:43 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:43:45 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:43:45 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:43:47 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:43:47 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:43:50 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:43:50 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:43:55 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:43:55 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:44:03 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:44:03 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:44:11 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:44:11 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:44:19 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:44:19 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+16:44:27 [gui_status] POST http://127.0.0.1:5000/api/logs/push failed: HTTP Error 400: BAD REQUEST
+16:44:27 [gui_status] POST http://127.0.0.1:5000/api/status/push failed: HTTP Error 404: NOT FOUND
+Sending telemetry: {'type': 'baro', 'temp': 22.778, 'pres': 101.3959}
+Sending telemetry: {'type': 'baro', 'temp': 22.799, 'pres': 101.3971}
+Sending telemetry: {'type': 'baro', 'temp': 22.82, 'pres': 101.3982}
+Sending telemetry: {'type': 'baro', 'temp': 22.841, 'pres': 101.39930000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.862, 'pres': 101.4002}
+Sending telemetry: {'type': 'baro', 'temp': 22.882, 'pres': 101.4011}
+Sending telemetry: {'type': 'baro', 'temp': 22.902, 'pres': 101.4019}
+Sending telemetry: {'type': 'baro', 'temp': 22.922, 'pres': 101.40259999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.942, 'pres': 101.4032}
+Sending telemetry: {'type': 'baro', 'temp': 22.962, 'pres': 101.4037}
+Sending telemetry: {'type': 'baro', 'temp': 22.981, 'pres': 101.4042}
+Sending telemetry: {'type': 'baro', 'temp': 23.0, 'pres': 101.4045}
+Sending telemetry: {'type': 'baro', 'temp': 23.018, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 23.037, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 23.055, 'pres': 101.405}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 143, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 23.072, 'pres': 101.405}
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/urllib/request.py", line 1348, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+  File "/usr/lib/python3.10/http/client.py", line 1283, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1329, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1278, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+  File "/usr/lib/python3.10/http/client.py", line 1038, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.10/http/client.py", line 976, in send
+    self.connect()
+  File "/usr/lib/python3.10/http/client.py", line 942, in connect
+    self.sock = self._create_connection(
+  File "/usr/lib/python3.10/socket.py", line 845, in create_connection
+    raise err
+  File "/usr/lib/python3.10/socket.py", line 833, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 157, in <module>
+    main()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 116, in main
+    _post_json(TEL_ENDPOINT, tel_data)
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_status.py", line 27, in _post_json
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+  File "/usr/lib/python3.10/urllib/request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.10/urllib/request.py", line 519, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.10/urllib/request.py", line 536, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+  File "/usr/lib/python3.10/urllib/request.py", line 496, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.10/urllib/request.py", line 1377, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib/python3.10/urllib/request.py", line 1351, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno 111] Connection refused>
+Sending telemetry: {'type': 'baro', 'temp': 22.073, 'pres': 101.3327}
+Sending telemetry: {'type': 'baro', 'temp': 22.098, 'pres': 101.3354}
+Sending telemetry: {'type': 'baro', 'temp': 22.123, 'pres': 101.338}
+Sending telemetry: {'type': 'baro', 'temp': 22.148, 'pres': 101.3407}
+Sending telemetry: {'type': 'baro', 'temp': 22.172, 'pres': 101.3433}
+Sending telemetry: {'type': 'baro', 'temp': 22.197, 'pres': 101.3459}
+Sending telemetry: {'type': 'baro', 'temp': 22.222, 'pres': 101.3484}
+Sending telemetry: {'type': 'baro', 'temp': 22.247, 'pres': 101.351}
+Sending telemetry: {'type': 'baro', 'temp': 22.271, 'pres': 101.3535}
+Sending telemetry: {'type': 'baro', 'temp': 22.296, 'pres': 101.356}
+Sending telemetry: {'type': 'baro', 'temp': 22.321, 'pres': 101.35839999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.345, 'pres': 101.3608}
+Sending telemetry: {'type': 'baro', 'temp': 22.369, 'pres': 101.36319999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.394, 'pres': 101.3655}
+Sending telemetry: {'type': 'baro', 'temp': 22.418, 'pres': 101.3678}
+Sending telemetry: {'type': 'baro', 'temp': 22.442, 'pres': 101.37}
+Sending telemetry: {'type': 'baro', 'temp': 22.466, 'pres': 101.37219999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.489, 'pres': 101.3743}
+Sending telemetry: {'type': 'baro', 'temp': 22.514, 'pres': 101.3765}
+Sending telemetry: {'type': 'baro', 'temp': 22.537, 'pres': 101.3785}
+Sending telemetry: {'type': 'baro', 'temp': 22.561, 'pres': 101.3805}
+Sending telemetry: {'type': 'baro', 'temp': 22.584, 'pres': 101.38239999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.607, 'pres': 101.38419999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.63, 'pres': 101.386}
+Sending telemetry: {'type': 'baro', 'temp': 22.652, 'pres': 101.3877}
+Sending telemetry: {'type': 'baro', 'temp': 22.675, 'pres': 101.3893}
+Sending telemetry: {'type': 'baro', 'temp': 22.697, 'pres': 101.3908}
+Sending telemetry: {'type': 'baro', 'temp': 22.719, 'pres': 101.3923}
+Sending telemetry: {'type': 'baro', 'temp': 22.741, 'pres': 101.3937}
+Sending telemetry: {'type': 'baro', 'temp': 22.763, 'pres': 101.3951}
+Sending telemetry: {'type': 'baro', 'temp': 22.784, 'pres': 101.3963}
+Sending telemetry: {'type': 'baro', 'temp': 22.805, 'pres': 101.39750000000001}
+Sending telemetry: {'type': 'baro', 'temp': 22.826, 'pres': 101.3986}
+Sending telemetry: {'type': 'baro', 'temp': 22.847, 'pres': 101.39959999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.868, 'pres': 101.4005}
+Sending telemetry: {'type': 'baro', 'temp': 22.888, 'pres': 101.4013}
+Sending telemetry: {'type': 'baro', 'temp': 22.908, 'pres': 101.40209999999999}
+Sending telemetry: {'type': 'baro', 'temp': 22.928, 'pres': 101.4028}
+Sending telemetry: {'type': 'baro', 'temp': 22.948, 'pres': 101.4034}
+Sending telemetry: {'type': 'baro', 'temp': 22.968, 'pres': 101.4039}
+Sending telemetry: {'type': 'baro', 'temp': 22.987, 'pres': 101.4043}
+Sending telemetry: {'type': 'baro', 'temp': 23.005, 'pres': 101.4046}
+Sending telemetry: {'type': 'baro', 'temp': 23.024, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 23.042, 'pres': 101.4049}
+Sending telemetry: {'type': 'baro', 'temp': 23.06, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 23.078, 'pres': 101.405}
+Sending telemetry: {'type': 'baro', 'temp': 23.095, 'pres': 101.4048}
+Sending telemetry: {'type': 'baro', 'temp': 23.112, 'pres': 101.4046}
+Sending telemetry: {'type': 'baro', 'temp': 23.128, 'pres': 101.4043}
+Sending telemetry: {'type': 'baro', 'temp': 23.145, 'pres': 101.4039}
+Sending telemetry: {'type': 'baro', 'temp': 23.161, 'pres': 101.4034}
+Sending telemetry: {'type': 'baro', 'temp': 23.176, 'pres': 101.4029}
+Sending telemetry: {'type': 'baro', 'temp': 23.192, 'pres': 101.40220000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.207, 'pres': 101.4014}
+Sending telemetry: {'type': 'baro', 'temp': 23.222, 'pres': 101.4006}
+Sending telemetry: {'type': 'baro', 'temp': 23.236, 'pres': 101.3997}
+Sending telemetry: {'type': 'baro', 'temp': 23.25, 'pres': 101.39869999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.264, 'pres': 101.3976}
+Sending telemetry: {'type': 'baro', 'temp': 23.278, 'pres': 101.3964}
+Sending telemetry: {'type': 'baro', 'temp': 23.291, 'pres': 101.3952}
+Sending telemetry: {'type': 'baro', 'temp': 23.303, 'pres': 101.3938}
+Sending telemetry: {'type': 'baro', 'temp': 23.315, 'pres': 101.3924}
+Sending telemetry: {'type': 'baro', 'temp': 23.327, 'pres': 101.39099999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.339, 'pres': 101.3894}
+Sending telemetry: {'type': 'baro', 'temp': 23.35, 'pres': 101.3878}
+Sending telemetry: {'type': 'baro', 'temp': 23.361, 'pres': 101.3861}
+Sending telemetry: {'type': 'baro', 'temp': 23.371, 'pres': 101.3843}
+Sending telemetry: {'type': 'baro', 'temp': 23.381, 'pres': 101.38250000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.39, 'pres': 101.3806}
+Sending telemetry: {'type': 'baro', 'temp': 23.4, 'pres': 101.37870000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.408, 'pres': 101.3767}
+Sending telemetry: {'type': 'baro', 'temp': 23.417, 'pres': 101.3746}
+Sending telemetry: {'type': 'baro', 'temp': 23.425, 'pres': 101.3725}
+Sending telemetry: {'type': 'baro', 'temp': 23.433, 'pres': 101.3703}
+Sending telemetry: {'type': 'baro', 'temp': 23.44, 'pres': 101.3681}
+Sending telemetry: {'type': 'baro', 'temp': 23.447, 'pres': 101.36580000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.453, 'pres': 101.3635}
+Sending telemetry: {'type': 'baro', 'temp': 23.459, 'pres': 101.3611}
+Sending telemetry: {'type': 'baro', 'temp': 23.465, 'pres': 101.3586}
+Sending telemetry: {'type': 'baro', 'temp': 23.47, 'pres': 101.3562}
+Sending telemetry: {'type': 'baro', 'temp': 23.475, 'pres': 101.3537}
+Sending telemetry: {'type': 'baro', 'temp': 23.479, 'pres': 101.35119999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.483, 'pres': 101.3486}
+Sending telemetry: {'type': 'baro', 'temp': 23.487, 'pres': 101.3461}
+Sending telemetry: {'type': 'baro', 'temp': 23.49, 'pres': 101.34349999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.493, 'pres': 101.3409}
+Sending telemetry: {'type': 'baro', 'temp': 23.495, 'pres': 101.3382}
+Sending telemetry: {'type': 'baro', 'temp': 23.497, 'pres': 101.3356}
+Sending telemetry: {'type': 'baro', 'temp': 23.498, 'pres': 101.333}
+Sending telemetry: {'type': 'baro', 'temp': 23.499, 'pres': 101.3303}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.32759999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.325}
+Sending telemetry: {'type': 'baro', 'temp': 23.5, 'pres': 101.3223}
+Sending telemetry: {'type': 'baro', 'temp': 23.499, 'pres': 101.31960000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.498, 'pres': 101.3169}
+Sending telemetry: {'type': 'baro', 'temp': 23.497, 'pres': 101.3143}
+Sending telemetry: {'type': 'baro', 'temp': 23.495, 'pres': 101.3117}
+Sending telemetry: {'type': 'baro', 'temp': 23.492, 'pres': 101.309}
+Sending telemetry: {'type': 'baro', 'temp': 23.49, 'pres': 101.3063}
+Sending telemetry: {'type': 'baro', 'temp': 23.486, 'pres': 101.3037}
+Sending telemetry: {'type': 'baro', 'temp': 23.483, 'pres': 101.30109999999999}
+Sending telemetry: {'type': 'baro', 'temp': 23.479, 'pres': 101.2986}
+Sending telemetry: {'type': 'baro', 'temp': 23.474, 'pres': 101.2961}
+Sending telemetry: {'type': 'baro', 'temp': 23.47, 'pres': 101.2936}
+Sending telemetry: {'type': 'baro', 'temp': 23.464, 'pres': 101.2912}
+Sending telemetry: {'type': 'baro', 'temp': 23.459, 'pres': 101.28880000000001}
+Sending telemetry: {'type': 'baro', 'temp': 23.453, 'pres': 101.2864}
+Sending telemetry: {'type': 'baro', 'temp': 23.446, 'pres': 101.2841}
+Sending telemetry: {'type': 'baro', 'temp': 23.44, 'pres': 101.2818}
+Sending telemetry: {'type': 'baro', 'temp': 23.432, 'pres': 101.2796}
+Sending telemetry: {'type': 'baro', 'temp': 23.425, 'pres': 101.2774}
+Sending telemetry: {'type': 'baro', 'temp': 23.417, 'pres': 101.2753}
+Sending telemetry: {'type': 'baro', 'temp': 23.408, 'pres': 101.2732}
+Sending telemetry: {'type': 'baro', 'temp': 23.399, 'pres': 101.2712}

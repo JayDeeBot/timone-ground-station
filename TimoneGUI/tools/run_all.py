@@ -43,7 +43,8 @@ SCRIPTS = [
     "gui_lora_915.py",
     "gui_radio_433.py",
     "gui_status.py",
-    "gui_peripherals.py",
+    "gui_settings.py",
+    # "gui_peripherals.py",
 ]
 
 LOG_DIR = Path(__file__).resolve().parent / "logs"
@@ -78,7 +79,12 @@ class ScriptSupervisor:
 
         # Launch communicator first so GUI listeners have a server
         for script in SCRIPTS:
-            self._launch(script, sim_port=sim_port)
+            env = os.environ.copy()
+            # Inject special environment vars for specific scripts
+            if script == "gui_settings.py":
+                env["SETTINGS_DRYRUN"] = "1"   # enable dry-run mode here
+            # self._launch(script, sim_port=sim_port)
+            self._launch(script, sim_port=sim_port, env=env)
         # Start watcher thread
         threading.Thread(target=self._watchdog_loop, name="watchdog", daemon=True).start()
 
@@ -122,7 +128,7 @@ class ScriptSupervisor:
         return [sys.executable, str(script_path)]
 
     # ---------- launching ----------
-    def _launch(self, script: str, sim_port: str | None):
+    def _launch(self, script: str, sim_port: str | None, env: dict | None = None):
         """Launch a single script as a subprocess with logging."""
         path = Path(__file__).resolve().parent / script
         log_file = LOG_DIR / f"{Path(script).stem}.log"
@@ -134,16 +140,15 @@ class ScriptSupervisor:
         else:
             args = [sys.executable, str(path)]
 
-        # Open file in append binary mode
         f = open(log_file, "ab", buffering=0)
         proc = subprocess.Popen(
             args,
             stdout=f,
             stderr=subprocess.STDOUT,
             cwd=path.parent,
+            env=(env or os.environ.copy()),
         )
-        # Keep handle so it doesn't get GC'd (and closed) while running
-        proc._log_handle = f  # noqa: attach for cleanup
+        proc._log_handle = f
         self.processes[script] = proc
 
     # ---------- watchdog ----------

@@ -1,95 +1,100 @@
 <div class="settings-container p-3">
-    <!-- LoRa Configuration (433 MHz) -->
-    <div class="card mb-3">
-        <div class="card-header">
-            <h5 class="card-title mb-0">LoRa Configuration (433 MHz)</h5>
-        </div>
-        <div class="card-body">
-            <form id="radio433Form">
-                <div class="mb-3">
-                    <label for="bandwidth433" class="form-label">Bandwidth (kHz)</label>
-                    <input type="number" 
-                           class="form-control" 
-                           id="bandwidth433" 
-                           name="bandwidth" 
-                           min="7.8" 
-                           max="1625" 
-                           step="0.1" 
-                           value="125">
-                    <div class="form-text">Enter bandwidth between 7.8 kHz and 1625 kHz</div>
-                </div>
+  <!-- Optional tiny bridge status badge -->
+  <div id="bridgeStatus" style="font:12px/1.6 system-ui;margin:4px 0 12px;opacity:.8;">
+    Bridge: <span data-bridge-state>connecting…</span>
+  </div>
 
-                <div class="mb-3">
-                    <label for="codingRate433" class="form-label">Coding Rate</label>
-                    <select class="form-select" id="codingRate433" name="codingRate">
-                        <option value="4/5">4/5</option>
-                        <option value="4/6">4/6</option>
-                        <option value="4/7">4/7</option>
-                        <option value="4/8">4/8</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="spreadingFactor433" class="form-label">Spreading Factor</label>
-                    <input type="number" 
-                           class="form-control" 
-                           id="spreadingFactor433" 
-                           name="spreadingFactor" 
-                           min="5" 
-                           max="12" 
-                           value="8">
-                    <div class="form-text">Enter a value between 5 and 12</div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save LoRa Settings (433 MHz)</button>
-            </form>
-        </div>
+  <!-- LoRa Configuration (433 MHz) -->
+  <div class="card mb-3">
+    <div class="card-header">
+      <h5 class="card-title mb-0">LoRa Configuration (433 MHz)</h5>
     </div>
-
-    <!-- 915 MHz Radio Configuration -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title mb-0">LoRa Configuration (915 MHz)</h5>
+    <div class="card-body">
+      <form id="radio433Form">
+        <div class="mb-3">
+          <label for="bandwidth433" class="form-label">Bandwidth (kHz)</label>
+          <input type="number"
+                 class="form-control"
+                 id="bandwidth433"
+                 name="bandwidth"
+                 min="7.8"
+                 max="1625"
+                 step="0.1"
+                 value="125">
+          <div class="form-text">Enter bandwidth between 7.8 kHz and 1625 kHz</div>
         </div>
-        <div class="card-body">
-            <form id="radio915Form">
-                <div class="mb-3">
-                    <label for="bandwidth915" class="form-label">Bandwidth (kHz)</label>
-                    <input type="number" 
-                           class="form-control" 
-                           id="bandwidth915" 
-                           name="bandwidth" 
-                           min="7.8" 
-                           max="1625" 
-                           step="0.1" 
-                           value="125">
-                    <div class="form-text">Enter bandwidth between 7.8 kHz and 1625 kHz</div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="codingRate915" class="form-label">Coding Rate</label>
-                    <select class="form-select" id="codingRate915" name="codingRate">
-                        <option value="4/5">4/5</option>
-                        <option value="4/6">4/6</option>
-                        <option value="4/7">4/7</option>
-                        <option value="4/8">4/8</option>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="spreadingFactor915" class="form-label">Spreading Factor</label>
-                    <input type="number" 
-                           class="form-control" 
-                           id="spreadingFactor915" 
-                           name="spreadingFactor" 
-                           min="5" 
-                           max="12" 
-                           value="8">
-                    <div class="form-text">Enter a value between 5 and 12</div>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Save LoRa Settings (915 MHz)</button>
-            </form>
+        <div class="mb-3">
+          <label for="codingRate433" class="form-label">Coding Rate</label>
+          <select class="form-select" id="codingRate433" name="codingRate">
+            <option value="4/5">4/5</option>
+            <option value="4/6">4/6</option>
+            <option value="4/7">4/7</option>
+            <option value="4/8">4/8</option>
+          </select>
         </div>
+
+        <div class="mb-3">
+          <label for="spreadingFactor433" class="form-label">Spreading Factor</label>
+          <input type="number"
+                 class="form-control"
+                 id="spreadingFactor433"
+                 name="spreadingFactor"
+                 min="5"
+                 max="12"
+                 value="8">
+          <div class="form-text">Enter a value between 5 and 12</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save LoRa Settings (433 MHz)</button>
+      </form>
     </div>
+  </div>
+
+  <!-- 915 MHz Radio Configuration -->
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title mb-0">LoRa Configuration (915 MHz)</h5>
+    </div>
+    <div class="card-body">
+      <form id="radio915Form">
+        <div class="mb-3">
+          <label for="bandwidth915" class="form-label">Bandwidth (kHz)</label>
+          <input type="number"
+                 class="form-control"
+                 id="bandwidth915"
+                 name="bandwidth"
+                 min="7.8"
+                 max="1625"
+                 step="0.1"
+                 value="125">
+          <div class="form-text">Enter bandwidth between 7.8 kHz and 1625 kHz</div>
+        </div>
+
+        <div class="mb-3">
+          <label for="codingRate915" class="form-label">Coding Rate</label>
+          <select class="form-select" id="codingRate915" name="codingRate">
+            <option value="4/5">4/5</option>
+            <option value="4/6">4/6</option>
+            <option value="4/7">4/7</option>
+            <option value="4/8">4/8</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="spreadingFactor915" class="form-label">Spreading Factor</label>
+          <input type="number"
+                 class="form-control"
+                 id="spreadingFactor915"
+                 name="spreadingFactor"
+                 min="5"
+                 max="12"
+                 value="8">
+          <div class="form-text">Enter a value between 5 and 12</div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save LoRa Settings (915 MHz)</button>
+      </form>
+    </div>
+  </div>
 </div>

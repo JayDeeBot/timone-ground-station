@@ -1,55 +1,3 @@
-### --------- UNCOMMENT FOR LOGGING ONLY VERSION --------- ###
-
-# #!/usr/bin/env python3
-# # -*- coding: utf-8 -*-
-# """
-# GUI Lora915 Listener
-# --------------------
-# Subscribes to the communicator PUB bus and prints LoRa 915 telemetry.
-# Run:
-#   python3 gui_lora_915.py --pub tcp://127.0.0.1:5556
-# """
-# import os
-# import sys
-# import json
-# import time
-# import argparse
-# import zmq
-
-# def main():
-#     ap = argparse.ArgumentParser()
-#     ap.add_argument("--pub", default=os.getenv("TIMONE_PUB", "tcp://127.0.0.1:5556"),
-#                     help="PUB endpoint exposed by communicator.py")
-#     args = ap.parse_args()
-
-#     ctx = zmq.Context.instance()
-#     sub = ctx.socket(zmq.SUB)
-#     sub.connect(args.pub)
-#     sub.setsockopt_string(zmq.SUBSCRIBE, "lora915")
-
-#     print(f"[LORA915] Connected to {args.pub}, subscribed to topic 'lora915'")
-#     try:
-#         while True:
-#             topic, payload = sub.recv_multipart()
-#             msg = json.loads(payload.decode("utf-8"))
-#             ts = msg.get("ts", int(time.time()*1000))
-#             data = msg.get("data", {})
-#             print(f"[LORA915] ts={ts} decoded={msg.get('decoded')} type={msg.get('type')}")
-#             print(f"  packet_count={data.get('packet_count')} rssi_dbm={data.get('rssi_dbm')} "
-#                   f"snr_db={data.get('snr_db')} latest_len={data.get('latest_len')}")
-#             if "latest_hex" in data:
-#                 print(f"  latest_hex={data['latest_hex']}")
-#             print("-"*60)
-#     except KeyboardInterrupt:
-#         print("\n[LORA915] Exiting...")
-#     finally:
-#         sub.close(0)
-
-# if __name__ == "__main__":
-#     main()
-
-### --------- FULL GUI VERSION --------- ###
-
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
@@ -75,18 +23,22 @@ TEL_PUSH  = f"{GUI_BASE}/api/telemetry/push"
 ALT_RE = re.compile(r"\bALT\s*[:=]\s*([-+]?\d+(?:\.\d+)?)", re.I)
 VEL_RE = re.compile(r"\bVEL\s*[:=]\s*([-+]?\d+(?:\.\d+)?)", re.I)
 V_RE   = re.compile(r"(?<![A-Z])\bv\s*[:=]\s*([-+]?\d+(?:\.\d+)?)", re.I)  # 'v:' variant
-
-# Flexible [GPS] LAT/LNG (case/spacing tolerant, : or =, , or ; separators)
 GPS_KV_RE = re.compile(
     r"\bGPS\b.*?lat\s*[:=]\s*([-+]?\d+(?:\.\d+)?)\s*[,;]\s*lng\s*[:=]\s*([-+]?\d+(?:\.\d+)?)",
     re.I,
 )
-
-# APRS position like: !3040.11S/14311.52E  (optional trailing symbol)
 APRS_RE = re.compile(
     r"!\s*(\d{2})(\d{2}\.\d+)\s*([NS])\s*[/\\]\s*(\d{3})(\d{2}\.\d+)\s*([EW])",
     re.I,
 )
+# Continuity flags like "mc:1" / "dc=0"
+MC_RE = re.compile(r"\bmc\s*[:=]\s*([01])\b", re.I)
+DC_RE = re.compile(r"\bdc\s*[:=]\s*([01])\b", re.I)
+
+# NEW: IBIS FSM, RSSI, SNR in log text (e.g. "LS:20", "RSSI:-100", "SNR:12.5")
+LS_RE   = re.compile(r"\bLS\s*[:=]\s*(\d{1,3})\b", re.I)
+RSSI_RE = re.compile(r"\bRSSI\s*[:=]\s*(-?\d+(?:\.\d+)?)\b", re.I)
+SNR_RE  = re.compile(r"\bSNR\s*[:=]\s*(-?\d+(?:\.\d+)?)\b", re.I)
 
 def safe_post(url, payload, timeout=2.0):
     try:
@@ -107,7 +59,6 @@ def payload_text(data: dict) -> str:
     return ""
 
 def aprs_to_decimal(lat_deg, lat_min, lat_hem, lon_deg, lon_min, lon_hem):
-    # lat_deg: 2 digits, lon_deg: 3 digits; minutes are decimal minutes
     lat = float(lat_deg) + float(lat_min) / 60.0
     lon = float(lon_deg) + float(lon_min) / 60.0
     if lat_hem.upper() == "S": lat = -lat
@@ -117,10 +68,10 @@ def aprs_to_decimal(lat_deg, lat_min, lat_hem, lon_deg, lon_min, lon_hem):
 def parse_telemetry_fields(text: str) -> dict:
     out = {}
 
+    # Alt & vel
     m = ALT_RE.search(text)
     if m: out["alt"] = float(m.group(1))
 
-    # prefer VEL, fallback to v:
     vel = None
     m = VEL_RE.search(text)
     if m: vel = float(m.group(1))
@@ -129,13 +80,12 @@ def parse_telemetry_fields(text: str) -> dict:
         if m: vel = float(m.group(1))
     if vel is not None: out["vel"] = vel
 
-    # GPS via [GPS] LAT/LNG
+    # GPS
     m = GPS_KV_RE.search(text)
     if m:
         out["lat"] = float(m.group(1))
         out["lng"] = float(m.group(2))
     else:
-        # APRS format
         m = APRS_RE.search(text)
         if m:
             lat_deg, lat_min, lat_hem, lon_deg, lon_min, lon_hem = m.groups()
@@ -143,11 +93,35 @@ def parse_telemetry_fields(text: str) -> dict:
             out["lat"] = lat
             out["lng"] = lon
 
-    # BARO (pressure / temp) inside radio payloads (optional)
+    # Optional BARO within radio payloads
     baro_p = re.search(r"\[BARO\].*?\bP\s*=\s*([-+]?\d+(?:\.\d+)?)", text, re.I)
     if baro_p: out["pres"] = float(baro_p.group(1))
     baro_t = re.search(r"\[BARO\].*?\bT\s*=\s*([-+]?\d+(?:\.\d+)?)", text, re.I)
     if baro_t: out["temp"] = float(baro_t.group(1))
+
+    # Continuity flags
+    m = MC_RE.search(text)
+    if m:
+        out["mc"] = int(m.group(1))
+        out["main"] = bool(out["mc"])
+    m = DC_RE.search(text)
+    if m:
+        out["dc"] = int(m.group(1))
+        out["drog"] = bool(out["dc"])
+
+    # NEW: IBIS FSM, RSSI, SNR
+    m = LS_RE.search(text)
+    if m:
+        try: out["state"] = int(m.group(1))
+        except Exception: pass
+    m = RSSI_RE.search(text)
+    if m:
+        try: out["rssi"] = float(m.group(1))
+        except Exception: pass
+    m = SNR_RE.search(text)
+    if m:
+        try: out["snr"] = float(m.group(1))
+        except Exception: pass
 
     return out
 
@@ -169,7 +143,7 @@ def main():
             rssi = data.get("rssi_dbm")
             snr  = data.get("snr_db")
 
-            # 1) Log line
+            # 1) Log line (unchanged)
             parts = [txt] if txt else []
             meta = []
             if rssi is not None: meta.append(f"RSSI:{rssi}")
@@ -180,15 +154,20 @@ def main():
             # 2) Telemetry row (any fields we find)
             if txt:
                 row = parse_telemetry_fields(txt)
+                # If meta RSSI/SNR present, keep them unless already parsed from text
+                if rssi is not None and "rssi" not in row:
+                    try: row["rssi"] = float(rssi)
+                    except Exception: pass
+                if snr is not None and "snr" not in row:
+                    try: row["snr"] = float(snr)
+                    except Exception: pass
+
                 if row:
                     row.setdefault("time", int(time.time() * 1000))
                     safe_post(TEL_PUSH, row)
-
-        except KeyboardInterrupt:
-            break
-        except Exception as e:
-            safe_post(LOGS_PUSH, {"line": f"[LoRa915] error: {e}"})
-            time.sleep(0.25)
+        except Exception:
+            # keep running even if a row is odd
+            pass
 
 if __name__ == "__main__":
     main()

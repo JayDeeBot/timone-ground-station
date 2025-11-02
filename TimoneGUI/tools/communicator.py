@@ -155,7 +155,7 @@ def decode_wire_payload(peripheral_hint: Optional[int], payload: bytes) -> Dict[
         except struct.error:
             pass
 
-    # WireBarometer_t size = 17 bytes (v1) :contentReference[oaicite:14]{index=14}
+    # WireBarometer_t size = 17 bytes (v1)
     if n == 17 and version == 1:
         try:
             _, ts_ms, p_hpa, t_c, alt_m = struct.unpack("<B I f f f", payload)

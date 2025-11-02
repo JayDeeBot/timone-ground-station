@@ -1,0 +1,195 @@
+2025-10-27 16:21:06,991 [INFO] server listening on 0.0.0.0:8766
+2025-10-27 16:21:12,930 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-10-27 16:21:14,470 [INFO] connection open
+2025-10-27 16:21:35,214 [INFO] Message received from GUI:
+{
+  "type": "radio_settings",
+  "radio": "433",
+  "bandwidth": 1555,
+  "codingRate": "4/5",
+  "spreadingFactor": 8
+}
+
+[gui_settings] Message received from GUI @ 16:21:35
+{
+  "type": "radio_settings",
+  "radio": "433",
+  "bandwidth": 1555,
+  "codingRate": "4/5",
+  "spreadingFactor": 8
+}
+2025-10-27 16:23:09,475 [INFO] connection closed
+2025-10-27 16:23:09,476 [INFO] server closing
+2025-10-27 16:23:09,476 [INFO] server closed
+2025-10-27 16:23:44,068 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-10-27 16:23:44,669 [INFO] connection open
+2025-10-27 16:24:15,092 [INFO] Message received from GUI:
+{
+  "type": "radio_settings",
+  "radio": "433",
+  "bandwidth": 1555,
+  "codingRate": "4/5",
+  "spreadingFactor": 8
+}
+
+[gui_settings] Message received from GUI @ 16:24:15
+{
+  "type": "radio_settings",
+  "radio": "433",
+  "bandwidth": 1555,
+  "codingRate": "4/5",
+  "spreadingFactor": 8
+}
+2025-10-27 16:24:22,897 [INFO] Message received from GUI:
+{
+  "type": "radio_settings",
+  "radio": "915",
+  "bandwidth": 1555,
+  "codingRate": "4/5",
+  "spreadingFactor": 12
+}
+
+[gui_settings] Message received from GUI @ 16:24:22
+{
+  "type": "radio_settings",
+  "radio": "915",
+  "bandwidth": 1555,
+  "codingRate": "4/5",
+  "spreadingFactor": 12
+}
+2025-10-27 16:25:49,198 [INFO] connection closed
+2025-10-27 16:25:49,198 [INFO] server closing
+2025-10-27 16:25:49,199 [INFO] server closed
+2025-10-27 16:43:41,718 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-10-27 16:44:06,711 [INFO] connection open
+2025-10-27 16:44:31,801 [INFO] server listening on 0.0.0.0:8766
+2025-10-27 16:45:20,821 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-10-27 16:45:23,927 [INFO] connection open
+2025-10-27 16:46:19,070 [INFO] Message received from GUI:
+{
+  "type": "radio_settings",
+  "radio": "433",
+  "bandwidth": 1555,
+  "codingRate": "4/6",
+  "spreadingFactor": 8
+}
+
+[gui_settings] Message received from GUI @ 16:46:19
+{
+  "type": "radio_settings",
+  "radio": "433",
+  "bandwidth": 1555,
+  "codingRate": "4/6",
+  "spreadingFactor": 8
+}
+2025-10-27 16:47:09,592 [INFO] connection closed
+2025-10-29 09:09:07,683 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-10-29 09:09:33,488 [INFO] connection open
+2025-10-29 09:09:41,199 [INFO] connection closed
+2025-10-29 09:09:41,199 [INFO] server closing
+2025-10-29 09:09:41,199 [INFO] server closed
+2025-10-29 09:10:01,444 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-10-29 09:10:03,434 [INFO] connection open
+2025-11-02 09:51:36,203 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-11-02 09:51:44,033 [INFO] connection open
+2025-11-02 09:53:13,948 [INFO] server listening on 0.0.0.0:8766
+2025-11-02 09:53:32,684 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-11-02 09:53:35,582 [INFO] connection open
+2025-11-02 09:55:44,937 [INFO] server listening on 0.0.0.0:8766
+[gui_settings] WS on ws://0.0.0.0:8766  (CMD → tcp://127.0.0.1:5557)  DRYRUN=True
+2025-11-02 09:55:51,271 [INFO] connection open
+2025-11-02 09:56:13,020 [INFO] connection closed
+2025-11-02 09:56:13,242 [INFO] connection open
+2025-11-02 09:56:18,430 [INFO] connection closed
+2025-11-02 09:56:58,190 [INFO] connection open
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 91, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 85, in main
+    async with websockets.serve(handler, WS_HOST, WS_PORT, max_size=1_000_000):
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1099, in __aenter__
+    return await self
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1117, in __await_impl__
+    server = await self._create_server()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1519, in create_server
+    raise OSError(err.errno, 'error while attempting '
+OSError: [Errno 98] error while attempting to bind on address ('0.0.0.0', 8766): address already in use
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 91, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 85, in main
+    async with websockets.serve(handler, WS_HOST, WS_PORT, max_size=1_000_000):
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1099, in __aenter__
+    return await self
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1117, in __await_impl__
+    server = await self._create_server()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1519, in create_server
+    raise OSError(err.errno, 'error while attempting '
+OSError: [Errno 98] error while attempting to bind on address ('0.0.0.0', 8766): address already in use
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 91, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 85, in main
+    async with websockets.serve(handler, WS_HOST, WS_PORT, max_size=1_000_000):
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1099, in __aenter__
+    return await self
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1117, in __await_impl__
+    server = await self._create_server()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1519, in create_server
+    raise OSError(err.errno, 'error while attempting '
+OSError: [Errno 98] error while attempting to bind on address ('0.0.0.0', 8766): address already in use
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 91, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 85, in main
+    async with websockets.serve(handler, WS_HOST, WS_PORT, max_size=1_000_000):
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1099, in __aenter__
+    return await self
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1117, in __await_impl__
+    server = await self._create_server()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1519, in create_server
+    raise OSError(err.errno, 'error while attempting '
+OSError: [Errno 98] error while attempting to bind on address ('0.0.0.0', 8766): address already in use
+Traceback (most recent call last):
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 91, in <module>
+    asyncio.run(main())
+  File "/usr/lib/python3.10/asyncio/runners.py", line 44, in run
+    return loop.run_until_complete(main)
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 649, in run_until_complete
+    return future.result()
+  File "/home/jarred/git/timone-ground-station/TimoneGUI/tools/gui_settings.py", line 85, in main
+    async with websockets.serve(handler, WS_HOST, WS_PORT, max_size=1_000_000):
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1099, in __aenter__
+    return await self
+  File "/home/jarred/.local/lib/python3.10/site-packages/websockets/legacy/server.py", line 1117, in __await_impl__
+    server = await self._create_server()
+  File "/usr/lib/python3.10/asyncio/base_events.py", line 1519, in create_server
+    raise OSError(err.errno, 'error while attempting '
+OSError: [Errno 98] error while attempting to bind on address ('0.0.0.0', 8766): address already in use
+2025-11-02 09:58:04,783 [INFO] connection closed
+2025-11-02 12:41:19,401 [INFO] connection open
+2025-11-02 13:00:30,325 [INFO] connection closed
