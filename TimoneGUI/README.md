@@ -34,21 +34,29 @@ TimoneGUI is a web-based application built using Flask for the backend and a dyn
    ./tools/launcher.sh
    ```
 
-# Raspberry Pi Login
+5. # Raspberry Pi Login
 
 Username: timone
 Password: rocket
 Default Keyring Password: rocket
 
-# To Do List
+6. # Accessing the Raspberry Pi via SSH (For better performance use the Pi directly with a monitor, keyboard and mouse)
 
-1. Setup a system (API/Class/Conifg) for importing new modules such as compass onto the AiMBoard - create the compass method as a template:
-    Requirements;
-        - Name of the device example: "compass"
-        - Graphing - bool flag to say whether the device should graph its data
-        - Tabbing - bool flag - should the device have its own Tabbing
-        - Raw values - should the raw values be displayed
+```bash
+# Make sure that SSH -X is installed - this will allow you to render the pi's output to your machine
+sudo apt update
+sudo apt install xorg
 
-2. Build a gui to test out the sender messages for the comms. Add this as a debug tab in the flask gui - call it pro settings - password protected.
+# Make sure you are connected to the same wifi - the pi should reconnect to the same network on reboot if its available (first test with monitor)
+ssh -X timone@[raspberry-pi-ip] # If you are using hotspot (recommended) then check your connected devices the ip will show up 
+# The ip will change everytime you reconnect unless you set a static ip - look into this if you're interested
 
-3. Come up with a handshake message for bootup. Send a unique byte (goodmorning); recieve the same uniqe byte back to say everythin is working or an error byte.
+# Bypass the warning (if it occurs)
+yes
+
+# Enter the password
+rocket
+
+# If you want to exit
+exit
+```
